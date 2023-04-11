@@ -7,9 +7,9 @@ import PathLink from '../component/PathLink'
 export default function Layout() {
   return (
     <Container>
-        <NavBar />
-        <PathLink />
-        <Outlet />
+      <NavBar />
+      <PathLink />
+      <Outlet />
     </Container>
   )
 }

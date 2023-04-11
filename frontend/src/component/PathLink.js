@@ -22,10 +22,10 @@ export default function PathLink() {
             <Container className='d-flex' style={{width: '300px'}}>
               <p className='me-5'>Question bank</p>
               <Stack>
-                <a href='#'>Question</a>
-                <a href='#'>Categories</a>
-                <a href='#'>Import</a>
-                <a href='#'>Export</a>
+                <a href='/question'>Question</a>
+                <a href='/category'>Categories</a>
+                <a href='/import'>Import</a>
+                <a href='/export'>Export</a>
               </Stack>
             </Container>
           </Dropdown.Menu>
