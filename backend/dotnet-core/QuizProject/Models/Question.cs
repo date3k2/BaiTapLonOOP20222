@@ -12,7 +12,7 @@ public partial class Question
 
     public string QuestionName { get; set; } = null!;
 
-    public Guid ChoicesId { get; set; }
+    public string? QuestionMediaPath { get; set; }
 
     [JsonIgnore]
     public virtual Category Category { get; set; } = null!;

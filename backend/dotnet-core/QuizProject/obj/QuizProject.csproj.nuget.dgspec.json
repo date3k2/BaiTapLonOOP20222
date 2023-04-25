@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nguye\\Downloads\\QuizProject\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
+    "C:\\Users\\DELL\\Documents\\GitHub\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nguye\\Downloads\\QuizProject\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
+    "C:\\Users\\DELL\\Documents\\GitHub\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nguye\\Downloads\\QuizProject\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "projectUniqueName": "C:\\Users\\DELL\\Documents\\GitHub\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
         "projectName": "QuizProject",
-        "projectPath": "C:\\Users\\nguye\\Downloads\\QuizProject\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
-        "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nguye\\Downloads\\QuizProject\\backend\\dotnet-core\\QuizProject\\obj\\",
+        "projectPath": "C:\\Users\\DELL\\Documents\\GitHub\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DELL\\Documents\\GitHub\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -71,6 +71,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "Syncfusion.DocIO.Net.Core": {
+              "target": "Package",
+              "version": "[21.1.41, )"
             }
           },
           "imports": [
@@ -79,8 +83,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -92,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
