@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
-import OptionsPanel from '../component/OptionsPanel'
+import OptionsPanel from '../../component/OptionsPanel'
 
 export default function QuestionPage() {
   return (

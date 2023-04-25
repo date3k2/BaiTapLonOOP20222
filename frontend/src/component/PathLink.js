@@ -41,7 +41,7 @@ export default function PathLink() {
         }
       </Container>
       {useLocation().pathname === '/' && <Container className='d-flex flex-row-reverse mb-2'>
-        <Button>
+        <Button href='/quiz/add'>
           Turn editing on
         </Button>
       </Container>}
