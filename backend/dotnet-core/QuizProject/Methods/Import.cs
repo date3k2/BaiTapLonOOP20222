@@ -233,6 +233,10 @@ public partial class Question
             }
             if (kit.question.QuestionName != "") 
                 throw new Exception(string.Format("Error in line {0}. Not Aiken Format.", kit.lineIter));
+
+            //Chỗ này để thông báo thành công cho Front-end nma chưa rõ bên ý lo pop-up ntn
+            Console.WriteLine($"Success. Added {kit.questions.Count} questions");
+
         }
 
         catch (Exception ex)
