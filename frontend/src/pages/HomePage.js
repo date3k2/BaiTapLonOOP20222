@@ -8,7 +8,7 @@ export default function HomePage() {
   const [QuizList, setQuizList] = useState([]);
 
   useEffect(() => {
-    axios.get(`${URL}/question`)
+    axios.get(`${URL}/quiz`)
     .then(res => {
       setQuizList(res.data)
       console.log(res)
