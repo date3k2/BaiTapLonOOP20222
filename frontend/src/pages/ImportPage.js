@@ -6,7 +6,7 @@ import axios from 'axios'
 
 export default function ImportPage() {
 
-  const URL = 'https://2d44bbf9-c927-4cc0-886b-6008d8fe87a7.mock.pstmn.io'
+  const URL = 'https://9333b960-135e-48a2-9e3d-de1f194dd3d3.mock.pstmn.io'
 
   const [file, setFile] = useState();
 
@@ -18,7 +18,7 @@ export default function ImportPage() {
       file
     );
     console.log(formData)
-    axios.post(URL, formData);
+    axios.post(`${URL}/import`, formData);
   }
 
   return (
