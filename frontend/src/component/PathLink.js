@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Container, Dropdown, Stack } from 'react-bootstrap'
 import setting from '../icons/setting.png'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export default function PathLink() {
 
-  const path = useLocation().pathname.split('/').filter(item => item !== '');
-  let pathStr = 'localhost:3000';
+  const path = window.location.pathname.split('/').filter(item => item !== '');
+  
+  let pathStr = window.location.protocol + "//" + window.location.host;
+
+  let data = useParams();
+  if(typeof data.quizName !== 'undefined'){
+    path.shift();
+    path.unshift(data.quizName)
+  }
 
   return (
     <Container className='my-2 border p-0'>
@@ -36,11 +43,12 @@ export default function PathLink() {
         {
           path.map(item => {
             pathStr += '/' + item;
-            return <a style={{textDecoration: 'none'}} href={pathStr}>{'/ ' + capitalize(item)}</a>
+            return <a style={{textDecoration: 'none'}} href={pathStr}>{'/ ' + capitalize(item.replaceAll("%20", " "))}</a>
           })
         }
       </Container>
-      {useLocation().pathname === '/' && <Container className='d-flex flex-row-reverse mb-2'>
+      {window.location.pathname === '/' && 
+      <Container className='d-flex flex-row-reverse mb-2'>
         <Button href='/quiz/add'>
           Turn editing on
         </Button>

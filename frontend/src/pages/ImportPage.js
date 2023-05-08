@@ -22,22 +22,22 @@ export default function ImportPage() {
   }
 
   return (
-    <Container className='border p-2'>
+    <Container className='border'>
       <OptionsPanel activeTab={2} />
-      <Container className='p-0'>
+      <Container className='p-0 pt-3 ps-3'>
         <p style={{color: 'red', fontSize: '30px'}}>Import questions from file</p>
-        <Container>
+        <Container className='p-0'>
           <Row>
             <Col><p style={{color: 'red'}}>File format</p></Col>
             <Col> <p>Aiken format</p></Col>
           </Row>
         </Container>
         <hr />
-        <Container>
+        <Container className='p-0'>
           <p style={{color: 'red'}}>General</p>
         </Container>
         <hr />
-        <Container>
+        <Container className='p-0'>
           <p style={{color: 'red'}}>Import question from file</p>
           <Container className='p-0'>
             <Row>

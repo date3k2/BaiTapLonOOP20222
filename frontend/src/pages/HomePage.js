@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Container } from 'react-bootstrap'
+import { Container, Stack } from 'react-bootstrap'
 import axios from 'axios'
+import exam from '../icons/exam.png'
 
 export default function HomePage() {
 
@@ -11,7 +12,6 @@ export default function HomePage() {
     axios.get(`${URL}/quiz`)
     .then(res => {
       setQuizList(res.data)
-      console.log(res)
     })
     .catch(err => {
       console.log(err)
@@ -19,11 +19,12 @@ export default function HomePage() {
   }, [])
 
   return (
-    <Container className='border p-3'>
+    <Container className='border p-0'>
       {QuizList.map(quiz => 
-        <div className='mb-3'>
-          <a href='#' style={{textDecoration: 'none', color: 'black'}}>{quiz.quizName}</a>
-        </div>
+        <Stack className='p-3' direction='horizontal'>
+          <img src={exam} style={{height: "20px"}} className='me-2'/>
+          <a href={`/${quiz.quizName}`} style={{textDecoration: 'none', color: 'black'}}>{quiz.quizName}</a>
+        </Stack>
       )}
     </Container>
   )
