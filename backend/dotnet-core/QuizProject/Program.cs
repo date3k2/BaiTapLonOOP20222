@@ -42,7 +42,6 @@ namespace BookProject
 
             app.MapControllers();
 
-            app.MapCategoryEndpoints();
             app.Run();
         }
     }

@@ -1,7 +1,5 @@
-﻿using Syncfusion.DocIO;
-using Syncfusion.DocIO.DLS;
+﻿using System.Drawing;
 using System.Text.RegularExpressions;
-using System.Drawing;
 
 namespace QuizProject.Models;
 
@@ -59,7 +57,7 @@ public partial class Question
 
     static public void ImportFromTXT(FileStream file)
     {
-       //Bộ phân tích dữ liệu
+        //Bộ phân tích dữ liệu
         DataAnalystKit kit = new DataAnalystKit();
 
         //Thuật toán
@@ -78,7 +76,7 @@ public partial class Question
                 if (kit.lineInQuestionIter == -1)
                 {
                     if (line == "") throw new Exception(errorMessage); //Where is câu hỏi
-                    
+
                     kit.question.QuestionId = Guid.NewGuid(); //Thêm ID mới cho câu
                     kit.question.QuestionName = line;
                     kit.lineInQuestionIter++;
@@ -88,7 +86,7 @@ public partial class Question
                 if (kit.ansPattern.IsMatch(line))
                 {
                     if (line[0] - 'A' != kit.lineInQuestionIter++) throw new Exception(errorMessage); //Sai thứ tự
-                    
+
                     QuestionChoice choice = new QuestionChoice(); //Câu trả lời đang đọc
                     choice.ChoiceId = Guid.NewGuid();
                     choice.QuestionId = kit.question.QuestionId;
@@ -102,7 +100,7 @@ public partial class Question
                 if (kit.rightAnsPattern.IsMatch(line))
                 {
                     if (kit.lineInQuestionIter < 2) throw new Exception(errorMessage); //Làm gì đã có 2 đáp án để chọn
-                    
+
                     int rightAnswerPos = kit.firstChoicePos + line["ANSWER: ".Length] - 'A'; //Vị trí đáp án đúng
                     kit.choices[rightAnswerPos].ChoiceMark = RIGHT_ANSWER_MAX; //Đúng 100% nên được gán RIGHT_ANSWER_MAX
                     kit.isNextQuestion = true;
@@ -219,19 +217,19 @@ public partial class Question
                         if (kit.question.QuestionMediaPath == "") kit.question.QuestionMediaPath = imageTempPath;
                         else throw new Exception(errorMessage); //Có 2 ảnh = Chưa có choice mà đã có ảnh mà question có ảnh rồi -> lỗi
                     }
-                    else 
+                    else
                     {
                         if (kit.question.QuestionChoices.Last().ChoiceMediaPath == "") kit.question.QuestionChoices.Last().ChoiceMediaPath = imageTempPath;
                         else throw new Exception(errorMessage); //2 ảnh cùng 1 choices
                     }
-  
+
                     if (picture == null) throw new Exception(errorMessage); //Bằng cách thần kì nào đó ảnh pay acc -> lỗi
                     Bitmap? bmp = new Bitmap(new MemoryStream(picture.ImageBytes));
                     bmp.Save(imageTempPath, System.Drawing.Imaging.ImageFormat.Png);
                     imagePaths.Add(imageTempPath);
                 }
             }
-            if (kit.question.QuestionName != "") 
+            if (kit.question.QuestionName != "")
                 throw new Exception(string.Format("Error in line {0}. Not Aiken Format.", kit.lineIter));
 
             //Chỗ này để thông báo thành công cho Front-end nma chưa rõ bên ý lo pop-up ntn

@@ -15,7 +15,8 @@ namespace QuizProject.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     CategoryInfo = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true)
                 },
@@ -28,8 +29,8 @@ namespace QuizProject.Migrations
                 name: "CategoryRelationship",
                 columns: table => new
                 {
-                    CategoryParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CategoryChildId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CategoryParentId = table.Column<int>(type: "int", nullable: false),
+                    CategoryChildId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,10 +47,10 @@ namespace QuizProject.Migrations
                 columns: table => new
                 {
                     QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     QuestionCode = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     QuestionName = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
-                    ChoicesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    QuestionMediaPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -67,9 +68,9 @@ namespace QuizProject.Migrations
                 {
                     ChoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsCorrect = table.Column<bool>(type: "bit", nullable: true),
+                    ChoiceMark = table.Column<double>(type: "float", nullable: true),
                     ChoiceText = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    ChoiceImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    ChoiceMediaPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

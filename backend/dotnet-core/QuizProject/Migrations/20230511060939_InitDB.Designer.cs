@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizProject.Models;
 
@@ -11,9 +12,11 @@ using QuizProject.Models;
 namespace QuizProject.Migrations
 {
     [DbContext(typeof(QuizProjectContext))]
-    partial class QuizProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20230511060939_InitDB")]
+    partial class InitDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,14 +38,14 @@ namespace QuizProject.Migrations
 
                     b.Property<string>("CategoryInfo")
                         .HasMaxLength(200)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(200)");
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("CategoryId")
                         .HasName("PK_Categories_CategoryId");
@@ -86,8 +89,8 @@ namespace QuizProject.Migrations
                     b.Property<string>("QuestionName")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(200)");
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("QuestionId")
                         .HasName("PK_Questions_QuestionId");
@@ -110,8 +113,8 @@ namespace QuizProject.Migrations
 
                     b.Property<string>("ChoiceText")
                         .HasMaxLength(50)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<Guid?>("QuestionId")
                         .HasColumnType("uniqueidentifier");

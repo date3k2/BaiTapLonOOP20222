@@ -12,8 +12,8 @@ using QuizProject.Models;
 namespace QuizProject.Migrations
 {
     [DbContext(typeof(QuizProjectContext))]
-    [Migration("20230413194331_InitDB")]
-    partial class InitDB
+    [Migration("20230511061954_UnicodeText")]
+    partial class UnicodeText
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,19 +30,22 @@ namespace QuizProject.Migrations
 
             modelBuilder.Entity("QuizProject.Models.Category", b =>
                 {
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryInfo")
                         .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("CategoryId")
                         .HasName("PK_Categories_CategoryId");
@@ -52,11 +55,11 @@ namespace QuizProject.Migrations
 
             modelBuilder.Entity("QuizProject.Models.CategoryRelationship", b =>
                 {
-                    b.Property<Guid>("CategoryParentId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CategoryParentId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("CategoryChildId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CategoryChildId")
+                        .HasColumnType("int");
 
                     b.HasKey("CategoryParentId", "CategoryChildId");
 
@@ -71,11 +74,8 @@ namespace QuizProject.Migrations
                     b.Property<Guid>("QuestionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ChoicesId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("QuestionCode")
                         .IsRequired()
@@ -83,11 +83,14 @@ namespace QuizProject.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<string>("QuestionMediaPath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("QuestionName")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("QuestionId")
                         .HasName("PK_Questions_QuestionId");
@@ -102,16 +105,16 @@ namespace QuizProject.Migrations
                     b.Property<Guid>("ChoiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("ChoiceImage")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<double?>("ChoiceMark")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ChoiceMediaPath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ChoiceText")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<bool?>("IsCorrect")
-                        .HasColumnType("bit");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<Guid?>("QuestionId")
                         .HasColumnType("uniqueidentifier");

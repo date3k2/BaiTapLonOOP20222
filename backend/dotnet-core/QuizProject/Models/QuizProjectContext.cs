@@ -26,14 +26,14 @@ public partial class QuizProjectContext : DbContext
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasKey(e => e.CategoryId).HasName("PK_Categories_CategoryId");
-
             entity.Property(e => e.CategoryId).ValueGeneratedNever();
             entity.Property(e => e.CategoryInfo)
                 .HasMaxLength(200)
-                .IsUnicode(false);
+                .IsUnicode(true);
+            entity.Property(e => e.CategoryId).ValueGeneratedOnAdd();
             entity.Property(e => e.CategoryName)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(true);
         });
 
         modelBuilder.Entity<CategoryRelationship>(entity =>
@@ -41,8 +41,6 @@ public partial class QuizProjectContext : DbContext
             entity.HasKey(e => new { e.CategoryParentId, e.CategoryChildId });
 
             entity.ToTable("CategoryRelationship");
-
-            entity.HasIndex(e => e.CategoryParentId, "KEY_CategoryRelationship_Categ").IsUnique();
 
             entity.HasOne(d => d.CategoryParent).WithOne(p => p.CategoryRelationship)
                 .HasForeignKey<CategoryRelationship>(d => d.CategoryParentId)
@@ -60,7 +58,7 @@ public partial class QuizProjectContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.QuestionName)
                 .HasMaxLength(200)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             entity.HasOne(d => d.Category).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.CategoryId)
@@ -75,7 +73,7 @@ public partial class QuizProjectContext : DbContext
             entity.Property(e => e.ChoiceId).ValueGeneratedNever();
             entity.Property(e => e.ChoiceText)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(true);
 
             entity.HasOne(d => d.Question).WithMany(p => p.QuestionChoices)
                 .HasForeignKey(d => d.QuestionId)
