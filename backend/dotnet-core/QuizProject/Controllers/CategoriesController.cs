@@ -4,7 +4,7 @@ using QuizProject.Models;
 
 namespace QuizProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {
@@ -47,35 +47,22 @@ namespace QuizProject.Controllers
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Category>> PostCategory(Category category, int? parentId)
         {
-            if (_context.Categories == null)
-            {
-                return Problem("Entity set 'QuizProjectContext.Categories'  is null.");
-            }
             _context.Categories.Add(category);
             try
             {
                 await _context.SaveChangesAsync();
+                parentId ??= category.CategoryId;
+                _context.CategoryRelationships.Add(new CategoryRelationship { CategoryChildId = category.CategoryId, CategoryParentId = (int)parentId });
+                await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException e)
             {
-                if (CategoryExists(category.CategoryId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(e.Message);
             }
 
             return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return (_context.Categories?.Any(e => e.CategoryId == id)).GetValueOrDefault();
         }
     }
 }
