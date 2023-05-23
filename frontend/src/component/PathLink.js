@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button, Container, Dropdown, Stack } from 'react-bootstrap'
 import setting from '../icons/setting.png'
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -43,7 +43,7 @@ export default function PathLink() {
         {
           path.map(item => {
             pathStr += '/' + item;
-            return <a style={{textDecoration: 'none'}} href={pathStr}>{'/ ' + capitalize(item.replaceAll("%20", " "))}</a>
+            return <a style={{textDecoration: 'none'}} href={pathStr}>{`/ ` + capitalize(item.replaceAll("%20", " "))}</a>
           })
         }
       </Container>
