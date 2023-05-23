@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import alert from '../../icons/alert.png'
 
-export default function Questionpage() {
+export default function EditQuestionPage() {
   return (
     <Container className='border p-2'>
       <p style={{ color: 'red', fontSize: '30px' }}>

@@ -47,7 +47,7 @@ export default function ImportPage() {
                   label="Upload or drop file here" 
                   handleChange={(file) => setFile(file)} 
                   name='file' 
-                  types={['doc', 'docx']}
+                  types={['txt', 'docx']}
                   maxSize={100}
                 />
                 <p>Maximum size for new file: 100MB</p>

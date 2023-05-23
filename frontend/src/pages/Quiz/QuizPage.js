@@ -10,7 +10,7 @@ export default function PreviewQuiz() {
     <Container className="border pl-4">
       <Row>
         <Col style={{ color: "red", fontSize: "25px" }}>
-          Thi giữa kì 2 môn Công nghệ
+          Thi giữa kì 2 môn Công nghệ 
         </Col>
         <Col className="d-flex justify-content-end">
           <a href={`${path}/edit`}>
