@@ -26,13 +26,13 @@
 //            return await _context.CategoryRelationships.ToListAsync();
 //        }
 
-//        [HttpGet("GetParent")]
-//        public async Task<Category> GetCategory(int id)
-//        {
-//            CategoryRelationship x = _context.CategoryRelationships.Where(p => p.CategoryParentId == 16 &&
-//            p.CategoryChildId == 16).Single();
-//            return x!.CategoryParent;
-//        }
+//        //[HttpGet("GetParent")]
+//        //public async Task<Category> GetCategory(int id)
+//        //{
+//        //    CategoryRelationship x = _context.CategoryRelationships.Where(p => p.CategoryParentId == 16 &&
+//        //    p.CategoryChildId == 16).Single();
+//        //    return x!.CategoryParent;
+//        //}
 
 //    }
 //}

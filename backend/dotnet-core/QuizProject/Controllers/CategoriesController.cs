@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuizProject.Methods;
 using QuizProject.Models;
 
 namespace QuizProject.Controllers
@@ -9,21 +10,51 @@ namespace QuizProject.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly QuizProjectContext _context;
-
+        private readonly CategoryHelper categoryHelper;
         public CategoriesController(QuizProjectContext context)
         {
             _context = context;
+            categoryHelper = new CategoryHelper();
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<List<object>>> GetCategories()
         {
             if (_context.Categories == null)
             {
                 return NotFound();
             }
-            return await _context.Categories.ToListAsync();
+            var ans = new List<object>();
+            var categoryRelationships = await _context.CategoryRelationships.ToListAsync();
+            var categories = await _context.Categories.Select(c => new { c.CategoryId, c.CategoryName }).ToListAsync();
+            var categoryMap = categories.ToDictionary(c => c.CategoryId, c => c.CategoryName);
+            var adj = categoryHelper.GetAdjencyList(categoryRelationships);
+            foreach (var item in categoryRelationships)
+            {
+                var u = item.CategoryParentId;
+                if (u == item.CategoryChildId)
+                {
+                    var level = new Dictionary<int, int>
+                    {
+                        [u] = 0
+                    };
+                    var tree = new List<int> { u };
+                    categoryHelper.DFS(u, adj, level, tree);
+                    foreach (var i in tree)
+                    {
+                        var category = new
+                        {
+                            id = i,
+                            name = categoryMap[i],
+                            level = level[i]
+                        };
+                        ans.Add(category);
+                    }
+
+                }
+            }
+            return ans;
         }
 
         // GET: api/Categories/5
