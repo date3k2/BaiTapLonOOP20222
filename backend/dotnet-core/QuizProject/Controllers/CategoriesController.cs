@@ -1,29 +1,60 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuizProject.Methods;
 using QuizProject.Models;
 
 namespace QuizProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {
         private readonly QuizProjectContext _context;
-
+        private readonly CategoryHelper categoryHelper;
         public CategoriesController(QuizProjectContext context)
         {
             _context = context;
+            categoryHelper = new CategoryHelper();
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<List<object>>> GetCategories()
         {
             if (_context.Categories == null)
             {
                 return NotFound();
             }
-            return await _context.Categories.ToListAsync();
+            var ans = new List<object>();
+            var categoryRelationships = await _context.CategoryRelationships.ToListAsync();
+            var categories = await _context.Categories.Select(c => new { c.CategoryId, c.CategoryName }).ToListAsync();
+            var categoryMap = categories.ToDictionary(c => c.CategoryId, c => c.CategoryName);
+            var adj = categoryHelper.GetAdjencyList(categoryRelationships);
+            foreach (var item in categoryRelationships)
+            {
+                var u = item.CategoryParentId;
+                if (u == item.CategoryChildId)
+                {
+                    var level = new Dictionary<int, int>
+                    {
+                        [u] = 0
+                    };
+                    var tree = new List<int> { u };
+                    categoryHelper.DFS(u, adj, level, tree);
+                    foreach (var i in tree)
+                    {
+                        var category = new
+                        {
+                            id = i,
+                            name = categoryMap[i],
+                            level = level[i]
+                        };
+                        ans.Add(category);
+                    }
+
+                }
+            }
+            return ans;
         }
 
         // GET: api/Categories/5
@@ -47,35 +78,22 @@ namespace QuizProject.Controllers
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Category>> PostCategory(Category category, int? parentId)
         {
-            if (_context.Categories == null)
-            {
-                return Problem("Entity set 'QuizProjectContext.Categories'  is null.");
-            }
             _context.Categories.Add(category);
             try
             {
                 await _context.SaveChangesAsync();
+                parentId ??= category.CategoryId;
+                _context.CategoryRelationships.Add(new CategoryRelationship { CategoryChildId = category.CategoryId, CategoryParentId = (int)parentId });
+                await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException e)
             {
-                if (CategoryExists(category.CategoryId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(e.Message);
             }
 
             return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return (_context.Categories?.Any(e => e.CategoryId == id)).GetValueOrDefault();
         }
     }
 }

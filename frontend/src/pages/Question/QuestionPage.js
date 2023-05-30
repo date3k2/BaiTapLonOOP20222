@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import OptionsPanel from '../../component/OptionsPanel'
 import { Container, Form, Stack, Button, Table } from 'react-bootstrap'
-import apiServices from '../../services/apiServices';
+import axios from 'axios'
+
+const URL = "https://9333b960-135e-48a2-9e3d-de1f194dd3d3.mock.pstmn.io";
 
 function Question({question}) {
   console.log(question)
@@ -20,8 +22,11 @@ export default function EditQuestionPage() {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
-    apiServices.getCategory()
-    .then(res => setCategories(res.data))
+    axios.get(`${URL}/category`)
+    .then(res => {
+      // console.log(res.data)
+      setCategories(res.data);
+    })
     .catch(err => console.log(err));
   }, [])
 
@@ -50,7 +55,7 @@ export default function EditQuestionPage() {
             <option value='-1' disabled hidden>Default</option>
             {
               categories.map((item, index) => {
-                let space = `${'\xa0'.repeat(item.level)}`;
+                let space = `${'\xa0'.repeat(item.level*2)}`;
                 return <option key={index} value={item.name}>{space} {item.name}</option>
               })
             } 
@@ -59,7 +64,7 @@ export default function EditQuestionPage() {
         <p>The default category for questions shared in context</p>
         <Form.Check type='checkbox' label='Also show question from sub categories' onChange={handleShowSub}/>
         <Form.Check type='checkbox' label='Also show old question'/>
-        <Button>Create a new question</Button>
+        <Button href = '/question/edit'>Create a new question</Button>
         {
           questions.length > 0 && 
           <Table striped>
