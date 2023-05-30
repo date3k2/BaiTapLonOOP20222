@@ -19,7 +19,7 @@ export default function Category() {
           </NavDropdown>
           <Navbar.Text
             style={{ color: 'red', fontSize: '25px' }}>
-            Add categoty
+            Add category
           </Navbar.Text>
         </Stack>
 
