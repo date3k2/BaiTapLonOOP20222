@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Stack } from 'react-bootstrap'
-import axios from 'axios'
 import exam from '../icons/exam.png'
+import apiServices from '../services/apiServices'
 
 export default function HomePage() {
-
-  const URL = "https://9333b960-135e-48a2-9e3d-de1f194dd3d3.mock.pstmn.io";
   const [QuizList, setQuizList] = useState([]);
 
   useEffect(() => {
-    axios.get(`${URL}/quiz`)
-    .then(res => {
-      setQuizList(res.data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    apiServices.getQuiz()
+    .then(res => setQuizList(res.data))
+    .catch(err => console.log(err));
   }, [])
 
   return (

@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import {Button, Col, Container, Row } from 'react-bootstrap'
+import {Button, Col, Container, Row, Toast } from 'react-bootstrap'
 import OptionsPanel from '../component/OptionsPanel'
 import { FileUploader } from "react-drag-drop-files"
-import axios from 'axios'
+import apiServices from '../services/apiServices'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ImportPage() {
 
-  const URL = 'https://9333b960-135e-48a2-9e3d-de1f194dd3d3.mock.pstmn.io'
-
   const [file, setFile] = useState();
 
-  const onUpload = () => {
-    const formData = new FormData();
+  const handleInputChange = (file) => {
+    setFile(file);
+  }
 
-    formData.append(
-      "questionFile",
-      file
-    );
-    console.log(formData)
-    axios.post(`${URL}/import`, formData);
+  const onUpload = () => {
+    if(file == null){
+      toast.error("Please choose a file!");
+      return;
+    }
+    apiServices.postQuiz(file)
+    .then(res => toast.success(res.data.message))
+    .catch(err => console.log(err));
   }
 
   return (
     <Container className='border'>
       <OptionsPanel activeTab={2} />
-      <Container className='p-0 pt-3 ps-3'>
+      <Container className='p-0 py-3 ps-3'>
         <p style={{color: 'red', fontSize: '30px'}}>Import questions from file</p>
         <Container className='p-0'>
           <Row>
@@ -44,11 +47,11 @@ export default function ImportPage() {
               <Col><p>Import</p></Col>
               <Col>
                 <FileUploader 
-                  label="Upload or drop file here" 
-                  handleChange={(file) => setFile(file)} 
+                  handleChange={(file) => handleInputChange(file)} 
                   name='file' 
                   types={['txt', 'docx']}
                   maxSize={100}
+                  label="Upload or drop file here"
                 />
                 <p>Maximum size for new file: 100MB</p>
                 <Button onClick={onUpload}>
@@ -59,6 +62,7 @@ export default function ImportPage() {
           </Container>
         </Container>
       </Container>
+      <ToastContainer hideProgressBar autoClose={3000} />
     </Container>
   )
 }
