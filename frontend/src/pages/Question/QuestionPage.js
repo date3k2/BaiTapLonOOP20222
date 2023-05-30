@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import OptionsPanel from '../../component/OptionsPanel'
 import { Container, Form, Stack, Button, Table } from 'react-bootstrap'
 import axios from 'axios'
+import apiServices from '../../services/apiServices';
 
 const URL = "https://9333b960-135e-48a2-9e3d-de1f194dd3d3.mock.pstmn.io";
 
 function Question({question}) {
-  console.log(question)
   return (
     <tr>
       <td width="2%"><input type='checkbox' /></td>
@@ -22,7 +22,7 @@ export default function EditQuestionPage() {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
-    axios.get(`${URL}/category`)
+    apiServices.getCategory()
     .then(res => {
       // console.log(res.data)
       setCategories(res.data);
