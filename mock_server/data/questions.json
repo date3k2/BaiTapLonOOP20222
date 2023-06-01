@@ -1,0 +1,179 @@
+{
+    "Kỹ thuật lập trình": [
+        {
+            "id": 1,
+            "questionName": "C1D1",
+            "questionText": "Cho biết kết quả câu 1",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "questionName": "C1D2",
+            "questionText": "Cho biết kết quả câu 2",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "questionName": "C1D3",
+            "questionText": "Cho biết kết quả câu 3",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        }
+    ],
+    "Mạng máy tính": [
+        {
+            "id": 4,
+            "questionName": "C2D1",
+            "questionText": "Cho biết đáp án câu 1",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "questionName": "C2D2",
+            "questionText": "Cho biết đáp án câu 2",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "questionName": "C2D3",
+            "questionText": "Cho biết đáp án câu 3",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        }
+    ],
+    "Tin học đại cương": [
+        {
+            "id": 7,
+            "questionName": "C3D1",
+            "questionText": "Cho biết giá trị câu 1",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "questionName": "C3D2",
+            "questionText": "Cho biết giá trị câu 2",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "questionName": "C3D3",
+            "questionText": "Cho biết giá trị câu 3",
+            "choice": [
+                {
+                    "content": "1",
+                    "grade": 100
+                },
+                {
+                    "content": "2",
+                    "grade": 100
+                },
+                {
+                    "content": "3",
+                    "grade": 100
+                }
+            ]
+        }
+    ]
+}
