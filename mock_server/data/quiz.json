@@ -1,8 +1,22 @@
 [
     {
-        "quizName": "Kiểm tra Kỹ thuật lập trình"
+        "id": 1,
+        "quizName": "Kiểm tra Kỹ thuật lập trình",
+        "description": "",
+        "descriptionShow": false,
+        "openTime": "2023-07-01T06:00:00",
+        "closeTime": "2023-07-01T10:00:00",
+        "totalGrade": "10",
+        "timeLimit": 60
     },
     {
-        "quizName": "Kiểm tra Mạng máy tính"
+        "id": 2,
+        "quizName": "Kiểm tra Mạng máy tính",
+        "description": "",
+        "descriptionShow": false,
+        "openTime": "2023-07-02T06:00:00",
+        "closeTime": "2023-07-02T10:00:00",
+        "totalGrade": "10",
+        "timeLimit": 60
     }
 ]
