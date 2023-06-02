@@ -25,7 +25,7 @@ export default function ImportPage() {
   }
 
   return (
-    <Container className='border'>
+    <Container className='border p-2'>
       <OptionsPanel activeTab={2} />
       <Container className='p-0 py-3 ps-3'>
         <p style={{color: 'red', fontSize: '30px'}}>Import questions from file</p>

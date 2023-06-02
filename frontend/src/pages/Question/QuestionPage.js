@@ -43,8 +43,8 @@ export default function EditQuestionPage() {
 
   return (
     <div>
-      <OptionsPanel activeTab={0} />
       <Container className='border p-2'>
+        <OptionsPanel activeTab={0} />
         <p style={{color: 'red', fontSize: '35px'}}>Question bank</p>
         <Stack direction='horizontal'>
           <p className='me-2 mt-2'>Select a category: </p>
