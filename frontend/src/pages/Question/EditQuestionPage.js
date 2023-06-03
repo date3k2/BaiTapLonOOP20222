@@ -95,9 +95,6 @@ export default function EditQuestionPage() {
         </Form.Group>
 
         <br />
-
-        <QuestionCard questionId={1} />
-        <QuestionCard questionId={2} />
         <AddChoice />
         <br />
         <Button
@@ -128,7 +125,7 @@ export default function EditQuestionPage() {
   );
 }
 
-function QuestionCard({ questionId }) {
+function ChoiceCard({choiceId }) {
   let grades = [
     100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333, 30, 25, 20,
     16.66667, 14.28571, 12.5, 11.11111, 10, 5,
@@ -151,7 +148,7 @@ function QuestionCard({ questionId }) {
       <Card.Body>
         <Form.Group as={Row}>
           <Form.Label column style={{ fontSize: "20px" }}>
-            Choice {questionId}
+            Choice {choiceId}
           </Form.Label>
           <Col>
             <Form.Control
@@ -181,24 +178,25 @@ function QuestionCard({ questionId }) {
 }
 
 function AddChoice() {
-  const [isShow, setIsShow] = useState(false);
+  const [choiceList, setChoiceList] = useState([1, 2]);
+  const [newChoiceList, setNewChoiceList] = useState([3, 4, 5])
   return (
     <>
-      {isShow ? (
-        <>
-          <QuestionCard questionId={3} />
-          <QuestionCard questionId={4} />
-          <QuestionCard questionId={5} />
-        </>
-      ) : (
-        <Button
-          variant="primary"
-          style={{ marginLeft: "550px", marginTop: "50px" }}
-          onClick={() => setIsShow(true)}
-        >
-          BLANKS FOR 3 MORE CHOICES
-        </Button>
-      )}
+      {
+        choiceList.map(choice => <ChoiceCard choiceId={choice} />)
+      }
+      <Button
+        onClick={() => {
+          setChoiceList([...choiceList, ...newChoiceList]);
+          newChoiceList.map((choice, index) => (newChoiceList[index] += 3));
+          setNewChoiceList([...newChoiceList]);
+        }
+        }
+        variant="primary"
+        style={{ marginLeft: "550px", marginTop: "50px" }}
+      >
+        BLANKS FOR 3 MORE CHOICES
+      </Button>
     </>
-  );
+  )
 }

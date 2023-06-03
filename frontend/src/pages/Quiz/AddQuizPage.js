@@ -10,7 +10,7 @@ import questionmark from '../../icons/questionmark.png'
 import calendar from '../../icons/calendar.png'
 
 export default function AddQuizPage() {
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
   const [isChecked1, setIsChecked1] = useState(false);
   const handleCheckbox1Change = (event) => {
     setIsChecked1(event.target.checked);
@@ -171,48 +171,117 @@ function TimeQuizz() {
   for (let i = 1; i <= 31; ++i) listDate[i] = i;
   let listMonth = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   let listYear = [];
-  for (let i = 0; i <= 100; ++i) listYear[i] = i + 2023;
+  for (let i = 0; i <= 50; ++i) listYear[i] = i + 2023;
   let listHour = [];
   for (let i = 1; i <= 24; ++i) listHour[i] = i;
   let listMinute = [];
   for (let i = 0; i <= 60; ++i) listMinute[i] = i;
+  let checkMonth = false;
+
+  const [selectedDay, setSelectedDay] = useState(1);
+  const [selectedMonth, setSelectedMonth] = useState("January");
+  const [selectedYear, setSelectedYear] = useState(2023);
+  const [selectedHour, setSelectedHour] = useState(1);
+  const [selectedMinute, setSelectedMinute] = useState(0);
+
+
+  const handleDaySelect = (event) => {
+    const value = event.target.value;
+    setSelectedDay(value);
+    if (value == 31) {
+      if (selectedMonth == 'April' || selectedMonth == 'June' || selectedMonth == 'September' || selectedMonth == 'November') {
+        setSelectedDay(30);
+      }
+      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(28);
+      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(29);
+    }   
+    if (value == 30) {
+      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(28);
+      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(29);
+    }
+    if (value == 29) {
+      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(28);
+    }
+  };
+
+  const handleMonthSelect = (event) => {
+    const value = event.target.value;
+    if (value == 'April' || value == 'June' || value == 'September' || value == 'November') checkMonth = true;
+    else checkMonth = false;
+    setSelectedMonth(value);
+    if (selectedDay == 31 && checkMonth == true) {
+      setSelectedDay(30);
+    }
+    if (value == 'February') {
+      if (selectedYear % 4 == 0) {
+        if (selectedDay == 31 || selectedDay == 30 || selectedDay == 29) setSelectedDay(28);
+      }
+      else {
+        if (selectedDay == 31 || selectedDay == 30) setSelectedDay(29);
+      }
+    }
+  };
+
+  const handleYearSelect = (event) => {
+    const value = event.target.value;
+    setSelectedYear(value);
+    if (value % 4 == 0) {
+      if (selectedMonth == 'February' && selectedDay == 29) {
+        setSelectedDay(28);
+      }
+    }
+  };
+
+  const handleHourSelect = (event) => {
+    setSelectedHour (event.target.value);
+  };  
+  const handleMinuteSelect = (event) => {
+    setSelectedMinute (event.target.value);
+  }; 
+
   return (
     <>
-      <Form.Select style={{ width: '70px' }}>
-        {listDate.map((date, index) => (
-          <option value={index + 1}> {date}</option>
+      <Form.Select value={selectedDay} onChange={handleDaySelect} style={{ width: '70px' }}>
+        {listDate.map((date) => (
+          <option value={date}> {date}</option>
         ))}
       </Form.Select >
-
-      <Form.Select style={{ width: '130px' }}>
-        {listMonth.map((month, index) => (
-          <option value={index + 1}> {month}</option>
+      {/* <p> selected day: {selectedDay}</p> */}
+          
+      <Form.Select value={selectedMonth} onChange={handleMonthSelect} style={{ width: '130px' }}>
+        {listMonth.map((month) => (
+          <option value={month}> {month}</option>
         ))}
       </Form.Select>
+      {/* <p> selected month: {selectedMonth}</p> */}
 
-      <Form.Select style={{ width: '100px' }}>
-        {listYear.map((year, index) => (
-          <option value={index + 1}> {year}</option>
+      <Form.Select value={selectedYear} onChange={handleYearSelect} style={{ width: '100px' }}>
+        {listYear.map((year) => (
+          <option value={year}> {year}</option>
         ))}
       </Form.Select>
+      {/* <p> selected year: {selectedYear}</p> */}
 
-      <Form.Select style={{ width: '70px' }}>
-        {listHour.map((hour, index) => (
-          <option value={index + 1}> {hour}</option>
+      <Form.Select value={selectedHour} onChange={handleHourSelect} style={{ width: '70px' }}>
+        {listHour.map((hour) => (
+          <option value={hour}> {hour}</option>
         ))}
       </Form.Select>
+      {/* <p> selected hour: {selectedHour}</p> */}
 
-      <Form.Select style={{ width: '70px' }}>
-        {listMinute.map((minute, index) => (
-          <option value={index + 1}> {minute}</option>
+      <Form.Select value={selectedMinute} onChange={handleMinuteSelect} style={{ width: '70px' }}>
+        {listMinute.map((minute) => (
+          <option value={minute}> {minute}</option>
         ))}
       </Form.Select>
+      {/* <p> selected minute: {selectedMinute}</p> */}
 
       <img src={calendar} width='15px' height='15px' />
 
       <Form.Check
         type='checkbox'
         label='Enable'
+        defaultChecked = {true}
       />
     </>
   );
