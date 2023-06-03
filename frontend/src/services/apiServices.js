@@ -1,14 +1,14 @@
 import axios from "axios";
 
-const URL = "https://9333b960-135e-48a2-9e3d-de1f194dd3d3.mock.pstmn.io";
+const URL = "//localhost:4000";
 
 class apiServices {
     getQuestions(category, doesShowSub) {
-        return axios.get(`${URL}/question?category=${category}&doesShowSub=${doesShowSub}`);
+        return axios.get(`${URL}/questions?category=${category}&doesShowSub=${doesShowSub}`);
     }
 
     getCategory(){
-        return axios.get(`${URL}/category`);
+        return axios.get(`${URL}/categories`);
     }
 
     postQuiz(quizFile){
