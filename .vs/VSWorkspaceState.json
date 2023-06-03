@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\dotnet-core",
+    "\\backend\\dotnet-core\\QuizProject",
+    "\\backend\\dotnet-core\\QuizProject\\Controllers",
+    "\\backend\\dotnet-core\\QuizProject\\Methods"
+  ],
+  "SelectedNode": "\\backend\\dotnet-core\\QuizProject\\QuizProject.sln",
+  "PreviewInSolutionExplorer": false
+}

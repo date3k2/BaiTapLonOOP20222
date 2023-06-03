@@ -871,3 +871,5 @@ C:\Users\nguye\Source\Repos\BaiTapLonOOP20222\backend\dotnet-core\QuizProject\ob
 C:\Users\nguye\Source\Repos\BaiTapLonOOP20222\backend\dotnet-core\QuizProject\obj\Debug\net6.0\QuizProject.csproj.CopyComplete
 C:\Users\nguye\Source\Repos\BaiTapLonOOP20222\backend\dotnet-core\QuizProject\obj\Debug\net6.0\QuizProject.genruntimeconfig.cache
 C:\Users\nguye\Source\Repos\BaiTapLonOOP20222\backend\dotnet-core\QuizProject\obj\Debug\net6.0\ref\QuizProject.dll
+C:\Users\nguye\Source\Repos\BaiTapLonOOP20222\backend\dotnet-core\QuizProject\bin\Debug\net6.0\DocumentFormat.OpenXml.dll
+C:\Users\nguye\Source\Repos\BaiTapLonOOP20222\backend\dotnet-core\QuizProject\bin\Debug\net6.0\System.IO.Packaging.dll

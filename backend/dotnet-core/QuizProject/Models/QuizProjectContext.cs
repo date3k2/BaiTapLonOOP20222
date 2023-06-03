@@ -53,9 +53,6 @@ public partial class QuizProjectContext : DbContext
             entity.HasKey(e => e.QuestionId).HasName("PK_Questions_QuestionId");
 
             entity.Property(e => e.QuestionId).ValueGeneratedNever();
-            entity.Property(e => e.QuestionCode)
-                .HasMaxLength(50)
-                .IsUnicode(false);
             entity.Property(e => e.QuestionName)
                 .HasMaxLength(200)
                 .IsUnicode(true);
