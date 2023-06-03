@@ -50,6 +50,9 @@ namespace QuizProject.Helpers
                     string paragraphText = GetLine(paragraph);
                     HandleLine(kit, paragraphText);
                 }
+                // Xử lý câu hỏi thừa nhưng không đủ lựa chọn ở cuối
+                if (kit.Ques.QuestionId != Guid.Empty || kit.Ques.QuestionChoices.Count > 0)
+                    throw new Exception($"Error in line: {kit.LineIter}");
                 return (kit.Questions, kit.QuestionChoices);
 
             }
