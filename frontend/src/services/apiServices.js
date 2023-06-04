@@ -23,7 +23,11 @@ class apiServices {
     }
 
     getQuiz(){
-        return axios.get(`${URL}/quiz`)
+        return axios.get(`${URL}/quiz`);
+    }
+
+    getQuizQuestion(quizName){
+        return axios.get(`${URL}/${quizName}/question`);
     }
 }
 

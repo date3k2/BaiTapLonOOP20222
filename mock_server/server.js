@@ -19,6 +19,11 @@ app.post('/quiz', (req, res) => {
     res.json("Add new quiz successfully!");
 });
 
+app.get('/:quizName/question', (req, res) => {
+    let data = require('./data/quizQuestion.json')
+    res.json(data)
+});
+
 // Category
 
 app.get('/categories', (req, res) => {

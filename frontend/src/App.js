@@ -9,7 +9,7 @@ import ImportPage from './pages/ImportPage';
 import ExportPage from './pages/ExportPage';
 import EditQuestionPage from './pages/Question/EditQuestionPage';
 import AddQuizPage from './pages/Quiz/AddQuizPage';
-import EditQuizPage from './pages/Quiz/EditQuizPage';
+import EditQuizPage from './pages/Quiz/EditQuizPage/EditQuizPage';
 import QuizPage from './pages/Quiz/QuizPage';
 
 export default function App() {

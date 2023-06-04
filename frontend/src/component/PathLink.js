@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Container, Dropdown, Stack } from 'react-bootstrap'
+import { Breadcrumb, Button, Container, Dropdown, Stack } from 'react-bootstrap'
 import setting from '../icons/setting.png'
 import { useParams } from 'react-router-dom'
 
@@ -38,15 +38,15 @@ export default function PathLink() {
           </Dropdown.Menu>
         </Dropdown>
       </Container>
-      <Container className='mb-2 d-flex'>
-        <a href='/' style={{textDecoration: 'none', marginRight: '5px'}}>Home</a>
+      <Breadcrumb className='mb-2 ms-2 d-flex'>
+        <Breadcrumb.Item href='/' style={{textDecoration: 'none', marginRight: '5px'}}>Home</Breadcrumb.Item>
         {
           path.map(item => {
             pathStr += '/' + item;
-            return <a style={{textDecoration: 'none'}} href={pathStr}>{`/ ` + capitalize(item.replaceAll("%20", " "))}</a>
+            return <Breadcrumb.Item href={pathStr}>{capitalize(item.replaceAll("%20", " "))}</Breadcrumb.Item>
           })
         }
-      </Container>
+      </Breadcrumb>
       {window.location.pathname === '/' && 
       <Container className='d-flex flex-row-reverse mb-2'>
         <Button href='/quiz/add'>
