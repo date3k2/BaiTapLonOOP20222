@@ -1,23 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Stack, Col, Row, Button } from "react-bootstrap";
 import { MdArrowDropDownCircle } from "react-icons/md";
+import Modal from "./Modal";
+import apiServices from "../../services/apiServices";
 
 export default function PreviewQuiz() {
+  //  const path = window.location.pathname;
+  const [QuizList, setQuizList] = useState([]);
 
-  const path = window.location.pathname;
+  useEffect(() => {
+    apiServices
+      .getQuiz()
+      .then((res) => setQuizList(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [quizName, setQuizName] = useState("");
+
+  useEffect(() => {
+    setQuizName(decodeURIComponent(window.location.pathname.slice(1)));
+  }, []);
+
+  const timeLimit = QuizList.reduce((acc, quiz) => {
+    if (quiz.quizName === quizName) {
+      return quiz.timeLimit;
+    }
+    return acc;
+  }, null);
 
   return (
     <Container className="border pl-4">
       <Row>
-        <Col style={{ color: "red", fontSize: "25px" }}>
-          Thi giữa kì 2 môn Công nghệ 
-        </Col>
+        <Col style={{ color: "red", fontSize: "25px" }}>{quizName}</Col>
         <Col className="d-flex justify-content-end">
-          <a href={`${path}/edit`}>
-            <MdArrowDropDownCircle
-              size={40}
-              color="#0081C9"
-            />
+          <a href={`${quizName}/edit`}>
+            <MdArrowDropDownCircle size={40} color="#0081C9" />
           </a>
         </Col>
       </Row>
@@ -31,7 +49,7 @@ export default function PreviewQuiz() {
             justifyContent: "center",
           }}
         >
-          <p>Time limit: 1 hour</p>
+          <p>Time limit: {timeLimit} minutes</p>
           <p>Grading method: Last grade</p>
         </div>
       </Row>
@@ -64,21 +82,17 @@ export default function PreviewQuiz() {
       <Row className="my-5">
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button
-            type="button"
             style={{ backgroundColor: "#0081C9" }}
-            href="/previewquiz"
+            onClick={() => setOpenModal(true)}
+            //href="/previewquiz"
           >
             PREVIEW QUIZ NOW
           </Button>
+          <Modal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {timeLimit}/>
         </div>
       </Row>
-      <div className="col-md-1 mx-auto ">
-        <select>
-          <option value="" selected="">
-            Jump to...
-          </option>
-        </select>
-      </div>
     </Container>
   );
+
+  
 }
