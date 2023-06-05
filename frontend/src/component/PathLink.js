@@ -1,21 +1,14 @@
 import React from 'react'
 import { Breadcrumb, Button, Container, Dropdown, Stack } from 'react-bootstrap'
 import setting from '../icons/setting.png'
-import { useParams } from 'react-router-dom'
 
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export default function PathLink() {
 
-  const path = window.location.pathname.split('/').filter(item => item !== '');
+  const path = window.location.pathname.split('/').filter(item => item !== '').map(item => decodeURIComponent(item));
   
   let pathStr = window.location.protocol + "//" + window.location.host;
-
-  let data = useParams();
-  if(typeof data.quizName !== 'undefined'){
-    path.shift();
-    path.unshift(data.quizName)
-  }
 
   return (
     <Container className='my-2 border p-0'>
