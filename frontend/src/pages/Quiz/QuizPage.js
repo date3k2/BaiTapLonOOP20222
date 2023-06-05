@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Stack, Col, Row, Button } from "react-bootstrap";
 import { MdArrowDropDownCircle } from "react-icons/md";
-import Modal from "./Modal";
+import PreviewQuizModal from "./PreviewQuizModal";
 import apiServices from "../../services/apiServices";
 
 export default function PreviewQuiz() {
@@ -88,7 +88,7 @@ export default function PreviewQuiz() {
           >
             PREVIEW QUIZ NOW
           </Button>
-          <Modal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {timeLimit}/>
+          <PreviewQuizModal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {timeLimit}/>
         </div>
       </Row>
     </Container>

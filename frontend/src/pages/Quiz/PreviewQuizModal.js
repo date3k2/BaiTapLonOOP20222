@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
-const MOdal = ({ open, onClose, timeLimit }) => {
+const PreviewQuizModal = ({ open, onClose, timeLimit }) => {
   if (!open) return null;
   return (
     <Modal show={true} onHide={onClose} backdrop="static" keyboard={false}>
@@ -73,4 +73,4 @@ const MOdal = ({ open, onClose, timeLimit }) => {
   );
 };
 
-export default MOdal;
+export default PreviewQuizModal;
