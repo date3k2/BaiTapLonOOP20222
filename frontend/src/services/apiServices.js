@@ -29,6 +29,10 @@ class apiServices {
     getQuizQuestion(quizName){
         return axios.get(`${URL}/${quizName}/question`);
     }
+
+    postQuizQuestion(quizName, questionsId){
+        return axios.post(`${URL}/${quizName}/question`, questionsId);
+    }
 }
 
 export default new apiServices();
