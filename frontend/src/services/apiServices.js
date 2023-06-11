@@ -10,6 +10,18 @@ class apiServices {
     getCategory(){
         return axios.get(`${URL}/categories`);
     }
+    
+    getQuestion(questionID) {
+        return axios.get(`${URL}/question?questionID=${questionID}`);
+    }
+
+    postQuestion(questionFile, questionID) {
+        const formData = new FormData();
+        formData.append(
+            questionFile
+        );
+        return axios.post(`${URL}/question?questionID=${questionID}`)
+    } 
 
     postQuiz(quizFile){
         const formData = new FormData();
