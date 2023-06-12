@@ -68,7 +68,7 @@ app.get('/question', (req, res) => {
     // res.json(data)
 })
 
-app.post('/question', (req, res) => {
+app.post('/questions', (req, res) => {
     res.json("Add new question successfully!");
 });
 

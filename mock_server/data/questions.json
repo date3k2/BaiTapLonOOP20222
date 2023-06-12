@@ -2,6 +2,7 @@
     "Kỹ thuật lập trình": [
         {
             "id": 1,
+            "categoryId": "1",
             "questionName": "C1D1",
             "questionText": "Cho biết kết quả câu 1",
             "choice": [
@@ -29,6 +30,7 @@
         },
         {
             "id": 2,
+            "categoryId": "1",
             "questionName": "C1D2",
             "questionText": "Cho biết kết quả câu 2",
             "choice": [
@@ -48,6 +50,7 @@
         },
         {
             "id": 3,
+            "categoryId": "1",
             "questionName": "C1D3",
             "questionText": "Cho biết kết quả câu 3",
             "choice": [
@@ -69,6 +72,7 @@
     "Mạng máy tính": [
         {
             "id": 4,
+            "categoryId": "5",
             "questionName": "C2D1",
             "questionText": "Cho biết đáp án câu 1",
             "choice": [
@@ -88,6 +92,7 @@
         },
         {
             "id": 5,
+            "categoryId": "5",
             "questionName": "C2D2",
             "questionText": "Cho biết đáp án câu 2",
             "choice": [
@@ -107,6 +112,7 @@
         },
         {
             "id": 6,
+            "categoryId": "5",
             "questionName": "C2D3",
             "questionText": "Cho biết đáp án câu 3",
             "choice": [
@@ -128,6 +134,7 @@
     "Tin học đại cương": [
         {
             "id": 7,
+            "categoryId": "2",
             "questionName": "C3D1",
             "questionText": "Cho biết giá trị câu 1",
             "choice": [
@@ -147,6 +154,7 @@
         },
         {
             "id": 8,
+            "categoryId": "2",
             "questionName": "C3D2",
             "questionText": "Cho biết giá trị câu 2",
             "choice": [
@@ -166,6 +174,7 @@
         },
         {
             "id": 9,
+            "categoryId": "2",
             "questionName": "C3D3",
             "questionText": "Cho biết giá trị câu 3",
             "choice": [

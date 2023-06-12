@@ -53,13 +53,13 @@ export default function ANewQuestionModal({setOption}) {
     }
   }
 
-  const handleShowSub = e => {
+  const handleShowSub = () => {
     setDoesShowSub(doesShowSub => !doesShowSub);
-    console.log(doesShowSub);
   };
 
   const handleCategory = e => {
     setChooseQuestion([]);
+    setIsCheckedAll(false);
     const category = e.target.value;
     apiServices.getQuestions(category, doesShowSub)
     .then(res => {
@@ -98,7 +98,7 @@ export default function ANewQuestionModal({setOption}) {
             </tbody>
           </Table>
         }
-      <Button onClick={handleSubmit}>ADD SELECTED QUESTION TO QUIZ</Button>
+      <Button onClick={handleSubmit}>ADD SELECTED QUESTION TO THE QUIZ</Button>
       </Modal.Body>
       <ToastContainer hideProgressBar autoClose={3000} />
     </Modal>

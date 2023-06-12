@@ -99,7 +99,7 @@ export default function EditQuizPage() {
             REPAGINATE
           </Button>
           <Button type="button" style={{ backgroundColor: "#0081C9" }}>
-            SELECT MULTIPLEITEMS
+            SELECT MULTIPLE ITEMS
           </Button>
         </div>
         <Col
