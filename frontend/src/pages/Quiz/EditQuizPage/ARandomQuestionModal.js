@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Modal, Nav, Row, Col, Container, Button } from 'react-bootstrap'
+import { Form, Modal, Nav, Row, Col, Container, Button, Pagination } from 'react-bootstrap'
 import Category from '../../../component/Category';
 import apiServices from '../../../services/apiServices';
 import { useParams } from 'react-router-dom';
@@ -7,17 +7,23 @@ import { ToastContainer, toast } from 'react-toastify';
 
 export default function ANewQuestionModal({setOption}) {
 
+  const MAX_QUESTIONS_PER_PAGE = 10;
   const [doesShowSub, setDoesShowSub] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [category, setCategory] = useState();
   const [optionsList, setOptionsList] = useState([]);
   const [numberRandomQuestion, setNumberRandomQuestion] = useState(1);
+  const [chosenPage, setChosenPage] = useState(1);
 
   const data = useParams();
 
   useEffect(() => {
-    apiServices.getQuestions()
-  }, [])
+    apiServices.getQuestions(category, doesShowSub)
+    .then(res => {
+      setQuestions(res.data)
+    })
+    .catch(err => console.log(err))
+  }, [doesShowSub]);
 
   const handleCategory = e => {
     setCategory(e.target.value);
@@ -83,7 +89,20 @@ export default function ANewQuestionModal({setOption}) {
         </Row>
         <p className='m-0'>Question matching this filter:</p>
         {
-          questions.length > 0 && questions.map(item => 
+          questions.length > 0 && 
+          <Pagination>
+            <Pagination.Prev onClick={() => setChosenPage(chosenPage => Math.max(chosenPage - 1, 1))} />
+            {
+              Array.from(
+                {length: Math.ceil(questions.length / MAX_QUESTIONS_PER_PAGE)},
+                (_, index) => index + 1
+              ).map((item, index) => <Pagination.Item key={index} active={item === chosenPage} onClick={() => setChosenPage(item)}>{item}</Pagination.Item>)
+            }
+            <Pagination.Next onClick={() => setChosenPage(chosenPage => Math.min(chosenPage + 1, Math.ceil(questions.length / MAX_QUESTIONS_PER_PAGE)))} />
+          </Pagination>
+        }
+        {
+          questions.length > 0 && questions.slice((chosenPage - 1) * MAX_QUESTIONS_PER_PAGE, chosenPage * MAX_QUESTIONS_PER_PAGE).map(item => 
             <p className='border p-2 m-0'>{item.questionName + item.questionText}</p>
           )
         }

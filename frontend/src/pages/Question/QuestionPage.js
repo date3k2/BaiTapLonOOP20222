@@ -17,13 +17,23 @@ function Question({question}) {
 export default function EditQuestionPage() {
   const [doesShowSub, setDoesShowSub] = useState(true);
   const [questions, setQuestions] = useState([]);
+  const [category, setCategory] = useState();
 
   const handleShowSub = e => {
     setDoesShowSub(doesShowSub => !doesShowSub);
   };
 
+  useEffect(() => {
+    apiServices.getQuestions(category, doesShowSub)
+    .then(res => {
+      setQuestions(res.data)
+    })
+    .catch(err => console.log(err))
+  }, [doesShowSub]);
+
   const handleCategory = e => {
     const category = e.target.value;
+    setCategory(category);
     apiServices.getQuestions(category, doesShowSub)
     .then(res => {
       setQuestions(res.data)

@@ -33,6 +33,7 @@ export default function ANewQuestionModal({setOption}) {
   const [questions, setQuestions] = useState([]);
   const [chooseQuestion, setChooseQuestion] = useState([]);
   const [isCheckedAll, setIsCheckedAll] = useState(false);
+  const [category, setCategory] = useState();
 
   let data = useParams();
 
@@ -41,6 +42,14 @@ export default function ANewQuestionModal({setOption}) {
     .then(res => toast.success(res.data))
     .catch(err => console.log(err));
   }
+
+  useEffect(() => {
+    apiServices.getQuestions(category, doesShowSub)
+    .then(res => {
+      setQuestions(res.data)
+    })
+    .catch(err => console.log(err))
+  }, [doesShowSub]);
 
   const handleChooseAll = () => {
     if(isCheckedAll){
@@ -61,6 +70,7 @@ export default function ANewQuestionModal({setOption}) {
     setChooseQuestion([]);
     setIsCheckedAll(false);
     const category = e.target.value;
+    setCategory(category);
     apiServices.getQuestions(category, doesShowSub)
     .then(res => {
       setQuestions(res.data)

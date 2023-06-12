@@ -34,12 +34,21 @@ function HandleHighlight(props) {
 }
 
 function QuizQuestion({question, index}) {
+
+  const data = useParams();
+
+  const handleDelete = () => {
+    apiServices.deleteQuizQuestion(data.quizName, Array(question.questionId))
+    .then(res => console.log(res.data))
+    .catch(err => console.log(err));
+  }
+
   return (
     <Stack className="mb-1 p-1" direction="horizontal" style={{backgroundColor: '#f0f0f0'}}>
       <p className="m-0 me-1 px-2" style={{backgroundColor: '#d9d7d7'}}>{index}</p>
       <p className="m-0">{question.questionName + question.questionText}</p>
       <BsZoomIn className="ms-auto me-3" />
-      <BsFillTrash3Fill className="me-3" />
+      <BsFillTrash3Fill style={{cursor:'pointer'}} onClick={handleDelete} className="me-3" />
       <input disabled type="text" value="1.00"  size={3}/>
     </Stack>
   );
@@ -157,7 +166,7 @@ export default function EditQuizPage() {
       }
 
       {quizQuestion.length > 0 &&
-        quizQuestion.map((data, index) => <QuizQuestion question={data} index={index} />)
+        quizQuestion.map((data, index) => <QuizQuestion question={data} index={index} key={index} />)
       }
 
       <div className="col-md-1 mx-auto" style={{ marginTop: "250px" }}>
