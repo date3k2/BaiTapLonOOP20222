@@ -34,9 +34,9 @@ export default function PathLink() {
       <Breadcrumb className='mb-2 ms-2 d-flex'>
         <Breadcrumb.Item href='/' style={{textDecoration: 'none', marginRight: '5px'}}>Home</Breadcrumb.Item>
         {
-          path.map(item => {
+          path.map((item, index) => {
             pathStr += '/' + item;
-            return <Breadcrumb.Item href={pathStr}>{capitalize(item.replaceAll("%20", " "))}</Breadcrumb.Item>
+            return <Breadcrumb.Item key={index} href={pathStr}>{capitalize(item.replaceAll("%20", " "))}</Breadcrumb.Item>
           })
         }
       </Breadcrumb>

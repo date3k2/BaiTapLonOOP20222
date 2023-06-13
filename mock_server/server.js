@@ -1,9 +1,15 @@
 let express = require('express');
-let cors = require('cors')
+let cors = require('cors');
+const bodyParser = require('body-parser');
+const multer = require('multer');
 let app = express();
 let port = process.env.PORT || 4000;
 
-app.use(cors())
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(multer().array());
+app.use(express.static('public'));
 app.listen(port);
 
 console.log('RESTful API server started on: ' + port);
@@ -22,6 +28,14 @@ app.post('/quiz', (req, res) => {
 app.get('/:quizName/question', (req, res) => {
     let data = require('./data/quizQuestion.json')
     res.json(data)
+});
+
+app.post('/:quizName/question', (req, res) => {
+    res.json('Add questions to quiz successfully');
+})
+
+app.delete('/:quizName/question/delete', (req, res) => {
+    res.json('Delete question from quiz successfully');
 });
 
 // Category
@@ -58,7 +72,7 @@ app.get('/question', (req, res) => {
     // res.json(data)
 })
 
-app.post('/question', (req, res) => {
+app.post('/questions', (req, res) => {
     res.json("Add new question successfully!");
 });
 

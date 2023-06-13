@@ -22,6 +22,7 @@ export default function EditQuestionPage() {
   const [filledName, setFilledName] = useState("");
   const [filledText, setFilledText] = useState("");
   const [choices, setChoices] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -40,16 +41,21 @@ export default function EditQuestionPage() {
         setChoices(res.data.choice)
       })
       .catch(error => console.log(error));
+
+    apiServices.getCategory()
+      .then(res => {
+        setCategories(res.data)
+      })
+      .catch(error => console.log(error));
   }, [])
 
   const handleChangeName = (event) => {
     setFilledName(event.target.value);
   };
-
   const handleChangeText = (event) => {
     setFilledText(event.target.value);
   };
-
+  
   const handleUpdateChoices = (index, key, newValue) => {
     setChoices(prevChoices => {
       const updatedChoices = [...prevChoices];
@@ -58,19 +64,28 @@ export default function EditQuestionPage() {
     });
   }
 
-  const handleSaveData = () => {
-    const item = {
-      filledName,
-      filledText,
-      choices
-    }
+  const handleSaveQuestion = (event) => {
+    event.preventDefault();
+    const filteredChoices = choices.filter(choice => choice.content !== "");
+    const item = {filledName, filledText, filteredChoices};
     const params = new URLSearchParams(window.location.search);
     const paramValue = params.get('questionID');
-    apiServices.postQuestion(item, paramValue)
+    apiServices.putQuestion(item, paramValue)
       .then(res => {
         console.log(res.data);
       })
       .catch(error => console.log(error));
+  };
+  const handleAddQuestion = (event) => {
+    event.preventDefault();
+    const filteredChoices = choices.filter(choice => choice.content !== "");
+    const item = {filledName, filledText, filteredChoices};
+    console.log(item);
+    // apiServices.postQuestion(item)
+    //   .then(res => {
+    //     console.log(res.data);
+    //   })
+    //   .catch(error => console.log(error));
   };
 
   return (
@@ -99,7 +114,10 @@ export default function EditQuestionPage() {
           </Form.Label>
           <Col>
             <Form.Select style={{ marginLeft: "20px", width: "350px" }}>
-              <option >Default</option>
+              <option hidden>Default</option>
+              {categories.map((category) => (
+                <option value={category}> {category.name}</option>
+              ))}
             </Form.Select>
           </Col>
         </Form.Group>
@@ -161,7 +179,7 @@ export default function EditQuestionPage() {
               <Form.Control
                 type="text"
                 style={{ width: "100px" }}
-                defaultValue="1"
+                defaultValue={1}
               />
             </Stack>
           </Col>
@@ -227,7 +245,7 @@ export default function EditQuestionPage() {
         </Button>
         <br />
         <Button
-          onChange={handleSaveData}
+          onClick={handleSaveQuestion}
           variant="primary"
           style={{ marginLeft: "500px", marginTop: "60px" }}
           href={window.location.href}
@@ -236,9 +254,10 @@ export default function EditQuestionPage() {
         </Button>
         <br />
         <Button
+          onClick={handleAddQuestion}
           variant="danger"
           style={{ marginLeft: "500px", marginTop: "30px" }}
-          href="/"
+          //href="/"
         >
           SAVE CHANGES
         </Button>
