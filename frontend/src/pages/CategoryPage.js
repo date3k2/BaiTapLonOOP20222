@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import OptionsPanel from '../component/OptionsPanel'
 import { Button, Container, NavDropdown, Stack } from 'react-bootstrap'
 import Navbar from 'react-bootstrap/Navbar';
@@ -7,14 +7,58 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import alert from '../icons/alert.png'
 import questionmark from '../icons/questionmark.png'
+import apiServices from '../services/apiServices';
+
 
 export default function Category() {
+  const [filledName, setFilledName] = useState("");
+  const [filledInfo, setFilledInfo] = useState("");
+  const [id, setId] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [parentID, setParentID] = useState(-1);
+  const [level, setLevel] = useState(0);
+
+  const handleChangeName = (event) => {
+    setFilledName(event.target.value);
+  };
+  const handleChangeInfo = (event) => {
+    setFilledInfo(event.target.value);
+  };
+  const handleChangeId = (event) => {
+    setId(event.target.value);
+  };
+  const handleParentSelect = (event) => {
+    const value = event.target.value;
+    const selected = categories.find(category => category.name === value);
+    setParentID(selected ? selected.parentID : -1);
+    setLevel(selected ? selected.level : 0);
+  }
+
+  useEffect(() => {
+    apiServices.getCategory()
+      .then(res => {
+        setCategories(res.data)
+      })
+      .catch(error => console.log(error));
+  }, []);
+
+  const handleAddCategory = (event) => {
+    event.preventDefault();
+    const item = {parentID, id, filledName, filledInfo, level}
+    apiServices.postCategory(item)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(error => console.log(error));
+  };
+
   return (
     <Container className='border p-2'>
       <OptionsPanel activeTab={1} />
       <div style={{ padding: '25px' }}>
         <Stack direction="horizontal" gap={2}>
           <NavDropdown
+            disabled
             style={{ color: 'blue', fontSize: '25px' }}>
           </NavDropdown>
           <Navbar.Text
@@ -31,9 +75,14 @@ export default function Category() {
           <Col>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
-              <Form.Select style={{ width: '350px' }}>
-                <option>Default</option>
+              <Form.Select onChange={handleParentSelect} style={{ width: '350px' }}>
+                <option> Default </option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category.name}> {category.name}</option>
+                ))}
               </Form.Select>
+              <p>level: {level} </p>
+              <p>parentID: {parentID} </p>
             </Stack>
           </Col>
         </Form.Group>
@@ -47,7 +96,8 @@ export default function Category() {
           <Col>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' />
-              <Form.Control type="text" style={{ width: '480px' }} />
+              <Form.Control onChange={handleChangeName} type="text" style={{ width: '480px' }} />
+              <p> name: {filledName}</p>
             </Stack>
           </Col>
         </Form.Group>
@@ -61,8 +111,8 @@ export default function Category() {
           <Col >
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' style={{ marginBottom: '260px' }} />
-              <Form.Control type="text" as="textarea" style={{ height: '300px' }}
-              />
+              <Form.Control onChange={handleChangeInfo} type="text" as="textarea" style={{ height: '300px' }} />
+              <p>info: {filledInfo} </p>
             </Stack>
           </Col>
         </Form.Group>
@@ -76,13 +126,17 @@ export default function Category() {
           <Col>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
-              <Form.Control type="text" style={{ width: '100px' }} />
+              <Form.Control onChange={handleChangeId} type="text" style={{ width: '100px' }} />
+              <p> id: {id}</p>
             </Stack>
           </Col>
         </Form.Group>
+
         <br />
+
         <div style={{ display: "flex", justifyContent: 'center' }}>
           <Button
+            onClick={handleAddCategory }
             variant='danger'
             href='/category'
           >
@@ -93,10 +147,9 @@ export default function Category() {
         <div style={{ display: "flex", justifyContent: 'center' }}>
           <Stack direction="horizontal" gap={1}>
             <p > There are required fields in this form marked</p>
-            <img src={alert} width='13px' height='13px' style={{ marginBottom: '13px' }} />
+            <img src={alert} width='13px' height='13px' style={{ marginBottom: '14px' }} />
           </Stack>
         </div>
-
       </div>
     </Container >
   )
