@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using QuizProject.Helpers;
+using QuizProject.Methods;
 using QuizProject.Models;
 
 namespace BookProject
@@ -19,6 +21,7 @@ namespace BookProject
             string connectionString = builder.Configuration.GetConnectionString("QuizProject")!;
             builder.Services.AddDbContext<QuizProjectContext>(options => options.UseSqlServer(connectionString).UseLazyLoadingProxies());
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+            builder.Services.AddSingleton<ICategoryHelper, CategoryHelper>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

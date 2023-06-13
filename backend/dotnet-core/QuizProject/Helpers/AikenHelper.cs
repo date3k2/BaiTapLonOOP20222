@@ -5,14 +5,19 @@ namespace QuizProject.Helpers
 {
     public class AikenHelper
     {
-        public int LineIter = 0; //Dòng số mấy
-        public short LineInQuestionIter = 0; //Là đáp án thứ bao nhiêu, nếu là 0 thì là câu hỏi
+        //Đếm dòng
+        public int LineIter = 0;
+
+        //Là đáp án thứ bao nhiêu, nếu là 0 thì là câu hỏi
+        public short LineInQuestionIter = 0;
+
         public bool IsNextQuestion = false;
 
-        //Chuẩn RegEx cho các dòng
-        public Regex ChoicePattern = new($@"[A-Z]\. \S.*", RegexOptions.Compiled | RegexOptions.IgnoreCase); //Chuẩn của câu trả lời
+        // Regex cho lựa chọn
+        public Regex ChoicePattern = new($@"[A-Z]\. \S.*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public Regex AnswerPattern = new(@"ANSWER: [A-Z]", RegexOptions.Compiled | RegexOptions.IgnoreCase); //Chuẩn của đáp án
+        // Regex cho đáp án
+        public Regex AnswerPattern = new(@"ANSWER: [A-Z]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         //Kết quả
         public Dictionary<char, string> Choices = new();

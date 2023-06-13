@@ -1,8 +1,9 @@
-﻿using QuizProject.Models;
+﻿using QuizProject.Helpers;
+using QuizProject.Models;
 
 namespace QuizProject.Methods
 {
-    public class CategoryHelper
+    public class CategoryHelper : ICategoryHelper
     {
         public Dictionary<int, List<int>> GetAdjencyList(List<CategoryRelationship> categoryRelationships)
         {
@@ -16,6 +17,7 @@ namespace QuizProject.Methods
             }
             return adjencyCategory;
         }
+
         public void DFS(int u, Dictionary<int, List<int>> adj, Dictionary<int, int> level, List<int> tree)
         {
             foreach (var v in adj[u])

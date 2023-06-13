@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuizProject.Helpers;
 using QuizProject.Models;
 
@@ -10,21 +11,29 @@ namespace QuizProject.Controllers
     {
         private readonly QuizProjectContext _context;
 
-        public QuestionsController(QuizProjectContext context)
+        private readonly ICategoryHelper _categoryHelper;
+
+        public QuestionsController(QuizProjectContext context, ICategoryHelper categoryHelper)
         {
             _context = context;
+            _categoryHelper = categoryHelper;
         }
 
-        //// GET: api/Questions
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
-        //{
-        //  if (_context.Questions == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    return await _context.Questions.ToListAsync();
-        //}
+        // GET: api/Questions
+        [HttpGet]
+        public async Task<ActionResult<List<Question>>> GetQuestions(int categoryId = -1, bool showSubCategory = false)
+        {
+            if (_context.Questions == null)
+            {
+                return NotFound();
+            }
+            if (categoryId == -1)
+            {
+
+                return await _context.Questions.ToListAsync();
+            }
+            return await _context.Questions.Where(q => q.CategoryId == categoryId).ToListAsync();
+        }
 
         //// GET: api/Questions/5
         //[HttpGet("{id}")]
@@ -88,7 +97,10 @@ namespace QuizProject.Controllers
                 {
                     var questionsAndChoices = import.ImportFromTXT(fileStream);
                     questionsAndChoices.Item1.ForEach(x => x.CategoryId = categoryId);
-                    return StatusCode(200, new { questionsAndChoices.Item1, questionsAndChoices.Item2 });
+                    _context.Questions.AddRange(questionsAndChoices.Item1);
+                    _context.QuestionChoices.AddRange(questionsAndChoices.Item2);
+                    await _context.SaveChangesAsync();
+                    return StatusCode(200, $"Success {questionsAndChoices.Item1.Count} questions.");
                 }
                 else
                 {

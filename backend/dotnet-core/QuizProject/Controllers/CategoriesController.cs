@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QuizProject.Methods;
+using QuizProject.Helpers;
 using QuizProject.Models;
 
 namespace QuizProject.Controllers
@@ -10,11 +10,11 @@ namespace QuizProject.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly QuizProjectContext _context;
-        private readonly CategoryHelper categoryHelper;
-        public CategoriesController(QuizProjectContext context)
+        private readonly ICategoryHelper _categoryHelper;
+        public CategoriesController(QuizProjectContext context, ICategoryHelper categoryHelper)
         {
             _context = context;
-            categoryHelper = new CategoryHelper();
+            _categoryHelper = categoryHelper;
         }
 
         // GET: api/Categories
@@ -29,7 +29,7 @@ namespace QuizProject.Controllers
             var categoryRelationships = await _context.CategoryRelationships.ToListAsync();
             var categories = await _context.Categories.Select(c => new { c.CategoryId, c.CategoryName }).ToListAsync();
             var categoryMap = categories.ToDictionary(c => c.CategoryId, c => c.CategoryName);
-            var adj = categoryHelper.GetAdjencyList(categoryRelationships);
+            var adj = _categoryHelper.GetAdjencyList(categoryRelationships);
             foreach (var item in categoryRelationships)
             {
                 var u = item.CategoryParentId;
@@ -40,7 +40,7 @@ namespace QuizProject.Controllers
                         [u] = 0
                     };
                     var tree = new List<int> { u };
-                    categoryHelper.DFS(u, adj, level, tree);
+                    _categoryHelper.DFS(u, adj, level, tree);
                     foreach (var i in tree)
                     {
                         var category = new
