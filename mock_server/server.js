@@ -34,6 +34,10 @@ app.post('/:quizName/question', (req, res) => {
     res.json('Add questions to quiz successfully');
 })
 
+app.delete('/:quizName/question/delete', (req, res) => {
+    res.json('Delete question from quiz successfully');
+});
+
 // Category
 
 app.get('/categories', (req, res) => {
@@ -68,7 +72,7 @@ app.get('/question', (req, res) => {
     // res.json(data)
 })
 
-app.post('/question', (req, res) => {
+app.post('/questions', (req, res) => {
     res.json("Add new question successfully!");
 });
 

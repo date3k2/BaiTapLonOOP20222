@@ -33,6 +33,7 @@ export default function ANewQuestionModal({setOption}) {
   const [questions, setQuestions] = useState([]);
   const [chooseQuestion, setChooseQuestion] = useState([]);
   const [isCheckedAll, setIsCheckedAll] = useState(false);
+  const [category, setCategory] = useState();
 
   let data = useParams();
 
@@ -41,6 +42,14 @@ export default function ANewQuestionModal({setOption}) {
     .then(res => toast.success(res.data))
     .catch(err => console.log(err));
   }
+
+  useEffect(() => {
+    apiServices.getQuestions(category, doesShowSub)
+    .then(res => {
+      setQuestions(res.data)
+    })
+    .catch(err => console.log(err))
+  }, [doesShowSub]);
 
   const handleChooseAll = () => {
     if(isCheckedAll){
@@ -53,14 +62,15 @@ export default function ANewQuestionModal({setOption}) {
     }
   }
 
-  const handleShowSub = e => {
+  const handleShowSub = () => {
     setDoesShowSub(doesShowSub => !doesShowSub);
-    console.log(doesShowSub);
   };
 
   const handleCategory = e => {
     setChooseQuestion([]);
+    setIsCheckedAll(false);
     const category = e.target.value;
+    setCategory(category);
     apiServices.getQuestions(category, doesShowSub)
     .then(res => {
       setQuestions(res.data)
@@ -98,7 +108,7 @@ export default function ANewQuestionModal({setOption}) {
             </tbody>
           </Table>
         }
-      <Button onClick={handleSubmit}>ADD SELECTED QUESTION TO QUIZ</Button>
+      <Button onClick={handleSubmit}>ADD SELECTED QUESTION TO THE QUIZ</Button>
       </Modal.Body>
       <ToastContainer hideProgressBar autoClose={3000} />
     </Modal>

@@ -57,6 +57,10 @@ class apiServices {
     postQuizQuestion(quizName, questionsId){
         return axios.post(`${URL}/${quizName}/question`, questionsId);
     }
+
+    deleteQuizQuestion(quizName, questionsId){
+        return axios.delete(`${URL}/${quizName}/question/delete`, questionsId);
+    }
 }
 
 export default new apiServices();
