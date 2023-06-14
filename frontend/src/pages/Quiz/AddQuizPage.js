@@ -8,23 +8,55 @@ import alert from '../../icons/alert.png'
 import exam from '../../icons/exam.png'
 import questionmark from '../../icons/questionmark.png'
 import calendar from '../../icons/calendar.png'
+import apiServices from '../../services/apiServices';
 
 export default function AddQuizPage() {
+  const [quizName, setQuizName] = useState("");
   const [isChecked, setIsChecked] = useState(true);
-  const [isChecked1, setIsChecked1] = useState(false);
-  const handleCheckbox1Change = (event) => {
-    setIsChecked1(event.target.checked);
-  }
+  const [descriptionShow, setDescriptionShow] = useState(false);
+  const [description, setDescription] = useState("");
+  const [timeLimit, setTimeLimit] = useState(null);
+  const [selected, setSelected] = useState(0);
+
+  const handleDescriptionShowChange = (event) => {
+    setDescriptionShow(event.target.checked);
+  };
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
   };
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value)
+  };
+  const handleTimeLimit = (event) => {
+    const value = event.target.value
+    if (selected === 1) value *= 60;
+    setTimeLimit(value);
+  };
+  const handleQuizNameChange = (event) => {
+    setQuizName(event.target.value)
+  };
+  const handleSelectedChange = (event) => {
+    setSelected(event.target.value)
+  };
+
+  const handleAddQuiz = (event) => {
+    event.preventDefault();
+    const item = { quizName, description, descriptionShow, timeLimit };
+    console.log(item);
+    apiServices.postQuiz(item)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(error => console.log(error));
+  };
+
   return (
     <Container className='border p-2'>
       <Stack direction="horizontal" gap={2}>
         <img src={exam} width='15px' height='17px' style={{ marginBottom: '10px' }} />
         <p
           style={{ color: 'red', fontSize: '30px' }}>
-          Adding a new Quizz
+          Adding a new Quiz
         </p>
         <img src={questionmark} width='15px' height='15px' style={{ marginBottom: '10px' }} />
       </Stack>
@@ -32,6 +64,7 @@ export default function AddQuizPage() {
       <div style={{ padding: '25px' }}>
         <Stack direction="horizontal" gap={2}>
           <NavDropdown
+            disabled
             style={{ color: 'blue', fontSize: '25px' }}>
           </NavDropdown>
           <Navbar.Text
@@ -46,7 +79,7 @@ export default function AddQuizPage() {
           <Col>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' />
-              <Form.Control type='text' style={{ width: '500px' }} />
+              <Form.Control onChange={handleQuizNameChange} type='text' style={{ width: '500px' }} />
             </Stack>
           </Col>
         </Form.Group>
@@ -58,14 +91,14 @@ export default function AddQuizPage() {
             Description
           </Form.Label>
           <Col style={{ marginLeft: '42px' }} >
-            <Form.Control type="text" as="textarea" style={{ height: '300px' }} />
+            <Form.Control onChange={handleDescriptionChange} type="text" as="textarea" style={{ height: '300px' }} />
 
             <Stack direction="horizontal" gap={2}>
               <Form.Check
                 type='checkbox'
                 label='Display description on course page'
-                checked={isChecked1}
-                onChange={handleCheckbox1Change}
+                checked={descriptionShow}
+                onChange={handleDescriptionShowChange}
               />
               <img src={questionmark} width='13px' height='13px' />
             </Stack>
@@ -110,30 +143,16 @@ export default function AddQuizPage() {
           <Col>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
-              {
-                isChecked ? <FormControl type='text' style={{ width: '100px' }} />
-                  : <FormControl disabled type='text' style={{ width: '100px' }} />
-              }
-              {isChecked ?
-                <Form.Select style={{ width: '115px' }}>
-                  <option value={1}>
-                    minutes
-                  </option>
-                  <option value={2}>
-                    hours
-                  </option>
-                </Form.Select>
-                :
-                <Form.Select disabled style={{ width: '115px' }}>
-                  <option value={1}>
-                    minutes
-                  </option>
-                  <option value={2}>
-                    hours
-                  </option>
-                </Form.Select>
-              }
-              {/* done task */}
+              <FormControl disabled={isChecked ? null : 'disabled'} onChange={handleTimeLimit} type='text' style={{ width: '100px' }} />
+              <Form.Select disabled={isChecked ? null : 'disabled'} onChange={handleSelectedChange} style={{ width: '115px' }}>
+                <option value={0}>
+                  minutes
+                </option>
+                <option value={1}>
+                  hours
+                </option>
+              </Form.Select>
+
               <Form.Check
                 type='checkbox'
                 label='Enable'
@@ -159,7 +178,7 @@ export default function AddQuizPage() {
       </div>
       <br />
       <div style={{ display: "flex", justifyContent: 'center' }}>
-        <Button variant="danger">Create </Button>
+        <Button onClick={handleAddQuiz} variant="danger">Create </Button>
         <Button variant="primary" style={{ marginLeft: '10px' }}>Cancel </Button>
       </div>
     </Container >
@@ -184,7 +203,6 @@ function TimeQuizz() {
   const [selectedHour, setSelectedHour] = useState(1);
   const [selectedMinute, setSelectedMinute] = useState(0);
 
-
   const handleDaySelect = (event) => {
     const value = event.target.value;
     setSelectedDay(value);
@@ -194,7 +212,7 @@ function TimeQuizz() {
       }
       if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(28);
       if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(29);
-    }   
+    }
     if (value == 30) {
       if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(28);
       if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(29);
@@ -233,11 +251,11 @@ function TimeQuizz() {
   };
 
   const handleHourSelect = (event) => {
-    setSelectedHour (event.target.value);
-  };  
+    setSelectedHour(event.target.value);
+  };
   const handleMinuteSelect = (event) => {
-    setSelectedMinute (event.target.value);
-  }; 
+    setSelectedMinute(event.target.value);
+  };
 
   return (
     <>
@@ -246,42 +264,35 @@ function TimeQuizz() {
           <option value={date}> {date}</option>
         ))}
       </Form.Select >
-      {/* <p> selected day: {selectedDay}</p> */}
-          
+
       <Form.Select value={selectedMonth} onChange={handleMonthSelect} style={{ width: '130px' }}>
         {listMonth.map((month) => (
           <option value={month}> {month}</option>
         ))}
       </Form.Select>
-      {/* <p> selected month: {selectedMonth}</p> */}
 
       <Form.Select value={selectedYear} onChange={handleYearSelect} style={{ width: '100px' }}>
         {listYear.map((year) => (
           <option value={year}> {year}</option>
         ))}
       </Form.Select>
-      {/* <p> selected year: {selectedYear}</p> */}
 
       <Form.Select value={selectedHour} onChange={handleHourSelect} style={{ width: '70px' }}>
         {listHour.map((hour) => (
           <option value={hour}> {hour}</option>
         ))}
       </Form.Select>
-      {/* <p> selected hour: {selectedHour}</p> */}
 
       <Form.Select value={selectedMinute} onChange={handleMinuteSelect} style={{ width: '70px' }}>
         {listMinute.map((minute) => (
           <option value={minute}> {minute}</option>
         ))}
       </Form.Select>
-      {/* <p> selected minute: {selectedMinute}</p> */}
 
       <img src={calendar} width='15px' height='15px' />
-
       <Form.Check
         type='checkbox'
         label='Enable'
-        defaultChecked = {true}
       />
     </>
   );
