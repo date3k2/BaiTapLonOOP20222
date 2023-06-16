@@ -35,10 +35,8 @@ function HandleHighlight(props) {
 
 function QuizQuestion({isSelect, question, index, chosenQuestion, setChosenQuestion, setQuizQuestions, quizQuestions}) {
 
-  const data = useParams();
-
   const handleDelete = () => {
-    
+    setQuizQuestions(quizQuestions.filter(item => item.id !== question.id))
   }
 
   return (
@@ -95,6 +93,9 @@ export default function EditQuizPage() {
       "isShuffle": isShuffle,
       "quizQuestions": quizQuestions
     }
+    apiServices.postQuizQuestion(data.quizName, quizData)
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
   }
 
   return (
@@ -111,7 +112,7 @@ export default function EditQuizPage() {
         <div className="d-flex gap-1 align-items-center">
           <Col>Maximum grade</Col>
           <input type="text" className="form-control" style={{ width: "70px" }} value={totalGrade.toFixed(2)} onChange={e => setTotalGrade(e.target.value)} />
-          <Button type="button" style={{ backgroundColor: "#0081C9" }} href="/previewquiz/editquiz" onClick={handleSubmit}>
+          <Button type="button" style={{ backgroundColor: "#0081C9" }} onClick={handleSubmit}>
             SAVE
           </Button>
         </div>
