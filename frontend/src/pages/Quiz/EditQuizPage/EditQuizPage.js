@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Container, Col, Stack, Button, Dropdown, Table } from "react-bootstrap";
+import { Container, Col, Stack, Button, Dropdown, Form } from "react-bootstrap";
 import { BsFillPencilFill, BsZoomIn, BsFillTrash3Fill } from "react-icons/bs";
 import { ImPlus } from "react-icons/im";
 import questionmark from "../../../icons/questionmark.png";
@@ -33,18 +33,15 @@ function HandleHighlight(props) {
   );
 }
 
-function QuizQuestion({question, index}) {
-
-  const data = useParams();
+function QuizQuestion({isSelect, question, index, chosenQuestion, setChosenQuestion, setQuizQuestions, quizQuestions}) {
 
   const handleDelete = () => {
-    apiServices.deleteQuizQuestion(data.quizName, Array(question.questionId))
-    .then(res => console.log(res.data))
-    .catch(err => console.log(err));
+    setQuizQuestions(quizQuestions.filter(item => item.id !== question.id))
   }
 
   return (
     <Stack className="mb-1 p-1" direction="horizontal" style={{backgroundColor: '#f0f0f0'}}>
+      {isSelect && <Form.Check onClick={() => setChosenQuestion([...chosenQuestion, question.id])}></Form.Check>}
       <p className="m-0 me-1 px-2" style={{backgroundColor: '#d9d7d7'}}>{index}</p>
       <p className="m-0">{question.questionName + question.questionText}</p>
       <BsZoomIn className="ms-auto me-3" />
@@ -56,23 +53,50 @@ function QuizQuestion({question, index}) {
 
 export default function EditQuizPage() {
 
-  const [isChecked, setIsChecked] = useState(false);
-  const [quizQuestion, setQuizQuestion] = useState([]);
+  const [totalGrade, setTotalGrade] = useState(10.0);
+  const [isShuffle, setIsShuffle] = useState(false);
+  const [quizQuestions, setQuizQuestions] = useState([]);
   const [addOption, setAddOption] = useState(-1);
+  const [isSelectMultiple, setIsSelectMultiple] = useState(false);
+  const [chosenQuestion, setChosenQuestion] = useState([]);
 
-  const options = [<ANewQuestionModal setOption={setAddOption} />, <FromQuestionBankModal setOption={setAddOption} />, <ARandomQuestionModal setOption={setAddOption} />]
+  const options = [
+    <ANewQuestionModal setOption={setAddOption} quizQuestions={quizQuestions} setQuizQuestions={setQuizQuestions} />, 
+    <FromQuestionBankModal setOption={setAddOption} quizQuestions={quizQuestions} setQuizQuestions={setQuizQuestions} />, 
+    <ARandomQuestionModal setOption={setAddOption} quizQuestions={quizQuestions} setQuizQuestions={setQuizQuestions} />
+  ]
 
   const data = useParams();
 
   useEffect(() => {
-    apiServices.getQuizQuestion(data.quizName)
-    .then(res => setQuizQuestion(res.data))
+    apiServices.getQuiz(data.quizName)
+    .then(res => setQuizQuestions(res.data.questions))
     .catch(err => console.log(err));
   }, [])
 
   const handleOnClick = () => {
-    setIsChecked(!isChecked);
+    setIsShuffle(!isShuffle);
   };
+
+  const handleDelete = () => {
+    console.log(chosenQuestion)
+  }
+
+  const handleCancel = () => {
+    setIsSelectMultiple(false);
+    setChosenQuestion([]);
+  }
+
+  const handleSubmit = () => {
+    const quizData = {
+      "totalGrade": totalGrade,
+      "isShuffle": isShuffle,
+      "quizQuestions": quizQuestions
+    }
+    apiServices.postQuizQuestion(data.quizName, quizData)
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+  }
 
   return (
     <Container className="border p-2">
@@ -84,19 +108,11 @@ export default function EditQuizPage() {
       </Stack>
 
       <Stack className="my-1" direction="horizontal">
-        <Col style={{ fontSize: "16px" }}>Question: {quizQuestion.length} | This quiz is open</Col>
+        <Col style={{ fontSize: "16px" }}>Question: {quizQuestions.length} | This quiz is open</Col>
         <div className="d-flex gap-1 align-items-center">
           <Col>Maximum grade</Col>
-          <input
-            type="text"
-            className="form-control"
-            style={{ width: "60px" }}
-          />
-          <Button
-            type="button"
-            style={{ backgroundColor: "#0081C9" }}
-            href="/previewquiz/editquiz"
-          >
+          <input type="text" className="form-control" style={{ width: "70px" }} value={totalGrade.toFixed(2)} onChange={e => setTotalGrade(e.target.value)} />
+          <Button type="button" style={{ backgroundColor: "#0081C9" }} onClick={handleSubmit}>
             SAVE
           </Button>
         </div>
@@ -107,7 +123,7 @@ export default function EditQuizPage() {
           <Button type="button" style={{ backgroundColor: "#0081C9" }}>
             REPAGINATE
           </Button>
-          <Button type="button" style={{ backgroundColor: "#0081C9" }}>
+          <Button type="button" style={{ backgroundColor: "#0081C9" }} onClick={() => setIsSelectMultiple(true)}>
             SELECT MULTIPLE ITEMS
           </Button>
         </div>
@@ -115,7 +131,7 @@ export default function EditQuizPage() {
           className="d-flex justify-content-end"
           style={{ fontSize: "16px" }}
         >
-          Total of marks: {(quizQuestion.length).toFixed(2)}
+          Total of marks: {(quizQuestions.length).toFixed(2)}
         </Col>
       </Stack>
 
@@ -124,7 +140,7 @@ export default function EditQuizPage() {
           <BsFillPencilFill size={12} color="0081C9" />
           <Col className="d-flex justify-content-end">
             <Button
-              variant={isChecked ? "success" : "outline-secondary"}
+              variant={isShuffle ? "success" : "outline-secondary"}
               onClick={handleOnClick}
               style={{
                 width: "15px",
@@ -136,7 +152,7 @@ export default function EditQuizPage() {
                 alignItems: "center",
               }}
             >
-              {isChecked && "\u2713"}
+              {isShuffle && "\u2713"}
             </Button>
           </Col>
           <div>Shuffle</div>
@@ -165,11 +181,29 @@ export default function EditQuizPage() {
         addOption != -1 && options[addOption]
       }
 
-      {quizQuestion.length > 0 &&
-        quizQuestion.map((data, index) => <QuizQuestion question={data} index={index} key={index} />)
+      {quizQuestions.length > 0 &&
+        quizQuestions.map((data, index) => 
+          <QuizQuestion
+            isSelect={isSelectMultiple} 
+            question={data} index={index} 
+            key={index} 
+            chosenQuestion={chosenQuestion} 
+            setChosenQuestion={setChosenQuestion} 
+            setQuizQuestions={setQuizQuestions} 
+            quizQuestions={quizQuestions}
+          />
+        )
       }
 
-      <div className="col-md-1 mx-auto" style={{ marginTop: "250px" }}>
+      {
+        isSelectMultiple && 
+        <Stack direction="horizontal">
+          <Button className="me-2" onClick={handleDelete}>Delete</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
+        </Stack>
+      }
+
+      <div className="col-md-1 mx-auto" style={{ marginTop: "50px" }}>
         <select style={{ width: "150px" }}>
           <option value="">
             Jump to...

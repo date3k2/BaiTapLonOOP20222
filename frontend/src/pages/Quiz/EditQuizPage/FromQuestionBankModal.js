@@ -10,9 +10,9 @@ function Question({question, chooseQuestion, setChooseQuestion}){
 
   const handleChooseQuestion = () => {
     if(chooseQuestion.includes(question.id)){
-      setChooseQuestion(chooseQuestion => chooseQuestion.filter(item => item !== question.id));
+      setChooseQuestion(chooseQuestion => chooseQuestion.filter(item => item.id !== question.id));
     } else {
-      setChooseQuestion(chooseQuestion => [...chooseQuestion, question.id]);
+      setChooseQuestion(chooseQuestion => [...chooseQuestion, question]);
     }
   }
 
@@ -20,7 +20,7 @@ function Question({question, chooseQuestion, setChooseQuestion}){
     <tr>
       <td width='2%'>
         {/* {chooseQuestion.length > 0 && chooseQuestion.includes(question.id) ? <Form.Check type='checkbox' checked onChange={handleChooseQuestion}/> : <Form.Check type='checkbox' onChange={handleChooseQuestion}/>} */}
-        <Form.Check type='checkbox' checked={chooseQuestion.includes(question.id)} onChange={handleChooseQuestion}/>
+        <Form.Check type='checkbox' checked={chooseQuestion.includes(question)} onChange={handleChooseQuestion}/>
       </td>
       <td>{question.questionName + question.questionText}</td>
       <td width='2%'><BsZoomIn className="ms-auto me-3" /></td>
@@ -28,7 +28,7 @@ function Question({question, chooseQuestion, setChooseQuestion}){
   );
 }
 
-export default function ANewQuestionModal({setOption}) {
+export default function ANewQuestionModal({setOption, quizQuestions, setQuizQuestions}) {
   const [doesShowSub, setDoesShowSub] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [chooseQuestion, setChooseQuestion] = useState([]);
@@ -38,9 +38,7 @@ export default function ANewQuestionModal({setOption}) {
   let data = useParams();
 
   const handleSubmit = () => {
-    apiServices.postQuizQuestion(data.quizName, chooseQuestion)
-    .then(res => toast.success(res.data))
-    .catch(err => console.log(err));
+    setQuizQuestions(quizQuestions => [...quizQuestions, ...chooseQuestion])
   }
 
   useEffect(() => {
@@ -57,7 +55,7 @@ export default function ANewQuestionModal({setOption}) {
       setIsCheckedAll(false);
     } else {
       setChooseQuestion([]);
-      questions.map(question => setChooseQuestion(chooseQuestion => [...chooseQuestion, question.id]));
+      questions.map(question => setChooseQuestion(chooseQuestion => [...chooseQuestion, question]));
       setIsCheckedAll(true);
     }
   }

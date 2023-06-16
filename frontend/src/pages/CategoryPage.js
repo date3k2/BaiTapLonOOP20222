@@ -81,8 +81,6 @@ export default function Category() {
                   <option key={index} value={category.name}> {category.name}</option>
                 ))}
               </Form.Select>
-              <p>level: {level} </p>
-              <p>parentID: {parentID} </p>
             </Stack>
           </Col>
         </Form.Group>
@@ -97,7 +95,6 @@ export default function Category() {
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' />
               <Form.Control onChange={handleChangeName} type="text" style={{ width: '480px' }} />
-              <p> name: {filledName}</p>
             </Stack>
           </Col>
         </Form.Group>
@@ -112,7 +109,6 @@ export default function Category() {
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' style={{ marginBottom: '260px' }} />
               <Form.Control onChange={handleChangeInfo} type="text" as="textarea" style={{ height: '300px' }} />
-              <p>info: {filledInfo} </p>
             </Stack>
           </Col>
         </Form.Group>
@@ -127,7 +123,6 @@ export default function Category() {
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <Form.Control onChange={handleChangeId} type="text" style={{ width: '100px' }} />
-              <p> id: {id}</p>
             </Stack>
           </Col>
         </Form.Group>
