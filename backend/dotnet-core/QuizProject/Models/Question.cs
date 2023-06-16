@@ -12,9 +12,11 @@ public partial class Question
 
     public string? QuestionMediaPath { get; set; }
 
-    [JsonIgnore]
-    public virtual Category Category { get; set; } = null!;
+    public virtual ICollection<QuestionChoice> QuestionChoices { get; set; } = new List<QuestionChoice>();
 
     [JsonIgnore]
-    public virtual ICollection<QuestionChoice> QuestionChoices { get; set; } = new List<QuestionChoice>();
+    public virtual Category? Category { get; set; }
+
+    [JsonIgnore]
+    public virtual ICollection<Quiz> Quizzes { get; set; } = new List<Quiz>();
 }

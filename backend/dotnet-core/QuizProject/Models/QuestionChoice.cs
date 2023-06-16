@@ -6,9 +6,9 @@ public partial class QuestionChoice
 {
     public Guid ChoiceId { get; set; }
 
-    public Guid QuestionId { get; set; }
+    public Guid? QuestionId { get; set; }
 
-    public double ChoiceMark { get; set; } = 0;
+    public double? ChoiceMark { get; set; }
 
     public string? ChoiceText { get; set; }
 

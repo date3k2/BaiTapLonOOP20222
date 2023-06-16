@@ -11,28 +11,61 @@ namespace QuizProject.Controllers
     {
         private readonly QuizProjectContext _context;
 
-        private readonly ICategoryHelper _categoryHelper;
-
         public QuestionsController(QuizProjectContext context, ICategoryHelper categoryHelper)
         {
             _context = context;
-            _categoryHelper = categoryHelper;
         }
 
         // GET: api/Questions
         [HttpGet]
-        public async Task<ActionResult<List<Question>>> GetQuestions(int categoryId = -1, bool showSubCategory = false)
+        public async Task<ActionResult> GetQuestions(int categoryId = 0, bool showSubCategory = false)
         {
             if (_context.Questions == null)
             {
                 return NotFound();
             }
-            if (categoryId == -1)
+            if (categoryId == 0)
             {
-
-                return await _context.Questions.ToListAsync();
+                var ques = await _context.Questions.ToListAsync();
+                return StatusCode(200, ques);
             }
-            return await _context.Questions.Where(q => q.CategoryId == categoryId).ToListAsync();
+            var questions = new List<Question>();
+            if (showSubCategory)
+            {
+                var allChildrenId = await _context.CategoryRelationships.Where(e => e.CategoryParentId == categoryId).Select(e => e.CategoryChildId).ToListAsync();
+                foreach (var childrenId in allChildrenId)
+                {
+                    var category = await _context.Categories.FindAsync(childrenId);
+                    questions.AddRange(category!.Questions);
+                }
+            }
+            else
+            {
+                var category = await _context.Categories.FindAsync(categoryId);
+                questions.AddRange(category!.Questions);
+            }
+            return Ok(questions);
+        }
+        [HttpPost("Single")]
+        public async Task<ActionResult<Guid>> PostSingleQuestion(Question question)
+        {
+            question.QuestionId = Guid.NewGuid();
+            foreach (var choice in question.QuestionChoices)
+            {
+                choice.ChoiceId = Guid.NewGuid();
+                choice.QuestionId = question.QuestionId;
+            }
+            _context.Questions.Add(question);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return StatusCode(200, question.QuestionId);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
         }
 
         //// GET: api/Questions/5
@@ -53,41 +86,37 @@ namespace QuizProject.Controllers
         //    return question;
         //}
 
-        //// PUT: api/Questions/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutQuestion(Guid id, Question question)
-        //{
-        //    if (id != question.QuestionId)
-        //    {
-        //        return BadRequest();
-        //    }
+        // PUT: api/Questions/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutQuestion(Guid id, Question question)
+        {
+            if (id != question.QuestionId)
+            {
+                return BadRequest();
+            }
 
-        //    _context.Entry(question).State = EntityState.Modified;
+            _context.Entry(question).State = EntityState.Modified;
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!QuestionExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(400, e.Message);
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
-        // POST: api/Questions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult> ImportQuestionFromFile(int categoryId, IFormFile file)
+        /// <summary>
+        /// API import câu hỏi từ file .txt và .docx dưới định dạng Aiken format
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="file"></param>
+        /// <returns>Trả về số câu hỏi được import thành công, hoặc báo lỗi nếu sai định dạng</returns>
+        [HttpPost("File")]
+        public async Task<ActionResult> ImportQuestionFromFile(IFormFile file, int categoryId = 0)
         {
             try
             {
@@ -106,7 +135,10 @@ namespace QuizProject.Controllers
                 {
                     var questionsAndChoices = import.ImportDocxl(fileStream);
                     questionsAndChoices.Item1.ForEach(x => x.CategoryId = categoryId);
-                    return StatusCode(200, new { questionsAndChoices.Item1, questionsAndChoices.Item2 });
+                    _context.Questions.AddRange(questionsAndChoices.Item1);
+                    _context.QuestionChoices.AddRange(questionsAndChoices.Item2);
+                    await _context.SaveChangesAsync();
+                    return StatusCode(200, $"Success {questionsAndChoices.Item1.Count} questions.");
                 }
 
             }
@@ -117,25 +149,24 @@ namespace QuizProject.Controllers
             }
         }
 
-        // DELETE: api/Questions/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteQuestion(Guid id)
-        //{
-        //    if (_context.Questions == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var question = await _context.Questions.FindAsync(id);
-        //    if (question == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteQuestion(Guid id)
+        {
+            if (_context.Questions == null)
+            {
+                return NotFound();
+            }
+            var question = await _context.Questions.FindAsync(id);
+            if (question == null)
+            {
+                return NotFound();
+            }
 
-        //    _context.Questions.Remove(question);
-        //    await _context.SaveChangesAsync();
+            _context.Questions.Remove(question);
+            await _context.SaveChangesAsync();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
 
     }

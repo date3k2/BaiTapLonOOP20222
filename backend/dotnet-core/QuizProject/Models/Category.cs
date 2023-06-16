@@ -11,7 +11,7 @@ public partial class Category
     public string? CategoryInfo { get; set; }
 
     [JsonIgnore]
-    public virtual CategoryRelationship? CategoryRelationship { get; set; }
+    public virtual ICollection<CategoryRelationship> CategoryRelationships { get; set; } = new List<CategoryRelationship>();
 
     [JsonIgnore]
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();

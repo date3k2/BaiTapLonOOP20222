@@ -43,11 +43,13 @@ namespace QuizProject.Controllers
                     _categoryHelper.DFS(u, adj, level, tree);
                     foreach (var i in tree)
                     {
+                        var cat = await _context.Categories.FindAsync(i);
                         var category = new
                         {
                             id = i,
                             name = categoryMap[i],
-                            level = level[i]
+                            level = level[i],
+                            numberOfQuestions = cat!.Questions.Count
                         };
                         ans.Add(category);
                     }
