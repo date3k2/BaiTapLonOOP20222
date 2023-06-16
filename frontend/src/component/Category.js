@@ -8,8 +8,8 @@ export default function Category({handleCategory}) {
 
   useEffect(() => {
     apiServices.getCategory()
-      .then(res => setCategories(res.data))
-      .catch(err => console.log(err));
+    .then(res => setCategories(res.data))
+    .catch(err => console.log(err));
     }, []);
 
   return (

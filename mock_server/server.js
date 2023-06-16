@@ -21,22 +21,21 @@ app.get('/quiz', (req, res) => {
     res.json(data);
 });
 
+app.get('/quiz/:quizName', (req, res) => {
+    data = require('./data/quiz.json');
+    let quizName = req.params.quizName;
+    data.forEach(quiz => {
+        if(quiz.quizName == quizName) res.json(quiz);
+    })
+})
+
 app.post('/quiz', (req, res) => {
     res.json("Add new quiz successfully!");
 });
 
-app.get('/:quizName/question', (req, res) => {
-    let data = require('./data/quizQuestion.json')
-    res.json(data)
-});
-
-app.post('/:quizName/question', (req, res) => {
+app.post('/:quizName/questions', (req, res) => {
     res.json('Add questions to quiz successfully');
 })
-
-app.delete('/:quizName/question/delete', (req, res) => {
-    res.json('Delete question from quiz successfully');
-});
 
 // Category
 

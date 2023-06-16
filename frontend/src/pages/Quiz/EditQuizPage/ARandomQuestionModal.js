@@ -5,7 +5,7 @@ import apiServices from '../../../services/apiServices';
 import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-export default function ANewQuestionModal({setOption}) {
+export default function ANewQuestionModal({setOption, quizQuestions, setQuizQuestions}) {
 
   const MAX_QUESTIONS_PER_PAGE = 10;
   const [doesShowSub, setDoesShowSub] = useState(true);
@@ -45,14 +45,12 @@ export default function ANewQuestionModal({setOption}) {
   };
 
   const handleSubmit = () => {
-    let randomQuestionsId = [];
-    while(randomQuestionsId.length < numberRandomQuestion){
-      let questionId = Math.floor(Math.random() * questions.length) + 1;
-      if(randomQuestionsId.indexOf(questionId) == -1) randomQuestionsId.push(questionId);
+    let randomQuestions = [];
+    while(randomQuestions.length < numberRandomQuestion){
+      let questionId = Math.floor(Math.random() * questions.length);
+      if(randomQuestions.indexOf(questions[questionId]) == -1) randomQuestions.push(questions[questionId]);
     }
-    apiServices.postQuizQuestion(data.quizName, randomQuestionsId)
-    .then(res => toast.success(res.data))
-    .catch(err => console.log(err))
+    setQuizQuestions(quizQuestions => [...quizQuestions, ...randomQuestions]);
   }
 
   const handleClose = () => {

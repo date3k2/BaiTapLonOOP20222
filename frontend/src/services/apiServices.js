@@ -46,20 +46,16 @@ class apiServices {
         return axios.post(`${URL}/import`, formData);
     }
 
-    getQuiz(){
+    getAllQuiz(){
         return axios.get(`${URL}/quiz`);
     }
 
-    getQuizQuestion(quizName){
-        return axios.get(`${URL}/   ${quizName}/question`);
+    getQuiz(quizName){
+        return axios.get(`${URL}/quiz/${quizName}`)
     }
 
-    postQuizQuestion(quizName, questionsId){
-        return axios.post(`${URL}/${quizName}/question`, questionsId);
-    }
-
-    deleteQuizQuestion(quizName, questionsId){
-        return axios.delete(`${URL}/${quizName}/question/delete`, questionsId);
+    postQuizQuestion(quizName, quizData){
+        return axios.post(`${URL}/${quizName}/questions`, quizData);
     }
 }
 

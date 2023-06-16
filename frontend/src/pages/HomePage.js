@@ -7,7 +7,7 @@ export default function HomePage() {
   const [QuizList, setQuizList] = useState([]);
 
   useEffect(() => {
-    apiServices.getQuiz()
+    apiServices.getAllQuiz()
     .then(res => setQuizList(res.data))
     .catch(err => console.log(err));
   }, [])
