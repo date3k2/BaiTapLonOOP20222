@@ -1,13 +1,13 @@
 [
     {
-        "id": 1,
+        "quizId": 1,
         "quizName": "Kiểm tra Kỹ thuật lập trình",
-        "description": "",
+        "quizDescription": "",
         "descriptionShow": false,
         "openTime": "2023-07-01T06:00:00",
         "closeTime": "2023-07-01T10:00:00",
         "totalGrade": "10",
-        "timeLimit": 60,
+        "timeLimitInSeconds": 60,
         "questions": [
             {
                 "id": 1,
@@ -88,14 +88,14 @@
         ]
     },
     {
-        "id": 2,
+        "quizId": 2,
         "quizName": "Kiểm tra Mạng máy tính",
-        "description": "",
+        "quizDescription": "",
         "descriptionShow": false,
         "openTime": "2023-07-02T06:00:00",
         "closeTime": "2023-07-02T10:00:00",
         "totalGrade": "10",
-        "timeLimit": 60,
+        "timeLimitInSeconds": 60,
         "questions": [
             {
                 "id": 1,

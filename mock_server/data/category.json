@@ -3,21 +3,21 @@
         "parentID": -1,
         "id": 1,
         "name": "Tin học đại cương",
-        "info": "ABC",
+        "numberOfQuestions": 3,
         "level": 0
     },
     {
         "parentID": 1,
         "id": 2,
         "name": "Kỹ thuật lập trình",
-        "info": "ABC",
+        "numberOfQuestions": 3,
         "level": 1
     },
     {
         "parentID": -1,
         "id": 5,
         "name": "Mạng máy tính",
-        "info": "ABC",
+        "numberOfQuestions": 3,
         "level": 0
     }
 ]

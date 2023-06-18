@@ -1,194 +1,199 @@
 {
     "Kỹ thuật lập trình": [
         {
-            "id": 1,
+            "questionId": 1,
             "categoryId": "1",
             "questionName": "C1D1",
             "questionText": "Cho biết kết quả câu 1",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceId": "1",
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceId": "2",
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceId": "3",
+                    "choiceText": "3",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "4",
-                    "grade": 50
+                    "choiceId": "4",
+                    "choiceText": "4",
+                    "choiceMark": 50
                 },
                 {
-                    "content": "5",
-                    "grade": 10
+                    "choiceId": "5",
+                    "choiceText": "5",
+                    "choiceMark": 10
                 }
             ]
         },
         {
-            "id": 2,
+            "questionId": 2,
             "categoryId": "1",
             "questionName": "C1D2",
             "questionText": "Cho biết kết quả câu 2",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceText": "3",
+                    "choiceMark": 100
                 }
             ]
         },
         {
-            "id": 3,
+            "questionId": 3,
             "categoryId": "1",
             "questionName": "C1D3",
             "questionText": "Cho biết kết quả câu 3",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceText": "3",
+                    "choiceMark": 100
                 }
             ]
         }
     ],
     "Mạng máy tính": [
         {
-            "id": 4,
+            "questionId": 4,
             "categoryId": "5",
             "questionName": "C2D1",
             "questionText": "Cho biết đáp án câu 1",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceText": "3",
+                    "choiceMark": 100
                 }
             ]
         },
         {
-            "id": 5,
+            "questionId": 5,
             "categoryId": "5",
             "questionName": "C2D2",
             "questionText": "Cho biết đáp án câu 2",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceText": "3",
+                    "choiceMark": 100
                 }
             ]
         },
         {
-            "id": 6,
+            "questionId": 6,
             "categoryId": "5",
             "questionName": "C2D3",
             "questionText": "Cho biết đáp án câu 3",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceText": "3",
+                    "choiceMark": 100
                 }
             ]
         }
     ],
     "Tin học đại cương": [
         {
-            "id": 7,
+            "questionId": 7,
             "categoryId": "2",
             "questionName": "C3D1",
             "questionText": "Cho biết giá trị câu 1",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceText": "3",
+                    "choiceMark": 100
                 }
             ]
         },
         {
-            "id": 8,
+            "questionId": 8,
             "categoryId": "2",
             "questionName": "C3D2",
             "questionText": "Cho biết giá trị câu 2",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceText": "3",
+                    "choiceMark": 100
                 }
             ]
         },
         {
-            "id": 9,
+            "questionId": 9,
             "categoryId": "2",
             "questionName": "C3D3",
             "questionText": "Cho biết giá trị câu 3",
-            "choice": [
+            "questionChoices": [
                 {
-                    "content": "1",
-                    "grade": 100
+                    "choiceText": "1",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "2",
-                    "grade": 100
+                    "choiceText": "2",
+                    "choiceMark": 100
                 },
                 {
-                    "content": "3",
-                    "grade": 100
+                    "choiceText": "3",
+                    "choiceMark": 100
                 }
             ]
         }
