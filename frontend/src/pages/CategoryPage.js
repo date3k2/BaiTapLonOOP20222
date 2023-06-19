@@ -8,15 +8,14 @@ import Row from 'react-bootstrap/Row';
 import alert from '../icons/alert.png'
 import questionmark from '../icons/questionmark.png'
 import apiServices from '../services/apiServices';
+import { Category } from '../models/Category'
 
-
-export default function Category() {
+export default function CategoryPage() {
   const [filledName, setFilledName] = useState("");
   const [filledInfo, setFilledInfo] = useState("");
   const [id, setId] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [parentID, setParentID] = useState(-1);
-  const [level, setLevel] = useState(0);
+  const [parentID, setParentID] = useState(0);
 
   const handleChangeName = (event) => {
     setFilledName(event.target.value);
@@ -31,8 +30,7 @@ export default function Category() {
     const value = event.target.value;
     const selected = categories.find(category => category.name === value);
     setParentID(selected ? selected.parentID : -1);
-    setLevel(selected ? selected.level : 0);
-  }
+  };
 
   useEffect(() => {
     apiServices.getCategory()
@@ -44,8 +42,8 @@ export default function Category() {
 
   const handleAddCategory = (event) => {
     event.preventDefault();
-    const item = {parentID, id, filledName, filledInfo, level}
-    apiServices.postCategory(item)
+    const categoryData = new Category (filledName,filledInfo,id);
+    apiServices.postCategory(categoryData)
       .then(res => {
         console.log(res.data);
       })

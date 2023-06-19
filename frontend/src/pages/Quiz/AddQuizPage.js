@@ -9,6 +9,7 @@ import exam from '../../icons/exam.png'
 import questionmark from '../../icons/questionmark.png'
 import calendar from '../../icons/calendar.png'
 import apiServices from '../../services/apiServices';
+import { Quiz } from '../../models/Quiz'
 
 export default function AddQuizPage() {
   const [quizName, setQuizName] = useState("");
@@ -29,7 +30,8 @@ export default function AddQuizPage() {
   };
   const handleTimeLimit = (event) => {
     const value = event.target.value
-    if (selected === 1) value *= 60;
+    if (selected === 1) value *= 3600;
+    else value *= 60;
     setTimeLimit(value);
   };
   const handleQuizNameChange = (event) => {
@@ -41,9 +43,9 @@ export default function AddQuizPage() {
 
   const handleAddQuiz = (event) => {
     event.preventDefault();
-    const item = { quizName, description, descriptionShow, timeLimit };
-    console.log(item);
-    apiServices.postQuiz(item)
+    const quizData = new Quiz(null, quizName, description, null, timeLimit);
+
+    apiServices.postQuiz(quizData)
       .then(res => {
         console.log(res.data);
       })

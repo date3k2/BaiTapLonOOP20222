@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, NavDropdown, Stack } from "react-bootstrap";
+import { Navigate, redirect, useNavigate } from 'react-router-dom'
 import Navbar from "react-bootstrap/Navbar";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -8,16 +9,18 @@ import Card from "react-bootstrap/Card";
 import alert from "../../icons/alert.png";
 import apiServices from '../../services/apiServices';
 import { toast, ToastContainer } from 'react-toastify';
+import { Question } from '../../models/Question'
+import { Choice } from '../../models/Choice'
 
 export default function EditQuestionPage() {
-  let gradeList =
+  let choiceMarkList =
     [100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333,
       30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5];
   let tmp = [];
-  for (let i = 0; i < gradeList.length; ++i) {
-    tmp[i] = -gradeList[gradeList.length - i - 1];
+  for (let i = 0; i < choiceMarkList.length; ++i) {
+    tmp[i] = -choiceMarkList[choiceMarkList.length - i - 1];
   }
-  gradeList = gradeList.concat(tmp);
+  choiceMarkList = choiceMarkList.concat(tmp);
 
   const [isEdit, setIsEdit] = useState(false);
   const [filledName, setFilledName] = useState("");
@@ -25,6 +28,7 @@ export default function EditQuestionPage() {
   const [choices, setChoices] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryID, setCategoryID] = useState(0);
+  const [param, setParam] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -33,14 +37,14 @@ export default function EditQuestionPage() {
       setIsEdit(true);
     }
     else {
-      setChoices([{ content: "", grade: 0 }, { content: "", grade: 0 }]);
+      setChoices([{ choiceText: "", choiceMark: 0 }, { choiceText: "", choiceMark: 0 }]);
     }
     // console.log(paramValue);
     apiServices.getQuestion(paramValue)
       .then(res => {
         setFilledName(res.data.questionName)
         setFilledText(res.data.questionText)
-        setChoices(res.data.choice)
+        setChoices(res.data.questionChoices)
         setCategoryID(res.data.categoryId)
       })
       .catch(error => console.log(error));
@@ -72,22 +76,28 @@ export default function EditQuestionPage() {
 
   const handleSaveQuestion = (event) => {
     event.preventDefault();
-    const filteredChoices = choices.filter(choice => choice.content !== "");
-    let totalGrade = 0;
-    for (let i=0; i<filteredChoices.length; ++i) {
-      if (filteredChoices[i].grade > 0)
-        totalGrade = totalGrade + Number(filteredChoices[i].grade);
+    const filteredChoices = choices.filter(choice => choice.choiceText !== "");
+    let totalchoiceMark = 0;
+    for (let i = 0; i < filteredChoices.length; ++i) {
+      if (filteredChoices[i].choiceMark > 0)
+        totalchoiceMark = totalchoiceMark + Number(filteredChoices[i].choiceMark);
     }
-    console.log(totalGrade);
-    if (totalGrade !== 100) {
-      toast.warning("Total grade must be 100%");
+    if (totalchoiceMark !== 100) {
+      toast.warning("Total choice mark must be 100%");
       return;
     }
-    const item = { categoryID, filledName, filledText, filteredChoices };
+    console.log(filteredChoices);
+    const filledCode = filledName + filledText;
+    const QuestionChoices = [];
+    for (let i = 0; i < filteredChoices.length; ++i) {
+      QuestionChoices[i] = new Choice(i + 1, null, filteredChoices[i].choiceMark, filteredChoices[i].choiceText, null);
+    };
+    console.log(QuestionChoices);
+    const questionData = new Question(null, categoryID, filledCode, null, QuestionChoices);
+    console.log(questionData);
     const params = new URLSearchParams(window.location.search);
     const paramValue = params.get('questionID');
-    console.log(item);
-    apiServices.putQuestion(item, paramValue)
+    apiServices.putQuestion(questionData, paramValue)
       .then(res => {
         console.log(res.data);
       })
@@ -96,20 +106,24 @@ export default function EditQuestionPage() {
 
   const handleAddQuestion = (event) => {
     event.preventDefault();
-    const filteredChoices = choices.filter(choice => choice.content !== "");
-    let totalGrade = 0;
-    for (let i=0; i<filteredChoices.length; ++i) {
-      if (filteredChoices[i].grade > 0)
-        totalGrade = totalGrade + Number(filteredChoices[i].grade);
+    const filteredChoices = choices.filter(choice => choice.choiceText !== "");
+    let totalchoiceMark = 0;
+    for (let i = 0; i < filteredChoices.length; ++i) {
+      if (filteredChoices[i].choiceMark > 0)
+        totalchoiceMark = totalchoiceMark + Number(filteredChoices[i].choiceMark);
     }
-    console.log(totalGrade);
-    if (totalGrade !== 100) {
-      toast.warning("Total grade must be 100%");
+    if (totalchoiceMark !== 100) {
+      toast.warning("Total choice mark must be 100%");
       return;
     }
-    const item = { categoryID, filledName, filledText, filteredChoices };
-    console.log(item);
-    apiServices.postQuestion(item)
+    const filledCode = filledName + filledText;
+    const QuestionChoices = [];
+    for (let i = 0; i < filteredChoices.length; ++i) {
+      QuestionChoices[i] = new Choice(i + 1, null, filteredChoices[i].choiceMark, filteredChoices[i].choiceText, null);
+    };
+    const questionData = new Question(null, categoryID, filledCode, null, QuestionChoices);
+    console.log(questionData);
+    apiServices.postQuestion(questionData)
       .then(res => {
         console.log(res.data);
       })
@@ -231,8 +245,8 @@ export default function EditQuestionPage() {
                   </Form.Label>
                   <Col>
                     <Form.Control
-                      onChange={event => handleUpdateChoices(index, 'content', event.target.value)}
-                      value={choice.content}
+                      onChange={event => handleUpdateChoices(index, 'choiceText', event.target.value)}
+                      value={choice.choiceText}
                       as="textarea"
                       type="text"
                       style={{ width: "410px", height: "80px" }}
@@ -246,13 +260,13 @@ export default function EditQuestionPage() {
                   </Form.Label>
                   <Col>
                     <Form.Select
-                      value={choice.grade}
-                      onChange={event => handleUpdateChoices(index, 'grade', event.target.value)}
+                      value={choice.choiceMark}
+                      onChange={event => handleUpdateChoices(index, 'choiceMark', event.target.value)}
                       style={{ marginRight: "250px", width: "160px" }}
                     >
-                      <option value ={0}> None</option>
-                      {gradeList.map((grade) => (
-                        <option value={grade}> {grade}%</option>
+                      <option value={0}> None</option>
+                      {choiceMarkList.map((choiceMark) => (
+                        <option value={choiceMark}> {choiceMark}%</option>
                       ))}
                     </Form.Select>
                   </Col>
@@ -263,7 +277,7 @@ export default function EditQuestionPage() {
         }
         <Button
           onClick={() => {
-            setChoices(choices => [...choices, { content: "", grade: 0 }, { content: "", grade: 0 }, { content: "", grade: 0 }])
+            setChoices(choices => [...choices, { choiceText: "", choiceMark: 0 }, { choiceText: "", choiceMark: 0 }, { choiceText: "", choiceMark: 0 }])
           }
           }
           variant="primary"
@@ -273,10 +287,10 @@ export default function EditQuestionPage() {
         </Button>
         <br />
         <Button
-          onClick={handleSaveQuestion}
+          onClick={isEdit ? handleSaveQuestion : handleAddQuestion}
           variant="primary"
           style={{ marginLeft: "500px", marginTop: "60px" }}
-          //href={window.location.href}
+          //href={window.location.pathname+`questionID=${param}`}
         >
           SAVE CHANGE AND CONTINUE EDITING
         </Button>
@@ -286,7 +300,7 @@ export default function EditQuestionPage() {
           onClick={isEdit ? handleSaveQuestion : handleAddQuestion}
           variant="danger"
           style={{ marginLeft: "500px", marginTop: "30px" }}
-          //href="/"
+        //href="/"
         >
           SAVE CHANGES
         </Button>

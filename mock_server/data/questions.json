@@ -14,22 +14,22 @@
                 {
                     "choiceId": "2",
                     "choiceText": "2",
-                    "choiceMark": 100
+                    "choiceMark": 0
                 },
                 {
                     "choiceId": "3",
                     "choiceText": "3",
-                    "choiceMark": 100
+                    "choiceMark": 0
                 },
                 {
                     "choiceId": "4",
                     "choiceText": "4",
-                    "choiceMark": 50
+                    "choiceMark": 0
                 },
                 {
                     "choiceId": "5",
                     "choiceText": "5",
-                    "choiceMark": 10
+                    "choiceMark": 0
                 }
             ]
         },
