@@ -1,92 +1,246 @@
 [
     {
-        "quizId": 1,
-        "quizName": "Kiểm tra Kỹ thuật lập trình",
-        "quizDescription": "",
-        "descriptionShow": false,
-        "openTime": "2023-07-01T06:00:00",
-        "closeTime": "2023-07-01T10:00:00",
-        "totalGrade": 10,
-        "timeLimitInSeconds": 60,
         "questions": [
-            {
-                "questionId": 1,
-                "questionName": "C1D1",
-                "questionText": "Cho biết kết quả câu 1",
-                "choice": [
-                    {
-                        "content": "1",
-                        "grade": 100
-                    },
-                    {
-                        "content": "2",
-                        "grade": 100
-                    },
-                    {
-                        "content": "3",
-                        "grade": 100
-                    }
-                ]
-            },
-            {
-                "questionId": 2,
-                "questionName": "C1D2",
-                "questionText": "Cho biết kết quả câu 2",
-                "choice": [
-                    {
-                        "content": "1",
-                        "grade": 100
-                    },
-                    {
-                        "content": "2",
-                        "grade": 100
-                    },
-                    {
-                        "content": "3",
-                        "grade": 100
-                    }
-                ]
-            },
-            {
-                "questionId": 5,
-                "questionName": "C2D2",
-                "questionText": "Cho biết đáp án câu 2",
-                "choice": [
-                    {
-                        "content": "1",
-                        "grade": 100
-                    },
-                    {
-                        "content": "2",
-                        "grade": 100
-                    },
-                    {
-                        "content": "3",
-                        "grade": 100
-                    }
-                ]
-            },
-            {
-                "questionId": 6,
-                "questionName": "C2D3",
-                "questionText": "Cho biết đáp án câu 3",
-                "choice": [
-                    {
-                        "content": "1",
-                        "grade": 100
-                    },
-                    {
-                        "content": "2",
-                        "grade": 100
-                    },
-                    {
-                        "content": "3",
-                        "grade": 100
-                    }
-                ]
-            }
-        ]
-    },
+          {
+            "categoryId": "cd7ba750-e54e-4b4e-b391-95d4abef3316",
+            "questionId": "af116f49-d9c8-45a7-b2a9-3988ccd474a3",
+            "questionName": "id irure excepteur est commodo irure nostrud",
+            "questionChoices": [
+              {
+                "choiceId": "f667e591-e4e7-47ea-9c65-488c8cf00d3d",
+                "choiceText": "nisi"
+              },
+              {
+                "choiceId": "18999dd2-4cd6-4461-8cad-38d0616c29e0",
+                "choiceText": "nostrud"
+              },
+              {
+                "choiceId": "25a01677-3dbc-4217-9b37-661f84f7f814",
+                "choiceText": "nostrud"
+              },
+              {
+                "choiceId": "efaa37b7-60f4-46a1-b9e8-be20bd4d0d4e",
+                "choiceText": "est"
+              }
+            ]
+          },
+          {
+            "categoryId": "2d9b4bd4-d077-49db-8b62-e206fcbdef70",
+            "questionId": "14395060-5c7d-4835-b19f-a995369f7555",
+            "questionName": "consequat labore magna laborum ut officia nulla",
+            "questionChoices": [
+              {
+                "choiceId": "41b36db9-a38e-43d5-9bbc-186bf3696544",
+                "choiceText": "nulla"
+              },
+              {
+                "choiceId": "bd4ab084-4963-4b0f-8f33-a65d4efffbff",
+                "choiceText": "exercitation"
+              },
+              {
+                "choiceId": "308bbb04-0f85-4a4d-a4ac-5d9f6bb66be4",
+                "choiceText": "nostrud"
+              },
+              {
+                "choiceId": "4026fb55-6c8e-4c1c-8ae5-21bc2ac7e4da",
+                "choiceText": "sunt"
+              }
+            ]
+          },
+          {
+            "categoryId": "ee9aaedb-834b-4cfb-a37a-82c5d5e5b938",
+            "questionId": "3d72007c-9229-478e-aaef-8015aaa5ca66",
+            "questionName": "consequat enim in exercitation proident ullamco officia",
+            "questionChoices": [
+              {
+                "choiceId": "e4c37ce4-9ee7-4783-a7d3-132aa1901637",
+                "choiceText": "id"
+              },
+              {
+                "choiceId": "5f5e339d-6b77-48ec-bfac-747d58ab98ca",
+                "choiceText": "Lorem"
+              },
+              {
+                "choiceId": "969be3f2-8158-450a-827e-07dd613de8b1",
+                "choiceText": "exercitation"
+              },
+              {
+                "choiceId": "81aa3f68-854d-4d4e-87f7-6216819cb828",
+                "choiceText": "Lorem"
+              }
+            ]
+          },
+          {
+            "categoryId": "30d12b5f-1a18-4902-8965-dc204223d81a",
+            "questionId": "34944a70-79d9-4c83-97e5-c36096395224",
+            "questionName": "quis consequat irure officia laborum aute velit",
+            "questionChoices": [
+              {
+                "choiceId": "edab9d0d-abdf-4f0c-b058-a9f82fc581e6",
+                "choiceText": "laborum"
+              },
+              {
+                "choiceId": "c7efd037-1fd9-4440-9bc3-279bc0ac1913",
+                "choiceText": "nulla"
+              },
+              {
+                "choiceId": "1b130daf-ceae-406c-bf22-53065905be77",
+                "choiceText": "eu"
+              },
+              {
+                "choiceId": "3aaaf809-8063-47c3-b5ac-2f1300e0adde",
+                "choiceText": "incididunt"
+              }
+            ]
+          },
+          {
+            "categoryId": "b966faf9-3228-4096-9ecc-a59c4cfac49b",
+            "questionId": "b4756597-4737-4556-a119-63b1fbd19cc1",
+            "questionName": "voluptate amet in elit exercitation laborum minim",
+            "questionChoices": [
+              {
+                "choiceId": "50237cca-834e-4630-84c5-3c177406dce6",
+                "choiceText": "incididunt"
+              },
+              {
+                "choiceId": "7fce164a-1a3f-48f0-b551-19d4c20b7218",
+                "choiceText": "nulla"
+              },
+              {
+                "choiceId": "7e536560-94c2-499a-9276-e6d81b6a1506",
+                "choiceText": "esse"
+              },
+              {
+                "choiceId": "3e53458e-4767-4b19-993a-fcad30f9d5a1",
+                "choiceText": "incididunt"
+              }
+            ]
+          },
+          {
+            "categoryId": "9bbee201-e4d4-4439-894c-b742f38942a2",
+            "questionId": "444c8544-259d-4548-8676-aff1168cf608",
+            "questionName": "in ullamco est aute minim excepteur eiusmod",
+            "questionChoices": [
+              {
+                "choiceId": "952b5cd5-34fd-4d4a-8a88-c4c949ef6db0",
+                "choiceText": "consequat"
+              },
+              {
+                "choiceId": "0cb9ab7d-618b-435c-bd8e-5337eba3ec86",
+                "choiceText": "reprehenderit"
+              },
+              {
+                "choiceId": "93e235cb-f061-4b7e-945d-187001059681",
+                "choiceText": "anim"
+              },
+              {
+                "choiceId": "7633dc69-4ece-4ccb-91f8-f5e1a8507c50",
+                "choiceText": "sunt"
+              }
+            ]
+          },
+          {
+            "categoryId": "fd87d2bb-7b2c-419b-8aa7-8b467089ede9",
+            "questionId": "c2753276-c5a1-4d40-89fb-ee7a2b1b7a7b",
+            "questionName": "commodo eu aliqua ex esse nostrud esse",
+            "questionChoices": [
+              {
+                "choiceId": "c75801ee-095e-408f-bf2a-e45390e574a9",
+                "choiceText": "incididunt"
+              },
+              {
+                "choiceId": "b94b5bb6-8db8-4213-aa69-6653536fc9e1",
+                "choiceText": "deserunt"
+              },
+              {
+                "choiceId": "5a363dcf-5057-403c-96b3-9fd389668e0b",
+                "choiceText": "et"
+              },
+              {
+                "choiceId": "588a46c0-ccb5-495c-915c-773c6e3b94ff",
+                "choiceText": "occaecat"
+              }
+            ]
+          },
+          {
+            "categoryId": "e9562d1a-2be4-4264-8b09-d2a66a29f97f",
+            "questionId": "2220a0dd-702b-4e02-867e-4a7edc662c21",
+            "questionName": "sit laboris pariatur dolor consectetur est proident",
+            "questionChoices": [
+              {
+                "choiceId": "27c1a296-be3c-43b9-82f4-07ce8bc0abbf",
+                "choiceText": "eiusmod"
+              },
+              {
+                "choiceId": "5550b127-71ac-46d7-a181-c46cbe43e9bd",
+                "choiceText": "irure"
+              },
+              {
+                "choiceId": "04f7d3d5-72ae-4839-91cc-c09e36a90844",
+                "choiceText": "voluptate"
+              },
+              {
+                "choiceId": "bbcfaf2d-77af-4c51-8ffd-c212f06b5e89",
+                "choiceText": "nisi"
+              }
+            ]
+          },
+          {
+            "categoryId": "fbf56485-182a-4a20-adbb-88e1a775b744",
+            "questionId": "7b788098-6ea0-4cf5-b7f2-cd1a40c99398",
+            "questionName": "fugiat ad deserunt aliqua velit amet culpa",
+            "questionChoices": [
+              {
+                "choiceId": "acfc177e-d683-4d96-8a8b-f9c04a2d9891",
+                "choiceText": "ex"
+              },
+              {
+                "choiceId": "ae68f939-cfb5-4516-a405-6d10b105d8a2",
+                "choiceText": "ad"
+              },
+              {
+                "choiceId": "e2d10aa8-b619-40a3-9dbd-39d9eb2116be",
+                "choiceText": "esse"
+              },
+              {
+                "choiceId": "bb014737-53dc-4f15-b5a9-66784c42da8d",
+                "choiceText": "veniam"
+              }
+            ]
+          },
+          {
+            "categoryId": "7fa50d8b-1a61-41a9-a735-4060a46998db",
+            "questionId": "bef190c2-4a16-40ee-a670-0e35d472841d",
+            "questionName": "ut incididunt id cupidatat do magna excepteur",
+            "questionChoices": [
+              {
+                "choiceId": "f07913cd-ca98-4c46-9a92-4a074c9f19ee",
+                "choiceText": "voluptate"
+              },
+              {
+                "choiceId": "90a76ce5-7c53-4724-a362-824b2dcdc7cb",
+                "choiceText": "elit"
+              },
+              {
+                "choiceId": "00663854-bfa5-4b5d-a991-3f00a1a82647",
+                "choiceText": "elit"
+              },
+              {
+                "choiceId": "70e80fd4-9309-4723-8e17-ab61f0122f77",
+                "choiceText": "exercitation"
+              }
+            ]
+          }
+        ],
+        "lazyLoader": {},
+        "quizId": "5c9eb13d-5bae-475f-989b-b50e1be2c833",
+        "quizName": "Kỹ thuật lập trình",
+        "quizDescription": "KTLT",
+        "openTime": null,
+        "closeTime": null,
+        "timeLimitInSeconds": 3600,
+        "totalGrade": 10
+      },
     {
         "quizId": 2,
         "quizName": "Kiểm tra Mạng máy tính",
@@ -101,7 +255,7 @@
                 "questionId": 1,
                 "questionName": "C1D1",
                 "questionText": "Cho biết kết quả câu 1",
-                "choice": [
+                "questionChoices": [
                     {
                         "content": "1",
                         "grade": 100
@@ -120,7 +274,7 @@
                 "questionId": 2,
                 "questionName": "C1D2",
                 "questionText": "Cho biết kết quả câu 2",
-                "choice": [
+                "questionChoices": [
                     {
                         "content": "1",
                         "grade": 100
@@ -139,7 +293,7 @@
                 "questionId": 5,
                 "questionName": "C2D2",
                 "questionText": "Cho biết đáp án câu 2",
-                "choice": [
+                "questionChoices": [
                     {
                         "content": "1",
                         "grade": 100
@@ -158,7 +312,7 @@
                 "questionId": 6,
                 "questionName": "C2D3",
                 "questionText": "Cho biết đáp án câu 3",
-                "choice": [
+                "questionChoices": [
                     {
                         "content": "1",
                         "grade": 100

@@ -69,7 +69,7 @@ export default function EditQuizPage() {
   const [chosenQuestion, setChosenQuestion] = useState([]);
   const [quizData, setQuizData] = useState();
   const path = useLocation();
-  const pathArr = path.pathname.split('/')[1].split('-');
+  const pathArr = path.pathname.split('/')[1].split('+');
   const quizId = pathArr[pathArr.length - 1];
 
   const options = [

@@ -26,8 +26,8 @@ export default function App() {
           <Route path='/quiz/add' element={<AddQuizPage /> }/>
           <Route path='/:quizName/edit' element={<EditQuizPage />}/>
           <Route path='/:quizName' element={<QuizPage />} />
+          <Route path='/:quizName/preview' element={<ExamPage />} />
         </Route>
-        <Route path='/exam' element={<ExamPage />} />
       </Routes>
     </BrowserRouter>
   )

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
-const PreviewQuizModal = ({ open, onClose, timeLimit }) => {
+const PreviewQuizModal = ({ open, onClose, timeLimit, path }) => {
   if (!open) return null;
   return (
     <Modal show={true} onHide={onClose} backdrop="static" keyboard={false}>
@@ -49,8 +49,8 @@ const PreviewQuizModal = ({ open, onClose, timeLimit }) => {
             fontSize: "0.9375rem",
             borderRadius: "4px",
             fontWeight: "400",
-   
           }}
+          href={path + '/preview'}
         >
           Start attempt
         </Button>

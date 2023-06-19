@@ -18,7 +18,7 @@ export default function HomePage() {
       {QuizList.map(quiz => 
         <Stack className='p-3' direction='horizontal'>
           <img src={exam} style={{height: "20px"}} className='me-2'/>
-          <a href={`/${quiz.quizName}-${quiz.quizId}`} style={{textDecoration: 'none', color: 'black'}}>{quiz.quizName}</a>
+          <a href={`/${quiz.quizName}+${quiz.quizId}`} style={{textDecoration: 'none', color: 'black'}}>{quiz.quizName}</a>
         </Stack>
       )}
     </Container>

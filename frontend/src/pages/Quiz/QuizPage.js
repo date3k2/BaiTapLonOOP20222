@@ -10,7 +10,7 @@ export default function PreviewQuiz() {
   const [quizData, setQuizData] = useState();
   const [openModal, setOpenModal] = useState(false);
   const path = useLocation();
-  const pathArr = path.pathname.split('-');
+  const pathArr = path.pathname.split('+');
   const quizId = pathArr[pathArr.length - 1];
 
   useEffect(() => {
@@ -74,11 +74,10 @@ export default function PreviewQuiz() {
           <Button
             style={{ backgroundColor: "#0081C9" }}
             onClick={() => setOpenModal(true)}
-            //href="/previewquiz"
           >
             PREVIEW QUIZ NOW
           </Button>
-          <PreviewQuizModal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {quizData ? quizData.timeLimitInSeconds : null}/>
+          <PreviewQuizModal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {quizData ? quizData.timeLimitInSeconds : null} path={path.pathname} />
         </div>
       </Row>
     </Container>

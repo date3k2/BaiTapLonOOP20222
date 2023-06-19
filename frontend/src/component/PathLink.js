@@ -37,8 +37,8 @@ export default function PathLink() {
         {
           path.map((item, index) => {
             pathStr += '/' + item;
-            if(item.includes('-')){
-              item = item.split('-')[0];
+            if(item.includes('+')){
+              item = item.split('+')[0];
             }
             return <Breadcrumb.Item key={index} href={pathStr}>{capitalize(item.replaceAll("%20", " "))}</Breadcrumb.Item>
           })
