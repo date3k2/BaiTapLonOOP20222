@@ -9,7 +9,7 @@ function Question({question}) {
     <tr>
       <td width="2%"><input type='checkbox' /></td>
       <td>{question.questionName + question.questionText}</td>
-      <td width="5%"><a href={`/question/edit?questionID=${question.id}`}>Edit</a></td>
+      <td width="5%"><a href={`/question/edit?questionID=${question.questionId}`}>Edit</a></td>
     </tr>
   )
 }

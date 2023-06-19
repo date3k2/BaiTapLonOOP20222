@@ -11,39 +11,32 @@ class apiServices {
         return axios.get(`${URL}/categories`);
     }
     
-    postCategory(categoryFile){
-        const formData = new FormData();
-        formData.append(
-            "categoryFile",
-            categoryFile
-        );
-        return axios.post(`${URL}/category`, formData);
+    postCategory(categoryData){
+        return axios.post(`${URL}/category`, categoryData);
     }
 
     getQuestion(questionID) {
         return axios.get(`${URL}/question?questionID=${questionID}`);
     }
 
-    putQuestion(questionFile, questionID) {
-        return axios.put(`${URL}/question?questionID=${questionID}`, questionFile);
+    putQuestion(questionData, questionID) {
+        return axios.put(`${URL}/question?questionID=${questionID}`, questionData);
     }
 
-    postQuestion(questionFile) {
-        const formData = new FormData();
-        formData.append(
-            questionFile
-        );
-        return axios.post(`${URL}/question`)
+    postQuestion(questionData) {
+        return axios.post(`${URL}/question`, questionData)
     } 
 
-    postQuiz(quizFile){
+    postImportQuestions(ImportQuestionsFile){
         const formData = new FormData();
         formData.append(
           "questionFile",
-          quizFile
+          ImportQuestionsFile
         );
-
         return axios.post(`${URL}/import`, formData);
+    }
+    postQuiz(quizData) {
+        return axios.post(`${URL}/quiz`, quizData);
     }
 
     getAllQuiz(){

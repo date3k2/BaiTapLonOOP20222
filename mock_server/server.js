@@ -60,18 +60,18 @@ app.get('/question', (req, res) => {
     let questionId = req.query.questionID;
     let data = require('./data/questions.json');
     data['Kỹ thuật lập trình'].forEach(item => {
-        if(item.id == questionId) res.json(item)
+        if(item.questionId == questionId) res.json(item)
     })
     data['Mạng máy tính'].forEach(item => {
-        if(item.id == questionId) res.json(item)
+        if(item.questionId == questionId) res.json(item)
     })
     data['Tin học đại cương'].forEach(item => {
-        if(item.id == questionId) res.json(item)
+        if(item.questionId == questionId) res.json(item)
     })
     // res.json(data)
 })
 
-app.post('/questions', (req, res) => {
+app.post('/question', (req, res) => {
     res.json("Add new question successfully!");
 });
 

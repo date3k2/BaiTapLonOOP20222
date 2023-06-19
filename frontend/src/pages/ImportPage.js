@@ -19,7 +19,7 @@ export default function ImportPage() {
       toast.error("Please choose a file!");
       return;
     }
-    apiServices.postQuiz(file)
+    apiServices.postImportQuestions(file)
     .then(res => toast.success(res.data.message))
     .catch(err => console.log(err));
   }
