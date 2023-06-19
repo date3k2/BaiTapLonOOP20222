@@ -1,13 +1,14 @@
 import React from 'react'
 import { Breadcrumb, Button, Container, Dropdown, Stack } from 'react-bootstrap'
 import setting from '../icons/setting.png'
+import { useLocation } from 'react-router-dom';
 
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export default function PathLink() {
-
-  const path = window.location.pathname.split('/').filter(item => item !== '').map(item => decodeURIComponent(item));
   
+  const data = useLocation();
+  const path = data.pathname.split('/').filter(item => item !== '').map(item => decodeURIComponent(item));
   let pathStr = window.location.protocol + "//" + window.location.host;
 
   return (
@@ -36,6 +37,9 @@ export default function PathLink() {
         {
           path.map((item, index) => {
             pathStr += '/' + item;
+            if(item.includes('-')){
+              item = item.split('-')[0];
+            }
             return <Breadcrumb.Item key={index} href={pathStr}>{capitalize(item.replaceAll("%20", " "))}</Breadcrumb.Item>
           })
         }

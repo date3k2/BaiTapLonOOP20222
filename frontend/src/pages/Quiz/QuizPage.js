@@ -3,26 +3,28 @@ import { Container, Stack, Col, Row, Button } from "react-bootstrap";
 import { MdArrowDropDownCircle } from "react-icons/md";
 import PreviewQuizModal from "./PreviewQuizModal";
 import apiServices from "../../services/apiServices";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 export default function PreviewQuiz() {
     
-  const data = useParams();
-   const [QuizTimelimit, setQuizTimelimit] = useState([]);
-
-    useEffect(() => {
-      apiServices.getQuiz(data.quizName)
-        .then((res) => setQuizTimelimit(res.data.timeLimitInSeconds))
-        .catch((err) => console.log(err));
-    }, []);
+  const [quizData, setQuizData] = useState();
   const [openModal, setOpenModal] = useState(false);
+  const path = useLocation();
+  const pathArr = path.pathname.split('-');
+  const quizId = pathArr[pathArr.length - 1];
+
+  useEffect(() => {
+    apiServices.getQuiz(quizId)
+    .then((res) => setQuizData(res.data))
+    .catch((err) => console.log(err));
+  }, []);
 
   return (
     <Container className="border pl-4">
       <Row>
-        <Col style={{ color: "red", fontSize: "25px" }}>{data.quizName}</Col>
+        <Col style={{ color: "red", fontSize: "25px" }}>{quizData ? quizData.quizName : null}</Col>
         <Col className="d-flex justify-content-end">
-          <a href={`${data.quizName}/edit`}>
+          <a href={`${path.pathname}/edit`}>
             <MdArrowDropDownCircle size={40} color="#0081C9" />
           </a>
         </Col>
@@ -37,7 +39,7 @@ export default function PreviewQuiz() {
             justifyContent: "center",
           }}
         >
-          <p>Time limit: {QuizTimelimit} minutes</p>
+          <p>Time limit: {quizData ? quizData.timeLimitInSeconds : null} minutes</p>
           <p>Grading method: Last grade</p>
         </div>
       </Row>
@@ -76,7 +78,7 @@ export default function PreviewQuiz() {
           >
             PREVIEW QUIZ NOW
           </Button>
-          <PreviewQuizModal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {QuizTimelimit}/>
+          <PreviewQuizModal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {quizData ? quizData.timeLimitInSeconds : null}/>
         </div>
       </Row>
     </Container>

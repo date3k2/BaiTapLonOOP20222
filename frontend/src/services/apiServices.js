@@ -50,12 +50,12 @@ class apiServices {
         return axios.get(`${URL}/quiz`);
     }
 
-    getQuiz(quizName){
-        return axios.get(`${URL}/quiz/${quizName}`)
+    getQuiz(quizId){
+        return axios.get(`${URL}/quiz/${quizId}`)
     }
 
-    postQuizQuestion(quizName, quizData){
-        return axios.post(`${URL}/${quizName}/questions`, quizData);
+    putQuiz(quizId, quizData){
+        return axios.post(`${URL}/${quizId}/`, quizData);
     }
 }
 
