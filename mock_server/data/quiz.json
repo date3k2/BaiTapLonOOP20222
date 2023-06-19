@@ -6,11 +6,11 @@
         "descriptionShow": false,
         "openTime": "2023-07-01T06:00:00",
         "closeTime": "2023-07-01T10:00:00",
-        "totalGrade": "10",
+        "totalGrade": 10,
         "timeLimitInSeconds": 60,
         "questions": [
             {
-                "id": 1,
+                "questionId": 1,
                 "questionName": "C1D1",
                 "questionText": "Cho biết kết quả câu 1",
                 "choice": [
@@ -29,7 +29,7 @@
                 ]
             },
             {
-                "id": 2,
+                "questionId": 2,
                 "questionName": "C1D2",
                 "questionText": "Cho biết kết quả câu 2",
                 "choice": [
@@ -48,7 +48,7 @@
                 ]
             },
             {
-                "id": 5,
+                "questionId": 5,
                 "questionName": "C2D2",
                 "questionText": "Cho biết đáp án câu 2",
                 "choice": [
@@ -67,7 +67,7 @@
                 ]
             },
             {
-                "id": 6,
+                "questionId": 6,
                 "questionName": "C2D3",
                 "questionText": "Cho biết đáp án câu 3",
                 "choice": [
@@ -94,11 +94,11 @@
         "descriptionShow": false,
         "openTime": "2023-07-02T06:00:00",
         "closeTime": "2023-07-02T10:00:00",
-        "totalGrade": "10",
+        "totalGrade": 10,
         "timeLimitInSeconds": 60,
         "questions": [
             {
-                "id": 1,
+                "questionId": 1,
                 "questionName": "C1D1",
                 "questionText": "Cho biết kết quả câu 1",
                 "choice": [
@@ -117,7 +117,7 @@
                 ]
             },
             {
-                "id": 2,
+                "questionId": 2,
                 "questionName": "C1D2",
                 "questionText": "Cho biết kết quả câu 2",
                 "choice": [
@@ -136,7 +136,7 @@
                 ]
             },
             {
-                "id": 5,
+                "questionId": 5,
                 "questionName": "C2D2",
                 "questionText": "Cho biết đáp án câu 2",
                 "choice": [
@@ -155,7 +155,7 @@
                 ]
             },
             {
-                "id": 6,
+                "questionId": 6,
                 "questionName": "C2D3",
                 "questionText": "Cho biết đáp án câu 3",
                 "choice": [

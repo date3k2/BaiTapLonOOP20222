@@ -21,11 +21,11 @@ app.get('/quiz', (req, res) => {
     res.json(data);
 });
 
-app.get('/quiz/:quizName', (req, res) => {
+app.get('/quiz/:quizId', (req, res) => {
     data = require('./data/quiz.json');
-    let quizName = req.params.quizName;
+    let quizId = req.params.quizId;
     data.forEach(quiz => {
-        if(quiz.quizName == quizName) res.json(quiz);
+        if(quiz.quizId == quizId) res.json(quiz);
     })
 })
 
@@ -33,7 +33,8 @@ app.post('/quiz', (req, res) => {
     res.json("Add new quiz successfully!");
 });
 
-app.post('/:quizName/questions', (req, res) => {
+app.put('/:quizId', (req, res) => {
+    console.log(req.body);
     res.json('Add questions to quiz successfully');
 })
 
