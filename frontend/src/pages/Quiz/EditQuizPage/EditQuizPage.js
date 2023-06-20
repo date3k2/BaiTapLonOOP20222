@@ -5,7 +5,7 @@ import { ImPlus } from "react-icons/im";
 import questionmark from "../../../icons/questionmark.png";
 import { useState } from "react";
 import apiServices from '../../../services/apiServices'
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import ANewQuestionModal from "./ANewQuestionModal";
 import FromQuestionBankModal from "./FromQuestionBankModal";
 import ARandomQuestionModal from "./ARandomQuestionModal";
@@ -36,12 +36,20 @@ function HandleHighlight(props) {
 function QuizQuestion({isSelect, question, index, chosenQuestion, setChosenQuestion, setQuizQuestions, quizQuestions}) {
 
   const handleDelete = () => {
-    setQuizQuestions(quizQuestions.filter(item => item.id !== question.id))
+    setQuizQuestions(quizQuestions.filter(item => item.questionId !== question.questionId))
+  }
+
+  const handleSelect = () => {
+    if(chosenQuestion.includes(question.questionId)){
+      setChosenQuestion(chosenQuestion.filter(item => item != question.questionId))
+    } else {
+      setChosenQuestion([...chosenQuestion, question.questionId])
+    }
   }
 
   return (
     <Stack className="mb-1 p-1" direction="horizontal" style={{backgroundColor: '#f0f0f0'}}>
-      {isSelect && <Form.Check onClick={() => setChosenQuestion([...chosenQuestion, question.id])}></Form.Check>}
+      {isSelect && <Form.Check checked={chosenQuestion.includes(question.questionId)} onChange={handleSelect}></Form.Check>}
       <p className="m-0 me-1 px-2" style={{backgroundColor: '#d9d7d7'}}>{index}</p>
       <p className="m-0">{question.questionName + question.questionText}</p>
       <BsZoomIn className="ms-auto me-3" />
@@ -59,6 +67,10 @@ export default function EditQuizPage() {
   const [addOption, setAddOption] = useState(-1);
   const [isSelectMultiple, setIsSelectMultiple] = useState(false);
   const [chosenQuestion, setChosenQuestion] = useState([]);
+  const [quizData, setQuizData] = useState();
+  const path = useLocation();
+  const pathArr = path.pathname.split('/')[1].split('+');
+  const quizId = pathArr[pathArr.length - 1];
 
   const options = [
     <ANewQuestionModal setOption={setAddOption} quizQuestions={quizQuestions} setQuizQuestions={setQuizQuestions} />, 
@@ -69,8 +81,12 @@ export default function EditQuizPage() {
   const data = useParams();
 
   useEffect(() => {
-    apiServices.getQuiz(data.quizName)
-    .then(res => setQuizQuestions(res.data.questions))
+    apiServices.getQuiz(quizId)
+    .then(res => {
+      setQuizQuestions(res.data.questions);
+      setQuizData(res.data);
+      setTotalGrade(res.data.totalGrade)
+    })
     .catch(err => console.log(err));
   }, [])
 
@@ -79,7 +95,11 @@ export default function EditQuizPage() {
   };
 
   const handleDelete = () => {
-    console.log(chosenQuestion)
+    let newQuizQuestions = quizQuestions;
+    for(let i = 0 ; i < chosenQuestion.length ; ++i)
+    newQuizQuestions = newQuizQuestions.filter(item => item.questionId !== chosenQuestion[i]);
+    setQuizQuestions(newQuizQuestions);
+    setChosenQuestion([]);
   }
 
   const handleCancel = () => {
@@ -88,12 +108,9 @@ export default function EditQuizPage() {
   }
 
   const handleSubmit = () => {
-    const quizData = {
-      "totalGrade": totalGrade,
-      "isShuffle": isShuffle,
-      "quizQuestions": quizQuestions
-    }
-    apiServices.postQuizQuestion(data.quizName, quizData)
+    quizData.questions = quizQuestions;
+    quizData.totalGrade = totalGrade;
+    apiServices.putQuiz(data.quizName, quizData)
     .then(res => console.log(res))
     .catch(err => console.log(err));
   }
@@ -102,7 +119,7 @@ export default function EditQuizPage() {
     <Container className="border p-2">
       <Stack direction="horizontal" gap={1}>
         <div style={{ color: "red", fontSize: "35px" }}>
-          Editing quiz: {data.quizName}
+          Editing quiz: {quizData ? quizData.quizName : null}
         </div>
         <img src={questionmark} style={{ width: "15px", height: "15px" }} />
       </Stack>
