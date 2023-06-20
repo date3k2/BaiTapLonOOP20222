@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Container, Stack } from 'react-bootstrap'
 import exam from '../icons/exam.png'
 import apiServices from '../services/apiServices'
-import { Link } from 'react-router-dom';
 
 export default function HomePage() {
   const [QuizList, setQuizList] = useState([]);

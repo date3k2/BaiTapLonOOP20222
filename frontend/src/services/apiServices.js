@@ -1,18 +1,19 @@
 import axios from "axios";
 
+// const URL = "https://localhost:7114/api/v1";
 const URL = "//localhost:4000";
 
 class apiServices {
     getQuestions(category, doesShowSub) {
-        return axios.get(`${URL}/questions?category=${category}&doesShowSub=${doesShowSub}`);
+        return axios.get(`${URL}/Questions?categoryId=${category}&showSubCategory=${doesShowSub}`);
     }
 
     getCategory(){
-        return axios.get(`${URL}/categories`);
+        return axios.get(`${URL}/Categories`);
     }
     
-    postCategory(categoryData){
-        return axios.post(`${URL}/category`, categoryData);
+    postCategory(parentId, categoryData){
+        return axios.post(`${URL}/Categories?parentId=${parentId}`, categoryData);
     }
 
     getQuestion(questionID) {
@@ -27,13 +28,13 @@ class apiServices {
         return axios.post(`${URL}/question`, questionData)
     } 
 
-    postImportQuestions(ImportQuestionsFile){
+    postImportQuestions(categoryId, ImportQuestionsFile){
         const formData = new FormData();
         formData.append(
-          "questionFile",
-          ImportQuestionsFile
-        );
-        return axios.post(`${URL}/import`, formData);
+            "file",
+            ImportQuestionsFile
+        )
+        return axios.post(`${URL}/Questions/File?categoryId=${categoryId}`, formData);
     }
     postQuiz(quizData) {
         return axios.post(`${URL}/quiz`, quizData);

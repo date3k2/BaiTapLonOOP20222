@@ -27,9 +27,7 @@ export default function CategoryPage() {
     setId(event.target.value);
   };
   const handleParentSelect = (event) => {
-    const value = event.target.value;
-    const selected = categories.find(category => category.name === value);
-    setParentID(selected ? selected.parentID : -1);
+    setParentID(event.target.value);
   };
 
   useEffect(() => {
@@ -42,8 +40,8 @@ export default function CategoryPage() {
 
   const handleAddCategory = (event) => {
     event.preventDefault();
-    const categoryData = new Category (filledName,filledInfo,id);
-    apiServices.postCategory(categoryData)
+    const categoryData = new Category(filledName,filledInfo);
+    apiServices.postCategory(parentID, categoryData)
       .then(res => {
         console.log(res.data);
       })
@@ -74,9 +72,9 @@ export default function CategoryPage() {
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <Form.Select onChange={handleParentSelect} style={{ width: '350px' }}>
-                <option> Default </option>
+                <option value={0}> Default </option>
                 {categories.map((category, index) => (
-                  <option key={index} value={category.name}> {category.name}</option>
+                  <option key={index} value={category.id}> {category.name}</option>
                 ))}
               </Form.Select>
             </Stack>
