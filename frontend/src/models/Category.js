@@ -1,6 +1,5 @@
 export class Category{
-    constructor(categoryId, categoryName, categoryInfo){
-        this.categoryId = categoryId;
+    constructor(categoryName, categoryInfo){
         this.categoryName = categoryName
         this.categoryInfo = categoryInfo
     }

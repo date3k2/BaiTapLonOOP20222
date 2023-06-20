@@ -5,8 +5,9 @@ import { useLocation } from 'react-router-dom';
 
 function ExamQuestion({getMap, index, question, answeredQuestion, answer, setAnswer, setAnsweredQuestion}){
 
-  const handleChooseChoice = () => {
+  const handleChooseChoice = (idChoice) => {
     if(!answeredQuestion.includes(question.questionId)) setAnsweredQuestion([...answeredQuestion, question.questionId]);
+    answer[question.questionId] = [idChoice];
   }
 
   return(
@@ -28,7 +29,7 @@ function ExamQuestion({getMap, index, question, answeredQuestion, answer, setAns
         <Col className='p-2' style={{backgroundColor: '#dcf5f5'}}>
           <p>{question.questionName}</p>
           {question.questionChoices.map((choice, index) => 
-            <Form.Check key={choice.choiceId} type='radio' label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={handleChooseChoice}/>
+            <Form.Check key={choice.choiceId} type='radio' label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice.choiceId)}/>
           )}
         </Col>
       </Row>
@@ -36,17 +37,22 @@ function ExamQuestion({getMap, index, question, answeredQuestion, answer, setAns
   );
 }
 
-function QuestionSelectBox({question, index, handleClick}){
+function QuestionSelectBox({question, index, handleClick, answeredQuestion}){
   return(
-    <div className='border d-flex justify-content-center m-1' style={{width: '30px', cursor: 'pointer'}} onClick={() => handleClick(question.questionId)}>
-      {index + 1}
+    <div className='border flex-column m-1 p-0' style={{width: '30px', cursor: 'pointer', height: '40px'}} onClick={() => handleClick(question.questionId)}>
+      <div className='d-flex justify-content-center' style={{height: '25px'}}>{index + 1}</div>
+      {
+        answeredQuestion.includes(question.questionId) ? 
+        <div className='m-0' style={{width: '30px', backgroundColor: 'gray', height: '15px'}}></div>
+        : null
+      }
     </div>
   );
 }
 
 export default function ExamPage() {
 
-  const [answer, setAnswer] = useState([]);
+  const [answer, setAnswer] = useState({});
   const [answeredQuestion, setAnsweredQuestion] = useState([]);
   const ref = useRef(null);
 
@@ -91,11 +97,12 @@ export default function ExamPage() {
               <Container className='d-flex justify-content-start flex-wrap p-2'>
                 {
                   quizData && quizData.questions.map((question, index) => 
-                    <QuestionSelectBox key={question.questionId} question={question} index={index} handleClick={handleScrollToQuestion}/>
+                    <QuestionSelectBox key={question.questionId} question={question} index={index} handleClick={handleScrollToQuestion} answeredQuestion={answeredQuestion}/>
                   )
                 }
               </Container>
             </Row>
+            <p onClick={() => console.log(answer)} style={{cursor: 'pointer', color: 'blue'}}>Finish attempt ...</p>
           </Col>
         </Col>
       </Row>

@@ -20,7 +20,7 @@ export default function Category({handleCategory}) {
           {
             categories.map((item, index) => {
             let space = `${'\xa0'.repeat(item.level*2)}`;
-            return <option key={index} value={item.name}>{space} {item.name} ({item.numberOfQuestions})</option>
+            return <option key={index} value={item.id}>{space} {item.name} ({item.numberOfQuestions})</option>
           })
         } 
       </Form.Select>

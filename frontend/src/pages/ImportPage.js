@@ -19,8 +19,8 @@ export default function ImportPage() {
       toast.error("Please choose a file!");
       return;
     }
-    apiServices.postImportQuestions(file)
-    .then(res => toast.success(res.data.message))
+    apiServices.postImportQuestions(0, file)
+    .then(res => toast.success("Success"))
     .catch(err => console.log(err));
   }
 

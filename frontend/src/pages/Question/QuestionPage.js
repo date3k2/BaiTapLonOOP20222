@@ -8,14 +8,14 @@ function Question({question}) {
   return (
     <tr>
       <td width="2%"><input type='checkbox' /></td>
-      <td>{question.questionName + question.questionText}</td>
+      <td>{question.questionCode ? question.questionCode : null} {question.questionText}</td>
       <td width="5%"><a href={`/question/edit?questionID=${question.questionId}`}>Edit</a></td>
     </tr>
   )
 }
 
 export default function EditQuestionPage() {
-  const [doesShowSub, setDoesShowSub] = useState(true);
+  const [doesShowSub, setDoesShowSub] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [category, setCategory] = useState();
 
@@ -33,6 +33,7 @@ export default function EditQuestionPage() {
 
   const handleCategory = e => {
     const category = e.target.value;
+    console.log(e.target.value);
     setCategory(category);
     apiServices.getQuestions(category, doesShowSub)
     .then(res => {

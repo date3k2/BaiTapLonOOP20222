@@ -5,7 +5,7 @@ using QuizProject.Models;
 
 namespace QuizProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class QuestionsController : ControllerBase
     {

@@ -40,12 +40,12 @@ app.put('/:quizId', (req, res) => {
 
 // Category
 
-app.get('/categories', (req, res) => {
+app.get('/Categories', (req, res) => {
     data = require('./data/category.json');
     res.json(data);
 });
 
-app.post('/category', (req, res) => {
+app.post('/Categories', (req, res) => {
     res.json("Add new category successfully!"); 
  });
 
@@ -82,7 +82,8 @@ app.put('/question', (req, res) => {
 
 // Import 
 
-app.post('/import', (req, res) => {
+app.post('/Questions/File', (req, res) => {
+    console.log(req.body)
     let message = {
         "type": "success",
         "message": "Upload successfully!"
