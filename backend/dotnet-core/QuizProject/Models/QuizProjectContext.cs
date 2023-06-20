@@ -28,8 +28,8 @@ public partial class QuizProjectContext : DbContext
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasKey(e => e.CategoryId).HasName("PK_Categories_CategoryId");
-            entity.Property(e => e.CategoryInfo).HasMaxLength(200);
-            entity.Property(e => e.CategoryName).HasMaxLength(50);
+            entity.Property(e => e.CategoryInfo).HasMaxLength(200).IsUnicode(true);
+            entity.Property(e => e.CategoryName).HasMaxLength(100).IsUnicode(true);
         });
 
         modelBuilder.Entity<CategoryRelationship>(entity =>
@@ -52,6 +52,10 @@ public partial class QuizProjectContext : DbContext
 
             entity.Property(e => e.QuestionId).ValueGeneratedNever();
 
+            entity.Property(e => e.QuestionText).IsUnicode(true);
+
+            entity.Property(e => e.QuestionCode).IsUnicode(true);
+
             entity.HasOne(d => d.Category).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -66,7 +70,7 @@ public partial class QuizProjectContext : DbContext
 
             entity.Property(e => e.ChoiceId).ValueGeneratedNever();
             entity.Property(e => e.ChoiceMark).HasDefaultValueSql("((0))");
-
+            entity.Property(e => e.ChoiceText).IsUnicode(true);
             entity.HasOne(d => d.Question).WithMany(p => p.QuestionChoices)
                 .HasForeignKey(d => d.QuestionId)
                 .HasConstraintName("FK_QuestionChoices_QuestionId");
@@ -79,8 +83,8 @@ public partial class QuizProjectContext : DbContext
             entity.ToTable("Quiz", tb => tb.HasComment("Bảng câu hỏi"));
 
             entity.Property(e => e.QuizId).ValueGeneratedNever();
-            entity.Property(e => e.QuizDescription).HasMaxLength(200);
-            entity.Property(e => e.QuizName).HasMaxLength(100);
+            entity.Property(e => e.QuizDescription).HasMaxLength(200).IsUnicode(true);
+            entity.Property(e => e.QuizName).HasMaxLength(100).IsUnicode(true);
 
             entity.HasMany(d => d.Questions).WithMany(p => p.Quizzes)
                 .UsingEntity<Dictionary<string, object>>(

@@ -89,7 +89,7 @@ namespace QuizProject.Helpers
                 // Lỗi không có tên câu hỏi
                 if (line.Trim() == "") throw new Exception($"Không có tên câu hỏi\nError in line: {kit.LineIter}");
                 kit.Ques.QuestionId = Guid.NewGuid();
-                kit.Ques.QuestionName = line;
+                kit.Ques.QuestionText = line;
                 ++kit.LineInQuestionIter;
             }
             else

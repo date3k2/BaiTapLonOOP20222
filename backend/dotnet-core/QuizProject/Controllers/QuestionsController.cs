@@ -11,7 +11,7 @@ namespace QuizProject.Controllers
     {
         private readonly QuizProjectContext _context;
 
-        public QuestionsController(QuizProjectContext context, ICategoryHelper categoryHelper)
+        public QuestionsController(QuizProjectContext context)
         {
             _context = context;
         }
@@ -46,6 +46,8 @@ namespace QuizProject.Controllers
             }
             return Ok(questions);
         }
+
+
         [HttpPost("Single")]
         public async Task<ActionResult<Guid>> PostSingleQuestion(Question question)
         {

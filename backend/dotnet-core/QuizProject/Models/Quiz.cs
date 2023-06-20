@@ -17,5 +17,9 @@ public partial class Quiz
 
     public int? TimeLimitInSeconds { get; set; }
 
+    public bool ShowDescription { get; set; } = false;
+
+    public bool IsShuffle { get; set; } = false;
+
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 }

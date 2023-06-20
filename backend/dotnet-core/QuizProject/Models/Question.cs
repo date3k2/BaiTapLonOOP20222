@@ -8,7 +8,9 @@ public partial class Question
 
     public int CategoryId { get; set; }
 
-    public string QuestionName { get; set; } = null!;
+    public string? QuestionCode { get; set; }
+
+    public string QuestionText { get; set; } = null!;
 
     public string? QuestionMediaPath { get; set; }
 
