@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
+    "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
   },
   "projects": {
-    "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
+    "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "projectUniqueName": "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
         "projectName": "QuizProject",
-        "projectPath": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
-        "packagesPath": "C:\\Users\\huula\\.nuget\\packages\\",
-        "outputPath": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
+        "projectPath": "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\huula\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -98,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     }

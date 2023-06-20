@@ -33,6 +33,8 @@ namespace QuizProject.Controllers
             if (showSubCategory)
             {
                 var allChildrenId = await _context.CategoryRelationships.Where(e => e.CategoryParentId == categoryId).Select(e => e.CategoryChildId).ToListAsync();
+                if (!allChildrenId.Contains(categoryId))
+                    allChildrenId.Add(categoryId);
                 foreach (var childrenId in allChildrenId)
                 {
                     var category = await _context.Categories.FindAsync(childrenId);
@@ -99,6 +101,11 @@ namespace QuizProject.Controllers
 
             _context.Entry(question).State = EntityState.Modified;
 
+            foreach (var choice in question.QuestionChoices)
+            {
+                _context.Entry(choice).State = EntityState.Modified;
+            }
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -108,7 +115,7 @@ namespace QuizProject.Controllers
                 return StatusCode(400, e.Message);
             }
 
-            return NoContent();
+            return Ok("Done");
         }
 
         /// <summary>
