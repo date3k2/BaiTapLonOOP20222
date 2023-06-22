@@ -1,6 +1,5 @@
 export class Quiz{
-    constructor(QuizId, QuizName, QuizDescription, totalGrade, timeLimitInSeconds, questions){
-        this.QuizId = QuizId
+    constructor(QuizName, QuizDescription, totalGrade, timeLimitInSeconds, questions){
         this.QuizName = QuizName
         this.QuizDescription = QuizDescription
         this.timeLimitInSeconds = timeLimitInSeconds
