@@ -12,6 +12,8 @@ public partial class Question
 
     public string QuestionText { get; set; } = null!;
 
+    public bool MoreThanOneChoice { get; set; } = false;
+
     public string? QuestionMediaPath { get; set; }
 
     public virtual ICollection<QuestionChoice> QuestionChoices { get; set; } = new List<QuestionChoice>();

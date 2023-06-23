@@ -21,5 +21,8 @@ public partial class Quiz
 
     public bool IsShuffle { get; set; } = false;
 
+
+    public double MaxGrade { get; set; } = 10;
+
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 }
