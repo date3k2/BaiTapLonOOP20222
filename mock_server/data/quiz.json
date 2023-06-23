@@ -288,8 +288,8 @@
         "quizDescription": "KTLT",
         "openTime": null,
         "closeTime": null,
-        "timeLimitInSeconds": 3600,
-        "totalGrade": 10
+        "timeLimitInSeconds": 70,
+        "maximumGrade": 10
       },
     {
         "quizId": 2,
@@ -298,7 +298,7 @@
         "descriptionShow": false,
         "openTime": "2023-07-02T06:00:00",
         "closeTime": "2023-07-02T10:00:00",
-        "totalGrade": 10,
+        "maximumGrade": 10,
         "timeLimitInSeconds": 60,
         "questions": [
             {

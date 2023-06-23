@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useRef, useState } from 'react'
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import apiServices from '../services/apiServices';
-import { useLocation } from 'react-router-dom';
+import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Countdown from 'react-countdown';
 
-function ExamQuestion({getMap, index, question, answer, setAnswer}){
+function ExamQuestion({getMap, index, question, answer, setAnswer, isDisable}){
 
   const handleChooseChoice = (choice) => {
     if(answer.get(question.questionId).includes(choice)){
@@ -36,7 +36,7 @@ function ExamQuestion({getMap, index, question, answer, setAnswer}){
         <Col className='p-2' style={{backgroundColor: '#dcf5f5'}}>
           <p>{question.questionName}</p>
           {question.questionChoices.map((choice, index) => 
-            <Form.Check key={choice.choiceId} type={question.isMultipleChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
+            <Form.Check disabled={isDisable} key={choice.choiceId} type={question.isMultipleChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
           )}
         </Col>
       </Row>
@@ -61,11 +61,42 @@ function CountdownTimer({hours, minutes, seconds}){
   return <span className='border border-2 border-danger p-1 bg-white my-2'>Time left: {hours} : {minutes} : {seconds}</span>
 }
 
-const Timer = memo(function Timer({quizData}){
+const Timer = memo(function Timer({quizTimeLimit, handleSubmit}){
   return <Container className='d-flex flex-row-reverse sticky-top'>
-  {quizData ? <Countdown date={Date.now() + quizData.timeLimitInSeconds * 1000} renderer={CountdownTimer} /> : null}
+  {quizTimeLimit > 0 ? <Countdown date={quizTimeLimit} renderer={CountdownTimer} onComplete={handleSubmit} /> : null}
   </Container>;
 });
+
+const Scoreboard = ({timeStart, timeCompleted, quizMarks, totalMark, maximumGrade}) => {
+
+  const DAY_IN_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const startDate = new Date(timeStart);
+  const completedDate = new Date(timeCompleted);
+  const timeTaken = Math.floor((completedDate - startDate) / 1000);
+
+  return(
+    <Container className='my-2'>
+      <Row>
+        <Col className='me-2' xs={2}>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Start on</p></Row>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>State</p></Row>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Completed on</p></Row>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Time taken</p></Row>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Mark</p></Row>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Grade</p></Row>
+        </Col>
+        <Col>
+          <Row>{DAY_IN_WEEK[startDate.getDay()] + ", " + startDate.toLocaleString()}</Row>
+          <Row>Completed</Row>
+          <Row>{DAY_IN_WEEK[completedDate.getDay()] + ", " + completedDate.toLocaleString()}</Row>
+          <Row>{timeTaken >= 3600 ? Math.floor(timeTaken / 3600).toString() + " hours" : null} {timeTaken >= 60 ? Math.floor((timeTaken % 3600) / 60).toString() + " mins" : null} {Math.floor(timeTaken % 60).toString() + " secs"}</Row>
+          <Row>{quizMarks.toFixed(2)} / {totalMark.toFixed(2)}</Row>
+          <Row>{((quizMarks / totalMark) * maximumGrade).toFixed(2)}</Row>
+        </Col>
+      </Row>
+    </Container>
+  );
+}
 
 export default function ExamPage() {
 
@@ -76,6 +107,15 @@ export default function ExamPage() {
   const pathArr = path.pathname.split('/')[1].split('+');
   const quizId = pathArr[pathArr.length - 1];
   const [quizData, setQuizData] = useState();
+  const navigate = useNavigate();
+
+  const [quizTimeLimit, setQuizTimeLimit] = useState(0);
+  const [timeQuizStart, setTimeQuizStart] = useState();
+  const [timeQuizFinished, setTimeQuizFinished] = useState();
+  const [totalMark, setTotalMark] = useState(0);
+
+  const [isQuizFinished, setIsQuizFinished] = useState(false);
+  
 
   function getMap() {
     if (!ref.current) {
@@ -89,23 +129,39 @@ export default function ExamPage() {
     const node = map.get(questionId);
     node.scrollIntoView({ behavior: 'smooth' });
   }
+
+  const handleSubmit = () => {
+    let totalMark = 0;
+    answer.forEach(item => {
+      item.forEach(i => totalMark += i.choiceMark / 100);
+    });
+    setTotalMark(totalMark);
+    setTimeQuizFinished(Date.now());
+    setIsQuizFinished(true);
+  }
   
   useEffect(() => {
     apiServices.getQuiz(quizId)
     .then(res => {
       setQuizData(res.data);
       res.data.questions.forEach(question => setAnswer(answer => new Map(answer.set(question.questionId, []))));
+      setQuizTimeLimit(Date.now() + res.data.timeLimitInSeconds * 1000);
     })
     .catch(err => console.log(err));
+    setTimeQuizStart(Date.now());
   }, []);
 
   return (
     <Container className='p-2'>
       <Row className='position-relative p-1'>
         <Col xs={9} className='border p-2 me-2'>
-          <Timer quizData={quizData} />
           {
-            quizData && quizData.questions.map((question, index) => <ExamQuestion getMap={getMap} key={question.questionId} question={question} index={index} answer={answer} setAnswer={setAnswer} />)
+            isQuizFinished ? 
+            <Scoreboard timeStart={timeQuizStart} timeCompleted={timeQuizFinished} quizMarks={totalMark} totalMark={quizData.questions.length} maximumGrade={quizData.maximumGrade}/>
+            : <Timer quizTimeLimit={quizTimeLimit} handleSubmit={() => handleSubmit()} />
+          }
+          {
+            quizData && quizData.questions.map((question, index) => <ExamQuestion getMap={getMap} key={question.questionId} question={question} index={index} answer={answer} setAnswer={setAnswer} isDisable={isQuizFinished}/>)
           }
         </Col>
         <Col className='border'>
@@ -122,7 +178,11 @@ export default function ExamPage() {
                 }
               </Container>
             </Row>
-            <p onClick={() => console.log(answer)} style={{cursor: 'pointer', color: 'blue'}}>Finish attempt ...</p>
+            {
+              isQuizFinished ? 
+              <p onClick={() => navigate('/')} style={{cursor: 'pointer', color: 'blue'}}>Finish review</p>
+              : <p onClick={handleSubmit} style={{cursor: 'pointer', color: 'blue'}}>Finish attempt</p>
+            }
           </Col>
         </Col>
       </Row>
