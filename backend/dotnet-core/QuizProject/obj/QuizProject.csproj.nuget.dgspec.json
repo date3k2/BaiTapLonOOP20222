@@ -41,6 +41,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Aspose.PDF": {
+              "target": "Package",
+              "version": "[23.6.0, )"
+            },
+            "Aspose.TeX": {
+              "target": "Package",
+              "version": "[23.5.0, )"
+            },
             "DocumentFormat.OpenXml": {
               "target": "Package",
               "version": "[2.20.0, )"
