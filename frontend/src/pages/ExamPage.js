@@ -4,7 +4,13 @@ import apiServices from '../services/apiServices';
 import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Countdown from 'react-countdown';
 
-function ExamQuestion({getMap, index, question, answer, setAnswer, isDisable}){
+function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinished}){
+
+  let correctChoiceList = [];
+  question.questionChoices.forEach(choice => {
+    if(choice.choiceMark > 0) correctChoiceList.push(choice.choiceText);
+  })
+  const correctChoice = correctChoiceList.join(", ");
 
   const handleChooseChoice = (choice) => {
     if(answer.get(question.questionId).includes(choice)){
@@ -33,12 +39,26 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isDisable}){
           <p className='m-0'>Marked out of 1.00</p>
           <p className='m-0'>Flag question</p>
         </Col>
-        <Col className='p-2' style={{backgroundColor: '#dcf5f5'}}>
-          <p>{question.questionName}</p>
-          {question.questionChoices.map((choice, index) => 
-            <Form.Check disabled={isDisable} key={choice.choiceId} type={question.isMultipleChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
-          )}
+        <Col className='p-0'>
+          <Container className='m-0 p-2' style={{backgroundColor: '#dcf5f5'}}>
+            <p>{question.questionName}</p>
+            {question.questionChoices.map((choice, index) => 
+              <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.isMultipleChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
+            )}
+          </Container>
         </Col>
+        {
+          isQuizFinished ?
+          <Row className='ms-2 mt-2'>
+            <Col xs={2}></Col>
+            <Col className='bg-warning p-3'>
+            <p>              
+              The correct answer is: {correctChoice}
+            </p>
+            </Col>
+          </Row>
+          : null
+          }
       </Row>
     </Container>
   );
@@ -75,15 +95,15 @@ const Scoreboard = ({timeStart, timeCompleted, quizMarks, totalMark, maximumGrad
   const timeTaken = Math.floor((completedDate - startDate) / 1000);
 
   return(
-    <Container className='my-2'>
+    <Container className='my-2 border'>
       <Row>
         <Col className='me-2' xs={2}>
           <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Start on</p></Row>
-          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>State</p></Row>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0' style={{backgroundColor: '#f2f2f2'}}>State</p></Row>
           <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Completed on</p></Row>
-          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Time taken</p></Row>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0' style={{backgroundColor: '#f2f2f2'}}>Time taken</p></Row>
           <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Mark</p></Row>
-          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0'>Grade</p></Row>
+          <Row><p className='d-flex flex-row-reverse p-0 fw-bold text-danger m-0' style={{backgroundColor: '#f2f2f2'}}>Grade</p></Row>
         </Col>
         <Col>
           <Row>{DAY_IN_WEEK[startDate.getDay()] + ", " + startDate.toLocaleString()}</Row>
@@ -91,7 +111,7 @@ const Scoreboard = ({timeStart, timeCompleted, quizMarks, totalMark, maximumGrad
           <Row>{DAY_IN_WEEK[completedDate.getDay()] + ", " + completedDate.toLocaleString()}</Row>
           <Row>{timeTaken >= 3600 ? Math.floor(timeTaken / 3600).toString() + " hours" : null} {timeTaken >= 60 ? Math.floor((timeTaken % 3600) / 60).toString() + " mins" : null} {Math.floor(timeTaken % 60).toString() + " secs"}</Row>
           <Row>{quizMarks.toFixed(2)} / {totalMark.toFixed(2)}</Row>
-          <Row>{((quizMarks / totalMark) * maximumGrade).toFixed(2)}</Row>
+          <Row><p className='p-0 m-0'><span className='fw-bold'>{((quizMarks / totalMark) * maximumGrade).toFixed(2)}</span> out of {totalMark} (<span className='fw-bold'>{(quizMarks * 100 / totalMark).toFixed(0)}</span> %)</p></Row>
         </Col>
       </Row>
     </Container>
@@ -161,7 +181,7 @@ export default function ExamPage() {
             : <Timer quizTimeLimit={quizTimeLimit} handleSubmit={() => handleSubmit()} />
           }
           {
-            quizData && quizData.questions.map((question, index) => <ExamQuestion getMap={getMap} key={question.questionId} question={question} index={index} answer={answer} setAnswer={setAnswer} isDisable={isQuizFinished}/>)
+            quizData && quizData.questions.map((question, index) => <ExamQuestion getMap={getMap} key={question.questionId} question={question} index={index} answer={answer} setAnswer={setAnswer} isQuizFinished={isQuizFinished}/>)
           }
         </Col>
         <Col className='border'>
