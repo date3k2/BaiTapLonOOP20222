@@ -34,7 +34,7 @@ const PreviewQuizModal = ({ open, onClose, timeLimit, path }) => {
             paddingLeft: "20px",
           }}
         >
-          Your attempt will have a time limit of {timeLimit} minutes. When you
+          Your attempt will have a time limit of {timeLimit}. When you
           start, the timer will begin to count down and cannot be paused. You
           must finish your attempt before it expires. Are you sure you wish to
           start now?

@@ -5,6 +5,15 @@ import PreviewQuizModal from "./PreviewQuizModal";
 import apiServices from "../../services/apiServices";
 import { Link, useLocation, useParams } from "react-router-dom";
 
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60); 
+  const hours = Math.floor(seconds / 3600);
+  const remainingMinutes = minutes % 60; 
+  // const formattedHours = String(hours).padStart(2, '0'); 
+  // const formattedMinutes = String(remainingMinutes).padStart(2, '0'); 
+  // return `${formattedMinutes}hours:${formattedMinutes}minutes`; 
+  return (hours ? hours + (hours > 1 ? ' hours ' : ' hour ') : '') + (remainingMinutes ? remainingMinutes + (remainingMinutes > 1 ? ' minutes' : ' minute') : '');
+}
 export default function PreviewQuiz() {
     
   const [quizData, setQuizData] = useState();
@@ -39,7 +48,7 @@ export default function PreviewQuiz() {
             justifyContent: "center",
           }}
         >
-          <p>Time limit: {quizData ? quizData.timeLimitInSeconds : null} minutes</p>
+          <p>Time limit: {quizData ? formatTime(quizData.timeLimitInSeconds) : null}</p>
           <p>Grading method: Last grade</p>
         </div>
       </Row>
@@ -77,7 +86,7 @@ export default function PreviewQuiz() {
           >
             PREVIEW QUIZ NOW
           </Button>
-          <PreviewQuizModal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {quizData ? quizData.timeLimitInSeconds : null} path={path.pathname} />
+          <PreviewQuizModal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {quizData ? formatTime(quizData.timeLimitInSeconds) : null} path={path.pathname} />
         </div>
       </Row>
     </Container>
