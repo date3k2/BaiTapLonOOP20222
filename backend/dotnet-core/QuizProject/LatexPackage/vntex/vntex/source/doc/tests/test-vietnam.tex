@@ -1,0 +1,74 @@
+% Copyright 2003-2005 Han The Thanh <hanthethanh@gmx.net>.
+% This file is part of vntex.  License: LPPL, version 1.3 or newer,
+% according to http://www.latex-project.org/lppl.txt
+%
+%
+% You need LaTeX 2003/12/01 (or newer) and ucs newer than August 2004!
+
+\documentclass[openany]{book}
+
+\IfFileExists{ucs.sty}
+{\usepackage[utf8x,utf8]{vietnam}} 
+{\usepackage[utf8]{vietnam}} 
+                                 % We must load both utf8x and utf8 (in
+                                 % this order) to make vietnam.sty load
+                                 % ucs.sty, and to tell ucs.sty that it
+                                 % should disable compatibility mode,
+                                 % allowing to test utf8 and utf8x input
+                                 % simultaneously.
+                                 %
+                                 % Supported input encoding: viscii,
+                                 % mviscii, tcvn, vps, utf8, utf8x
+                                 %
+                                 % Other options: 
+                                 %   noinputenc: don't use inputenc (for
+                                 %       use with TCX)
+                                 %   nocaptions: don't redefine captions
+                                 %       to Vietnamese
+
+
+\usepackage{multicol}   % needed for testing accent commands
+\usepackage[colorlinks]{hyperref} % let's try vietnamese with hyperref
+\input{pd1supp.def}     % supplement for characters missing in PD1 encoding
+                        % (used for PDF bookmarks) 
+
+\begin{document}
+
+\title{\bfseries Test of Vietnamese support for \LaTeX{} using \texttt{vietnam.sty}}
+\author{H\`an Th\'\ecircumflex{} Th\`anh}
+\maketitle
+
+\tableofcontents
+\listoffigures
+
+\chapter{Test input encodings}
+\section{Test of VISCII encoding support}
+\inputencoding{viscii}
+\input{test-viscii}
+
+\section{Test of TCVN encoding support}
+\inputencoding{tcvn}
+\input{test-tcvn}
+
+\section{Test of UTF8 encoding support}
+\inputencoding{utf8}
+\input{test-utf8}
+
+\IfFileExists{ucs.sty}{%
+\section[Test of UTF8x encoding support]
+   {Test of UTF8x encoding support (from Unicode package)}
+\inputencoding{utf8x}
+\input{test-utf8}
+}{\typeout{^^JWARNING: File ucs.sty not found, skipping test.^^J}}
+
+\clearpage
+
+\appendix
+
+\chapter{Test of Vietnamese captions}
+\input{test-captions}
+
+\chapter{Test of accent commands for T5 encoding}
+\input{test-accents}
+
+\end{document}

@@ -4,13 +4,15 @@ using Aspose.TeX.Presentation.Pdf;
 using Aspose.TeX;
 using QuizProject.Models;
 using Aspose.Pdf;
+using System.Text;
+using PdfSaveOptions = Aspose.TeX.Presentation.Pdf.PdfSaveOptions;
 
 namespace QuizProject.Helpers
 {
     public class ExportFile
     {
         private readonly string PACKAGE = "\\documentclass{article}\r\n\r\n" +
-            "\\usepackage[vietnamese]{babel}\r\n\\usepackage{tasks}\r\n\\usepackage{enumerate}\r\n" +
+            "\\usepackage[utf8]{inputenc}\r\n\\usepackage{enumerate}\r\n" +
             "\\usepackage[shortlabels]{enumitem}\r\n\r\n" +
             "\\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}\r\n\r\n" +
             "\\usepackage{amsmath}\r\n\\usepackage{graphicx}\r\n\\usepackage[colorlinks=true, allcolors=blue]{hyperref}";
@@ -32,7 +34,7 @@ namespace QuizProject.Helpers
 
         public string ToLatex(Question question)
         {
-            string result = question.QuestionText + "\\\\\n";
+            string result = question.QuestionText + "\n";
             string includeGraphic = $"\\includegraphics[width = 0.3\\textwidth]{{{question.QuestionMediaPath}}}\n";
             if (question.QuestionMediaPath != null) { result += includeGraphic; }
             result += "\\begin{enumerate}[{\\Alph*.}]\n";
@@ -60,26 +62,33 @@ namespace QuizProject.Helpers
             else return choice.ChoiceText ?? "<blank>";
         }
 
-        void WriteLatex(Quiz quiz, string path)
+        public void WriteLatex(Quiz quiz, string path)
         {
             StreamWriter stream = new StreamWriter(path);
             stream.Write(ToLatex(quiz));
             stream.Close();
         }
 
-        void LatexToPdf(string input, string output)
+        public void LatexToPdf(string input, string outputLocation)
         {
+            string packageLocation = Path.Combine(Directory.GetCurrentDirectory(), "LatexPackage");
+
             TeXOptions options = TeXOptions.ConsoleAppOptions(TeXConfig.ObjectLaTeX);
-            options.OutputWorkingDirectory = new OutputFileSystemDirectory(output);
-            options.SaveOptions = new Aspose.TeX.Presentation.Pdf.PdfSaveOptions();
-            new TeXJob(input, new ImageDevice(), options).Run();
+            options.RequiredInputDirectory = new InputFileSystemDirectory(packageLocation);
+            options.Interaction = Interaction.NonstopMode;
+            
+            
+            options.OutputWorkingDirectory = new OutputFileSystemDirectory(outputLocation);
+            options.SaveOptions = new PdfSaveOptions();
+            TeXJob job = new TeXJob(input, new PdfDevice(), options);
+            job.Run();
         }
 
-        void SetPdfPassword(string output, string password)
+        public void SetPdfPassword(string output, string password)
         {
             Document document = new Document(output);
             document.Encrypt(password, password, 0, CryptoAlgorithm.AESx256);
-            document.Save();
+            document.Save(output);
         }
     }
 }

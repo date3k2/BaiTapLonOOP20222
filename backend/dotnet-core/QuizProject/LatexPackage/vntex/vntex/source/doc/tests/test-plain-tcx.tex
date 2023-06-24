@@ -1,0 +1,26 @@
+%& -translate-file=viscii-t5
+
+% Copyright 2003-2005 Han The Thanh <hanthethanh@gmx.net>.
+% This file is part of vntex.  License: LPPL, version 1.3 or newer,
+% according to http://www.latex-project.org/lppl.txt
+
+\input plnfss           % load PLNFSS
+\setfontencoding{T5}    % default is OT1 by plnfss
+\selectfont             % active the font switch
+
+\input t5code.tex   % to get \uppercase and \lowercase work properly
+
+% some definitions used in included test files
+\def\subsection#1{%
+    \bigskip
+    \leftline{\bfseries #1}
+    \smallskip
+    \noindent\ignorespaces}
+\let\subsubsection=\subsection
+\def\\{\hfil\break}
+\def\MakeUppercase#1{\edef\x{\uppercase{#1}}\x}
+\def\MakeLowercase#1{\edef\x{\lowercase{#1}}\x}
+
+
+\input test-viscii
+\bye

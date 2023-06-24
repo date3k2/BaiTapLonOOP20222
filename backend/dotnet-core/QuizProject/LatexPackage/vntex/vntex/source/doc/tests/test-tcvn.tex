@@ -1,0 +1,67 @@
+% Copyright 2003-2005 Han The Thanh <hanthethanh@gmx.net>.
+% This file is part of vntex.  License: LPPL, version 1.3 or newer,
+% according to http://www.latex-project.org/lppl.txt
+
+\subsection{Test of lowercase letters}
+¸ ¹ µ ¶ · ¨ ¾ Æ » ¼ ½ © Ê Ë Ç È É ® \\
+Ğ Ñ Ì Î Ï ª Õ Ö Ò Ó Ô İ Ş × Ø Ü\\
+ã ä ß á â « è é å æ ç ¬ í î ê ë ì \\
+ó ô ï ñ ò ­ ø ù õ ö ÷ ı ş ú û ü 
+
+\subsection{Test of uppercase letters}
+ƒ „ €  ‚ ¡ À … ¯ º ¿ ¢ Ä † Á Â Ã § \\
+Š ‹ ‡ ˆ ‰ £ Ú Œ Å Í Ù  ‘   \\
+• – ’ “ ” ¤ ÿ — Û à ğ ¥ › œ ˜ ™ š \\
+    Ÿ ¦           
+
+\subsection{Test whether \texttt{MakeLowercase} works correctly}
+\MakeLowercase{%
+ƒ „ €  ‚ ¡ À … ¯ º ¿ ¢ Ä † Á Â Ã § \\
+Š ‹ ‡ ˆ ‰ £ Ú Œ Å Í Ù  ‘    \\ 
+• – ’ “ ” ¤ ÿ — Û à ğ ¥ › œ ˜ ™ š \\
+    Ÿ ¦           } 
+
+\subsection{Test whether \texttt{MakeUppercase} works correctly}
+\MakeUppercase{%
+¸ ¹ µ ¶ · ¨ ¾ Æ » ¼ ½ © Ê Ë Ç È É ® \\
+Ğ Ñ Ì Î Ï ª Õ Ö Ò Ó Ô İ Ş × Ø Ü \\ 
+ã ä ß á â « è é å æ ç ¬ í î ê ë ì \\
+ó ô ï ñ ò ­ ø ù õ ö ÷ ı ş ú û ü } 
+
+\subsection{Some text sample}
+
+\ifx\documentclass\undefined\else
+\begin{figure}[htb]
+  \centering
+  \rule{4cm}{3cm}
+  \caption{§ªm Hµ Néi}
+\end{figure}
+\fi
+
+\ifx\documentclass\undefined
+   \def\fn{\footnote*{Thö coi chó thİch cã ch¹y kh«ng hÌ.}}
+\else
+   \def\fn{\footnote{Thö coi chó thİch cã ch¹y kh«ng hÌ.}}
+\fi
+
+H¾n võa ®i võa chöi\fn. Bao giê còng thÕ, cø r­îu xong lµ h¾n chöi. B¾t ®Çu
+chöi trêi. Cã hÒ g×? Trêi cã cña riªng nhµ nµo? Råi h¾n chöi ®êi. ThÕ
+còng ch¼ng sao: ®êi lµ tÊt c¶ nh­ng ch¼ng lµ ai. Tøc m×nh h¾n chöi ngay tÊt
+c¶ lµng Vò §¹i. Nh­ng c¶ lµng Vò §¹i ai còng nhñ, \textit{``Ch¾c nã trõ
+m×nh ra!''} Kh«ng ai lªn tiÕng c¶. Tøc thËt! Û! ThÕ nµy th× tøc thËt! Tøc
+chÕt ®i ®­îc mÊt! §· thÕ, h¾n ph¶i chöi cha ®øa nµo kh«ng chöi nhau víi
+h¾n. Nh­ng còng kh«ng ai ra ®iÒu. MÑ kiÕp! ThÕ th× cã phİ r­îu kh«ng? ThÕ
+th× cã khæ h¾n kh«ng? Kh«ng biÕt ®øa chÕt mÑ nµo ®Î ra th©n h¾n cho h¾n khæ
+®Õn n«ng nçi nµy? A ha! Ph¶i ®Êy, h¾n cø thÕ mµ chöi, h¾n chöi ®øa chÕt mÑ
+nµo ®Î ra th©n h¾n, ®Î ra c¸i th»ng \textbf{Chİ PhÌo}! H¾n nghiÕn r¨ng vµo
+mµ chöi c¸i ®øa ®· ®Î ra Chİ PhÌo. Nh­ng mµ biÕt ®øa nµo ®· ®Î ra
+Chİ PhÌo? Cã trêi mµ biÕt! H¾n kh«ng biÕt, c¶ lµng Vò §¹i còng kh«ng ai
+biÕt.
+
+\subsection{Test of Vietnamese in sectioning commands}
+\subsubsection{§ªm qua t¸t n­íc ®Çu ®×nh}
+\subsubsection{Bá quªn chiÕc ¸o trªn cµnh hoa sen}
+\subsubsection{Em ®­îc th× cho anh xin}
+\subsubsection{Hay lµ em ®Ó lµm tin trong nhµ}
+
+\endinput

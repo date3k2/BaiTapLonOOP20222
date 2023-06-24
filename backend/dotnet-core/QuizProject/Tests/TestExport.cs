@@ -68,8 +68,12 @@ namespace Test
                     )
                 }
             );
-        QuizProject.Helpers.ExportFile helper = new ExportFile();
-        Console.Write(helper.ToLatex(quiz));
+            QuizProject.Helpers.ExportFile helper = new ExportFile();
+            string input = Path.Combine(Directory.GetCurrentDirectory(), "Testquiz.ltx");
+            string output = Path.Combine(Directory.GetCurrentDirectory());
+            helper.WriteLatex(quiz, input);
+            helper.LatexToPdf(input, output);
+            helper.SetPdfPassword(Path.Combine(output, "Testquiz.pdf"), "12345678");
     }
 }
 }

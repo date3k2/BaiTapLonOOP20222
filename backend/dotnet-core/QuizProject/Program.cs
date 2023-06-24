@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using QuizProject.Helpers;
 using QuizProject.Methods;
 using QuizProject.Models;
+using System.Text;
 using Test;
 
 namespace BookProject
@@ -11,6 +12,7 @@ namespace BookProject
         public static void Main(string[] args)
         {
             //Test
+            Console.OutputEncoding = Encoding.Default;
             TestExport.Mainly(args);
 
             //Start

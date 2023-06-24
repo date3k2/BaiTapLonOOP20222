@@ -1,0 +1,514 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{url}
+\usepackage[colorlinks,bookmarks=false]{hyperref}
+\usepackage{fancyvrb}
+\usepackage[utf8]{vietnam}
+\usepackage{charter}
+\usepackage{ifpdf}
+\usepackage{microtype}
+% \usepackage{graphicx}
+% \usepackage{array}
+
+\parindent0pt
+\parskip.4\baselineskip
+\def\arraystretch{1.3}
+\hyperlinkfileprefix{}
+
+
+\advance\topmargin by -2cm
+\advance\textheight by 3cm
+\advance\footskip by .5cm
+\advance\oddsidemargin by -0.5cm
+\advance\textwidth by 1cm
+
+\input{abbr.tex}
+
+%% These abbrs are are not defined in abbr.tex:
+\abbr{FD}{FD}{}
+\abbr{MAKEINDEX}{MakeIndex}{}
+\abbr{LATEXPIX}{LaTeXPIX}{}
+
+\newcommand{\htmlheader}
+{Hỗ trợ tiếng Việt cho \<TEX>}
+
+\newcommand{\htmlfooter}{}
+
+\begin{document}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{1}
+\DefineShortVerb{\|}
+
+\title{\<VNTEX>}
+
+% \noindent
+% Chào bạn đã đến với trang web của \<VNTEX>.  
+
+% \HCode{<h2>}
+% Các tin đáng chú ý
+% \HCode{</h2>}
+% \begin{itemize}
+% \item 06/10/2006: thêm phần hướng dẫn dịch bản tiếng Việt của 
+% \href{http://www.tug.org/tex-archive/info/Free_Math_Font_Survey/survey.html}
+% {Free Math Font Survey} ở phần \hyperlink{tai-lieu-vntex}{Tài liệu}
+
+% \item 05/10/2006: cập nhật bản dịch Free Math Font Survey tại 
+% \href{doc/survey-vn.pdf}{trang chủ} và
+% \href{http://vntex.sarovar.org/survey-vn.pdf}{mirror tại sarovar}
+
+% \item 04/09/2006: công bố \href{download/vntex-beta}{vntex-beta-20060904}
+
+% \item 19/08/2006: công bố phiên bản \<TRUETYPE> của bộ font \<URWVN>-3.03
+% tại \href{http://forum.vnoss.org/viewtopic.php?id=3334}{\<VNOSS>}. Xem 
+% \href{fonts/urwvn-ttf}{hướng dẫn cài đặt}.
+
+% \item 08/08/2006: hoàn thành việc Việt hóa các text font trong
+% tài liệu
+% \href{http://www.tug.org/tex-archive/info/Free_Math_Font_Survey/survey.html}
+% {Free Math Font Survey} và công bố
+% \href{fonts/samples/survey-vn.pdf}{bản dịch}
+
+% % \item 18/07/2006: cập nhật mục \hyperlink{du-dinh-phat-trien}{dự
+% % định phát triển}.
+
+% \item 16/07/2006: thêm mẫu font mới: 
+% VnGaramond
+% (\href{http://vntex.sf.net/fonts/samples/garamondvn-test.pdf}{test},
+%  \href{http://vntex.sf.net/fonts/samples/garamondvn-sample.pdf}{sample})
+% và VnGrotesq
+% (\href{http://vntex.sf.net/fonts/samples/grotesqvn-test.pdf}{test},
+%  \href{http://vntex.sf.net/fonts/samples/grotesqvn-sample.pdf}{sample}). Các
+%  font này sẽ được công bố để người dùng tải về trong thời gian tới.
+
+% \item 13/07/2006: hướng dẫn cách tạo ``searchable'' \<PDF> với tiếng Việt. 
+% Xem \hyperlink{cmap-vn}{chi tiết}.
+
+% \item 24/06/2006: hỗ trợ \<UNICODE> bookmarks cho \<PDF>.
+% Xem \hyperlink{bookmark-vn}{chi tiết}.
+
+% \item 16/06/2006: công bố phiên bản chính thức mới của trang web \<VNTEX>
+
+% \item 05/06/2006: công bố phiên bản thử nghiệm mới của trang web
+% \<VNTEX>, cùng với một số gói mới: \hyperlink{more-extsizes}{more-extsizes}
+% và \hyperlink{makeindex-vn}{makeindex-vn}.
+
+% \item 03/06/2006: sửa lỗi các tập \<FD> cho font \<VNR>. Xem 
+% \hyperlink{cap-nhat-vnr-fd}{chi tiết}.
+
+% \item 26/05/2006: công bố phiên bản \<TRUETYPE> của bộ font \<URWVN>. Xem 
+% \href{fonts/urwvn-ttf}{chi tiết}.
+
+% \item 20/09/2005: công bố \<VNTEX>-3.02
+
+% \item 20/09/2005: công bố \href{fonts/samples}{mẫu font}
+% cho \<VNTEX>
+
+% \item 01/12/2004: \<CONTEXT> đã
+% \href{http://vnoss.org/forum/viewtopic.php?id=506}{hỗ trợ tiếng Việt}
+
+% \end{itemize}
+
+{\huge\centering\htmlheader\par}
+%\vspace*{10pt}
+\begin{center}
+  Hàn Thế Thành
+\end{center}
+
+\section{Giới thiệu}
+% \subsection{\<VNTEX>, \<LATEX>, \<CONTEXT>,\<...> là gì vậy?}
+% If you are new to \<TEX>, see \url{http://en.wikipedia.org/wiki/TeX} for a
+% basic explanation of \<TEX> and related programs. The \<TUG> (\<TEX> Users
+        % roup) homepage at \url{http://tug.org} also contains useful introductory
+% material to \<TEX>.
+
+\subsection{\<VNTEX> là gì?}
+\<VNTEX> là một gói chứa các hỗ trợ cần thiết cho việc sử dụng tiếng Việt
+với \<TEX>. Trang web này chứa các thông tin về gói \<VNTEX> và các vấn đề
+liên quan đến tiếng Việt trong \<TEX>. Chắc hẳn khi tìm đến với \<VNTEX>
+bạn đã ít nhiều biết đến thế giới \<TEX>, và bạn cần \<VNTEX> cho việc dùng
+tiếng Việt với \<TEX>.
+
+Nếu bạn chưa từng sử dụng \<TEX>, có lẽ trang web này không
+thích hợp lắm cho việc bắt đầu tìm hiểu về \<TEX>; bạn có thể
+tham khảo một số địa chỉ sau:
+\begin{enumerate}
+\item Tiếng Việt:
+\begin{itemize}
+\item \href{http://forum.vnoss.org/viewforum.php?id=10}{Diễn đàn \<VNOSS>}
+\item \href{http://viettug.org}{ViệtTUG}
+\item \href{http://vi.wikipedia.org/wiki/TeX}{Định nghĩa \<TEX> tại
+wikipedia bằng tiếng Việt} 
+\end{itemize}
+\item Tiếng Anh:
+\begin{itemize}
+\item \href{http://tug.org}{TUG}
+\item \href{http://en.wikipedia.org/wiki/TeX}{Định nghĩa \<TEX> tại
+wikipedia bằng tiếng Anh}
+\end{itemize}
+\end{enumerate}
+
+Còn nếu bạn đang tìm câu trả lời cho một vấn đề trong \<TEX> nhưng không
+liên quan đến tiếng Việt (ví dụ làm sao để gõ một công thức hay chèn một
+hình ảnh vào văn bản) thì bạn có thể tìm hiểu tại các diễn đàn hay
+đọc các tài liệu trong mục \hyperlink{tro-giup}{Tài liệu}.
+
+Gói \<VNTEX> chứa các thành phần sau:
+\begin{itemize}
+\item các font tiếng Việt,
+\item hỗ trợ tiếng Việt cho \<LATEX> (input encoding + font encoding)
+\item một số (ít) tài liệu và ví dụ, cùng với các mẫu font hỗ trợ tiếng
+Việt
+\end{itemize}
+
+\<VNTEX> được xây dựng tuân theo các qui ước chung của cộng đồng người dùng
+\<TEX>. Việc này nhằm hạn chế bớt các xung đột có thể xảy ra khi dùng
+\<VNTEX> với các ngôn ngữ hay các gói khác, cũng như giúp việc tích hợp
+\<VNTEX> vào các hệ thống \<TEX> thuận lợi hơn.
+
+\<VNTEX> đã được tích hợp vào một số hệ thống \<TEX> thông dụng như
+\<TEXLIVE>, \<TETEX> và \<MIKTEX>.
+
+\subsection{Tóm tắt lịch sử phát triển}
+\begin{itemize}
+\item 01/2000 -- phát hành phiên bản đầu tiên của \<VNTEX> (chưa được đánh số).
+Phiên bản này chưa có các font \<T1>.
+
+\item 08/2002 -- phát hành phiên bản 1.2 của \<VNTEX>. Bản này đã chứa dạng
+\<T1> của các font \<VNR> (được tạo ra tự động bằng \<TEXTRACE>, chất lượng
+tạm dùng được). Các font \<PS> thông dụng cũng được hỗ trợ tiếng Việt qua
+cơ chế ``virtual font'' (dấu khá xấu do dùng các ký tự có sẵn để vẽ).
+
+\item 03/2003 -- phát hành phiên bản 2.0 của \<VNTEX>. Phiên bản này đã
+chứa định dạng \<T1> của các font \<VNR>, dựa trên các font \<T1> \<CMR> do
+\<BLUESKY> thực hiện. Các font \<URWVN> cũng được phát hành trong phiên bản
+này. Chi tiết về việc tạo ra các font này có thể xem tại
+\href{http://www.tug.org/TUGboat/Articles/tb24-1/thanh.pdf}{đây}. Phiên bản
+\<VNTEX> này sau đó đã được đưa vào \<TETEX>, \<MIKTEX> và \<TEXLIVE>.
+
+\item 09/2005 -- phát hành phiên bản 3.02 của \<VNTEX>.
+\end{itemize}
+
+\subsection{Tác giả}
+Phần lớn \<VNTEX> do \<THANH> viết, phần hỗ trợ cho \<LATEX> do Werner
+Lemberg viết. Ngoài ra còn có sự đóng góp của nhiều người khác (xin xem
+tiếp ở mục sau).
+
+\subsection{Những người tham gia đóng góp cho \<VNTEX>}
+Những người trong danh sách dưới đây (theo thứ tự ABC) đã tham gia đóng
+góp cho sự phát triển của \<VNTEX> dưới các hình thức khác nhau: 
+
+Huỳnh Kỳ Anh,
+Nguyễn Đại Quý,
+Nguyễn Phi Hùng,
+Nguyễn Tân Khoa,
+Reinhard Kotucha,
+Thái Phú Khánh Hòa,
+Ulrich Dirr,
+Vladimir Volovich.
+
+Nếu bạn thấy cần thêm ai vào danh sách này xin vui lòng góp ý
+cho chúng tôi.
+
+\subsection{Quản lý}
+Hiện nay gói \<VNTEX> do \<THANH>, Werner Lemberg và Reinhard Kotucha quản
+lý.
+
+\subsection{Giấy phép và bản quyền}
+Các font \<URWVN> và Bitstream được phân phối theo giấy phép
+\<GPL>, các thứ còn lại theo giấy phép \<LPPL> ($\ge$\,1.3).
+
+Vui lòng xem \href{http://www.gnu.org/licenses/gpl.txt}{\<GPL>} và
+\href{http://www.latex-project.org/lppl.txt}{\<LPPL>} nếu cần biết thêm chi tiết.
+
+\subsection{Về trang web này}
+Trang web này do \<THANH> và \<THAIHOA> xây dựng và quản lý, cùng với
+sự đóng góp của Tôn Nữ Thục Anh. Riêng phần
+\href{http://vntex.sf.net/download}{download} do Reinhard Kotucha quản
+lý. Mọi ý kiến đóng góp xin gởi đến |hanthethanh| hoặc |h2vnteam| tại
+|gmail| chấm |com|.
+
+\section{Cài đặt và cập nhật}
+\subsection{Cài đặt}
+Phiên bản chính thức mới nhất của \<VNTEX> được công bố tại
+\href{http://vntex.sf.net/download/vntex}{đây}, có hướng dẫn cài đặt kèm theo.  Tuy nhiên
+bạn nên kiểm tra kỹ xem hệ thống \<TEX> bạn đang sử dụng đã có sẵn
+\<VNTEX> chưa. Nếu bạn dùng \<UNIX> thì nên dùng \<TEXLIVE>
+($\ge$\,2005), còn nếu dùng \<WINDOWS> thì nên dùng \<MIKTEX>
+($\ge$\,2.5). Làm như vậy bạn sẽ có sẵn \<VNTEX> mà không cần phải tự
+cài đặt. Lưu ý là bản \<VNTEX> có trong \<TETEX>-3.0 có một số trục
+trặc khi dùng mã \<UTF8>; nếu bạn dùng \<TETEX> thì nên tự cài đặt
+thêm \<VNTEX> phiên bản $\ge$\,3.02, hoặc chuyển sang dùng \<TEXLIVE>.
+
+Ngoài ra, để sử dụng được \<VNTEX> bạn cần phải có một trình soạn thảo để
+gõ và hiển thị được tiếng Việt. Việc cài đặt những thứ này phụ thuộc vào
+từng hệ thống nên chúng tôi không mô tả chi tiết ở đây được. Chúng tôi chỉ
+có vài gợi ý cho người mới làm quen:
+\begin{itemize}
+\item Nếu bạn dùng \<WINDOWS>, hãy chọn:
+\begin{itemize}
+\item hệ thống \<TEX>: \<MIKTEX>
+\item bộ gõ tiếng Việt: \<UNIKEY>
+\item trình soạn thảo: \<TEXMAKER> hoặc \<WINSHELL>
+\end{itemize}
+
+\item Nếu bạn dùng \<UNIX>, hãy chọn:
+\begin{itemize}
+\item hệ thống \<TEX>: \<TEXLIVE>
+\item bộ gõ tiếng Việt: \<XUNIKEY>  hoặc \<XVNKB>
+\item trình soạn thảo: \<TEXMAKER> hoặc \<KILE>
+\end{itemize}
+\end{itemize}
+
+Hướng dẫn cài đặt \<VNTEX> cụ thể cho từng hệ thống hiện chưa có. Nếu bạn
+biết có tài liệu nào viết về vấn đề này, hoặc bạn muốn viết hướng dẫn cài
+đặt \<VNTEX> cho 1 hệ thống cụ thể, xin vui lòng liên hệ với chúng tôi.
+
+\subsection{Cập nhật}
+\hypertarget{cap-nhat}{}
+Đây là nơi công bố các gói sửa lỗi cho bản \<VNTEX> đã chính thức công bố,
+hoặc những thành phần mới của \<VNTEX> chưa được tích hợp vào bản chính
+thức. Những thứ công bố ở đây sẽ được đưa vào phiên bản \<VNTEX> kế tiếp.
+
+\begin{description}
+\item[Bản sửa lỗi cho các tập \<FD> của bộ font \<VNR>:]
+  \hypertarget{cap-nhat-vnr-fd}{} sửa một số lỗi trong các tập \<FD>
+  của font \<VNR>. Tải gói
+  \href{http://vntex.sf.net/download/vntex-updates/vntex-update-20060603.zip}{này}
+  về, sau đó bung nén và ghi đè các tập này lên các tập \<FD> của
+  \<VNTEX>.
+\end{description}
+
+
+\section{Tài liệu}
+\hypertarget{tai-lieu}{}
+Đây là nơi thu thập các tài liệu tiếng Việt về \<TEX> và các  chủ đề liên
+quan. Đang được cập nhật và sắp xếp dần.
+
+\subsection{Tài liệu viết cho \<VNTEX>} 
+\hypertarget{tai-lieu-vntex}{}
+Bao gồm các tài liệu về các chủ đề liên quan trực tiếp đến \<VNTEX>.
+\begin{description}
+\item [Hướng dẫn sử dụng font với \<VNTEX>:]
+Tài liệu hướng dẫn sử dụng font với \<VNTEX> do \<THANH> và \<THAIHOA>
+viết. Xem:
+\href{http://vntex.sf.net/doc/vn-fonts.html}{\<HTML>},
+\href{http://vntex.sf.net/doc/vn-fonts.pdf}{\<PDF>},
+\href{http://vntex.sf.net/doc/vn-fonts-src.zip}{\<SRC>}.
+
+\item [Dịch ``Free Math Font Survey'' với \<MIKTEX>:]
+Tài liệu mô tả các bước cần thiết để dịch bản tiếng Việt của tài liệu
+\href{http://www.tug.org/tex-archive/info/Free_Math_Font_Survey/survey.html}
+{Free Math Font Survey} với \<MIKTEX>-2.5. Xem:
+\href{http://vntex.sf.net/doc/survey-vn-miktex.html}{\<HTML>},
+\href{http://vntex.sf.net/doc/survey-vn-miktex.pdf}{\<PDF>}.
+\end{description}
+
+
+\subsection{Tài liệu viết cho \<LATEX>} 
+Bao gồm các tài liệu được viết cho \<LATEX> và các vấn đề liên quan, được
+dịch từ tiếng Anh.
+
+\subsubsection{Các tài liệu hướng dẫn sử dụng \<LATEX>} 
+\begin{description}
+\item[Giới thiệu ngắn về \<LATEX>2e:]
+Tài liệu ``Giới thiệu ngắn về \<LATEX>2e'' (A not so short
+introduction to \<LATEX>) của Tobias Oetiker 
+do Nguyễn Tân Khoa dịch. Tải về:
+\href{http://vntex.sf.net/doc/lshort-vn.pdf}{\<PDF>},
+\href{http://vntex.sf.net/doc/lshort-vn-src.zip}{\<SRC>}.
+
+\item[Giáo trình \<LATEX>:]
+Tài liệu ``Giáo trình \<LATEX>'' (A course of \<LATEX>) của Gary
+L.~Gray do Nguyễn Phi Hùng dịch. Tải về:
+\href{http://vntex.sf.net/doc/latex-course-vn.pdf}{\<PDF>},
+\href{http://vntex.sf.net/doc/latex-course-vn-src.zip}{\<SRC>}.
+
+\item[Hướng dẫn viết luận án bằng \<LATEX>:]
+Tài liệu hướng dẫn thiết kế luận án tốt nghiệp bằng \<LATEX> được biên soạn bởi by
+Dr.~Nicola Talbot và do \<THAIHOA> dịch. Có thể tải về từ
+\href{http://theoval.cmp.uea.ac.uk/~nlct/latex/thesis_viet/index.html}{đây}.
+\end{description}
+
+% \subsubsection{Các tài liệu hướng dẫn sử dụng font với \<LATEX>2e} 
+% \begin{description}
+% \item[
+% \end{description}
+
+\subsection{Tài liệu cho một số công cụ liên quan}
+\begin{description}
+\item[Hướng dẫn sử dụng \<TEXMAKER>]
+\<TEXMAKER> là một chương trình soạn thảo \<TEX> chạy trên \<UNIX>/\<LINUX>
+và \<WINDOWS>, hỗ trợ \<UNICODE> và thích hợp với người dùng mới bắt đầu. Hướng dẫn
+sử dụng \<TEXMAKER> do \<THAIHOA> dịch. Tải về:  
+\href{http://vntex.sf.net/doc/texmaker-vn.pdf}{\<PDF>}.
+
+\item[Hướng dẫn sử dụng \<LATEXPIX>]
+\<LATEXPIX> một công cụ dùng để vẽ hình cho \<LATEX>. Phần mềm này 
+thích hợp cho những ai mới bắt đầu với \<LATEX>. 
+Tài liệu hướng dẫn sử dụng do \<THAIHOA> dịch. Tải về:
+\href{http://vntex.sf.net/doc/LaTeXPiX-vn.pdf}{\<PDF>}, hoặc bản \<PDF>
+\href{http://members.home.nl/nickvanbeurden/LaTeXPiX_vietnamese.pdf}{gốc}.
+\end{description}
+
+
+\section{Vấn đề liên quan}
+\hypertarget{van-de-lien-quan}{}
+\subsection{Sử dụng tiếng Việt với \<CONTEXT>}
+\<CONTEXT> đã hỗ trợ tiếng Việt. Xem
+\href{http://forum.vnoss.org/viewtopic.php?id=506}{tại đây} để biết thêm chi tiết
+
+\hypertarget{more-extsizes}{}
+\subsection{Sử dụng gói \texttt{extsizes} với \<VNTEX>}
+Để sử dụng gói |extsizes| với \<VNTEX>, trước tiên cần phải cập nhật các
+tập \<FD> cho các font \<VNR>. Xem thêm 
+\href{http://vntex.sf.net/download/vntex-updates}{chi tiết}.
+
+Để sử dụng được gói |extsizes| với các cỡ chữ khác như 13pt và 13.5pt,
+tải và cài đặt gói
+\href{http://vntex.sf.net/download/vntex-support/more-extsizes.zip}{more-extsizes}
+do \<THAIHOA> viết. Ví dụ:
+
+\begin{verbatim}
+\documentclass[13pt]{extarticle}
+\usepackage[utf8]{vietnam}
+\usepackage{type1cm}
+
+\begin{document}
+Văn bản này dùng cỡ chữ 13pt.
+\end{document}
+\end{verbatim}
+
+Lưu ý \emph{phải} dùng gói |type1cm| nếu văn bản có chứa các công thức
+toán.
+
+Các cỡ chữ được gói |more-extsizes| hỗ trợ thêm: 13, 13p5, 15 và 16.
+
+\hypertarget{makeindex-vn}{}
+\subsection{Sử dụng \<MAKEINDEX> với \<VNTEX>}
+\<MAKEINDEX> là một chương trình sắp xếp chỉ mục cho
+\<LATEX>. \<MAKEINDEX> không hỗ trợ tiếng Việt nên để dùng
+\<MAKEINDEX> với \<VNTEX> ta cần một chút ``mẹo''.
+
+Nếu bạn dùng \<UNIX>/\<LINUX>, hãy tải gói
+\href{http://vntex.sf.net/download/vntex-support/makeindex-vn.zip}{makeindex-vn
+  cho \<UNIX>/\<LINUX>}. Người dùng \<WINDOWS> có thể sử dụng gói
+\href{http://vntex.sf.net/download/vntex-support/vnindexwin.zip}{makeindex-vn
+  cho \<WINDOWS>} Sau khi tải về hãy bung nén và xem hướng dẫn đi kèm
+để biết cách sử dụng.
+
+Các ký tự Việt được sắp xếp theo qui tắc mô tả tại 
+\href{http://www.vietlex.com/vietnamese/quytacABC.html}{đây}.
+
+% Hướng dẫn chi tiết cho \<WINDOWS> hiện chưa có. Nếu bạn muốn viết phần này
+% chúng tôi rất hoan nghênh.
+
+\subsection{Chuyển đổi từ \<LATEX> sang \<HTML>}
+Trước đây \<VNTEX> có chứa hỗ trợ cho \<TEX4HT>, sau đó các hỗ trợ này đã
+được đưa vào bản phân phối chính thức của \<TEX4HT> nên đã được xóa khỏi
+\<VNTEX>.
+
+Để chuyển từ \<LATEX> sang \<HTML> bạn có thể dùng lệnh sau:
+\begin{verbatim}
+htlatex filename.tex "html,uni-html4,charset=utf-8" " -cunihtf -utf8"
+\end{verbatim}
+
+Bạn phải có bản \<TEX4HT> tương đối mới, ít nhất là như bản \<TEX4HT> trong
+\<TEXLIVE>2005. File \<LATEX> có thể dùng một trong các bảng mã mà
+\<VNTEX> hỗ trợ (ví dụ \<VISCII> hay \<UTF8>). \<TEX4HT> sẽ tự động ghi kết
+quả dưới mã \<UTF8>. 
+
+Trang web này cũng được viết bằng \<LATEX> và chuyển sang \<HTML> bằng
+\<TEX4HT>.   
+
+\hypertarget{bookmark-vn}{}
+\subsection{Bookmark cho \<PDF> và tiếng Việt}
+Gói |hyperref| cho phép tạo \<UNICODE> bookmark cho \<PDF>, tuy nhiên một
+số ký tự Việt chưa được hỗ trợ. Để khắc phục ta làm như sau:
+\begin{itemize}
+\item tải về gói
+  \href{http://vntex.sf.net/download/vntex-support/puenc-vn.zip}{puenc-vn}
+
+\item bung nén và chép tập |puenc.def| đè lên tập |puenc.def| của
+  |hyperref| (hoặc bạn có thể chép tập này vào thư mục chứa văn bản
+  của bạn)
+
+\item dùng gói |hyperref| trong văn bản \<LATEX> của bạn theo ví dụ sau:
+
+\begin{verbatim}
+\documentclass{article}
+\usepackage[unicode]{hyperref}
+\usepackage[utf8]{vietnam}
+\begin{document}
+\section{Tiếng Việt}
+\end{document}
+\end{verbatim}
+
+(lưu ý để bookmark hiển thị đúng bạn phải dịch văn bản \<LATEX> của bạn ít
+nhất là 2 lần)
+\end{itemize}
+
+\<UNICODE> bookmark không ``portable'' -- bạn phải dùng \<AR> phiên
+bản $\ge$\,5.0 mới xem được đầy đủ các ký tự.
+
+Nếu bạn không dùng \<UNICODE> bookmark thì \<PDF> của bạn sẽ portable hơn
+và bookmark sẽ hiển thị tốt với đa số trình duyệt \<PDF>. Tuy nhiên  một
+số ký tự Việt không được hỗ trợ trong bảng mã dùng cho \<PDF> bookmark
+(PD1), do đó các ký tự này sẽ bị mất khi tạo bookmark. Bạn có thể hạn chế điều
+này bằng cách thay thế các ký tự Việt bằng các ký tự ``gần giống'' trong
+bảng mã PD1 (ví dụ `ắ' sẽ được thay thế bằng `á') theo cách sau:
+
+\begin{verbatim}
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage[utf8]{vietnam}
+\input{pd1supp.def}
+\begin{document}
+\section{Tiếng Việt}
+\end{document}
+\end{verbatim}
+
+\hypertarget{cmap-vn}{}
+\subsection{Tạo ``searchable'' \<PDF> với tiếng Việt}
+Để có thể tìm kiếm hay cắt/dán tiếng Việt với các file \<PDF>, bạn có thể
+dùng gói |cmap| của Vladimir Volovich như sau:
+
+\begin{verbatim}
+\documentclass{article}
+\usepackage{cmap}
+\usepackage[utf8]{vietnam}
+\begin{document}
+Tiếng Việt
+\end{document}
+\end{verbatim}
+
+Lưu ý phải nạp (load) gói |cmap| trước khi nạp các gói khác. Nếu bạn quên
+điều này thì |cmap| sẽ ghi ra một số cảnh báo (warning) và file \<PDF> của
+bạn có thể sẽ không ``searchable'' (không thể tìm kiếm hoặc cắt/dán).
+
+Một số hạn chế: gói |cmap| chỉ dùng với \<PDFTEX> và không có tác dụng đối
+với ``virtual font''. Điều này có nghĩa là bạn phải dùng \<PDFTEX> để dịch
+văn bản, và các đoạn text dùng font smallcap (chọn bằng lệnh |\textsc|) sẽ
+không searchable.
+
+\section{Trợ giúp}
+\hypertarget{tro-giup}{}
+Dưới đây là một số địa chỉ bạn có thể tham khảo khi gặp một vấn
+đề nào đó với \<VNTEX> (để nhanh chóng có được câu trả lời, xin vui lòng
+dành ít phút để đọc tài liệu
+\href{http://forum.vnoss.org/pub/smart-question-vi.html}{Cách đặt một câu
+hỏi thông minh} nếu bạn chưa đọc).
+
+\begin{itemize}
+\item \<VNOSS> có diễn dàn dành cho
+\href{http://forum.vnoss.org/viewforum.php?id=10}{\<TEX>/\<LATEX>}. Ở đây
+bạn có thể hỏi về \<VNTEX>, \<CONTEXT> và các vấn đề liên quan đến tiếng
+Việt trong \<TEX>. 
+
+\item Trang web \href{http://viettug.org/}{ViệtTUG} do Huỳnh Kỳ Anh quản
+lý, chứa nhiều thông tin hữu ích cho người muốn học sử dụng \<LATEX>.
+
+\item Mailing list của \<VNTEX> có tại
+\href{http://lists.sourceforge.net/lists/listinfo/vntex-users}{đây}
+\end{itemize}
+
+
+\end{document}
