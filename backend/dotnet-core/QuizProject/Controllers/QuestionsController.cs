@@ -54,11 +54,16 @@ namespace QuizProject.Controllers
         public async Task<ActionResult<Guid>> PostSingleQuestion(Question question)
         {
             question.QuestionId = Guid.NewGuid();
+            short countChoice = 0;
             foreach (var choice in question.QuestionChoices)
             {
                 choice.ChoiceId = Guid.NewGuid();
                 choice.QuestionId = question.QuestionId;
+                if (choice.ChoiceMark != 0)
+                    ++countChoice;
             }
+            if (countChoice > 1)
+                question.MoreThanOneChoice = true;
             _context.Questions.Add(question);
             try
             {
@@ -72,23 +77,23 @@ namespace QuizProject.Controllers
             }
         }
 
-        //// GET: api/Questions/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Question>> GetQuestion(Guid id)
-        //{
-        //  if (_context.Questions == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    var question = await _context.Questions.FindAsync(id);
+        // GET: api/Questions/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Question>> GetQuestion(Guid id)
+        {
+            if (_context.Questions == null)
+            {
+                return NotFound();
+            }
+            var question = await _context.Questions.FindAsync(id);
 
-        //    if (question == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (question == null)
+            {
+                return NotFound();
+            }
 
-        //    return question;
-        //}
+            return question;
+        }
 
         // PUT: api/Questions/5
         [HttpPut("{id}")]

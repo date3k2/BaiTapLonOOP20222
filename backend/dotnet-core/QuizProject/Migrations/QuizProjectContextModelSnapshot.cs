@@ -31,7 +31,7 @@ namespace QuizProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 0L);
 
                     b.Property<string>("CategoryInfo")
                         .HasMaxLength(200)
@@ -70,6 +70,9 @@ namespace QuizProject.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("MoreThanOneChoice")
+                        .HasColumnType("bit");
 
                     b.Property<string>("QuestionCode")
                         .IsUnicode(true)
@@ -129,6 +132,9 @@ namespace QuizProject.Migrations
 
                     b.Property<bool>("IsShuffle")
                         .HasColumnType("bit");
+
+                    b.Property<double>("MaxGrade")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("OpenTime")
                         .HasColumnType("datetime2");

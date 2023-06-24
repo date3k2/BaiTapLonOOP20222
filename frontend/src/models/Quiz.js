@@ -1,9 +1,11 @@
 export class Quiz{
-    constructor(QuizName, QuizDescription, totalGrade, timeLimitInSeconds, questions){
-        this.QuizName = QuizName
-        this.QuizDescription = QuizDescription
+    constructor(quizId, quizName, quizDescription, timeLimitInSeconds, showDescription, isShuffle, maxGrade){
+        this.quizId = quizId
+        this.quizName = quizName
+        this.quizDescription = quizDescription
         this.timeLimitInSeconds = timeLimitInSeconds
-        this.totalGrade = totalGrade
-        this.questions = questions
+        this.showDescription = showDescription
+        this.isShuffle = isShuffle
+        this.maxGrade = maxGrade
     }
 }
