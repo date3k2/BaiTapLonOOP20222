@@ -16,7 +16,7 @@ namespace QuizProject.Migrations
                 columns: table => new
                 {
                     CategoryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:Identity", "0, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CategoryInfo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
                 },
@@ -36,7 +36,8 @@ namespace QuizProject.Migrations
                     CloseTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TimeLimitInSeconds = table.Column<int>(type: "int", nullable: true),
                     ShowDescription = table.Column<bool>(type: "bit", nullable: false),
-                    IsShuffle = table.Column<bool>(type: "bit", nullable: false)
+                    IsShuffle = table.Column<bool>(type: "bit", nullable: false),
+                    MaxGrade = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,6 +70,7 @@ namespace QuizProject.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     QuestionCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     QuestionText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MoreThanOneChoice = table.Column<bool>(type: "bit", nullable: false),
                     QuestionMediaPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
