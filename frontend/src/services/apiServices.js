@@ -49,7 +49,7 @@ class apiServices {
     }
 
     putQuiz(quizId, quizData){
-        return axios.post(`${URL}/${quizId}/`, quizData);
+        return axios.put(`${URL}/${quizId}`, quizData);
     }
 }
 

@@ -43,7 +43,7 @@ export default function AddQuizPage() {
 
   const handleAddQuiz = (event) => {
     event.preventDefault();
-    const quizData = new Quiz(null, quizName, description, null, timeLimit);
+    const quizData = new Quiz(null, quizName, description, timeLimit, descriptionShow, null, null);
 
     apiServices.postQuiz(quizData)
       .then(res => {
@@ -212,15 +212,15 @@ function TimeQuizz() {
       if (selectedMonth == 'April' || selectedMonth == 'June' || selectedMonth == 'September' || selectedMonth == 'November') {
         setSelectedDay(30);
       }
-      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(28);
-      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(29);
+      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(29);
+      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(28);
     }
     if (value == 30) {
-      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(28);
-      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(29);
+      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(29);
+      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(28);
     }
     if (value == 29) {
-      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(28);
+      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(28);
     }
   };
 
@@ -233,7 +233,7 @@ function TimeQuizz() {
       setSelectedDay(30);
     }
     if (value == 'February') {
-      if (selectedYear % 4 == 0) {
+      if (selectedYear % 4 != 0) {
         if (selectedDay == 31 || selectedDay == 30 || selectedDay == 29) setSelectedDay(28);
       }
       else {
@@ -245,7 +245,7 @@ function TimeQuizz() {
   const handleYearSelect = (event) => {
     const value = event.target.value;
     setSelectedYear(value);
-    if (value % 4 == 0) {
+    if (value % 4 != 0) {
       if (selectedMonth == 'February' && selectedDay == 29) {
         setSelectedDay(28);
       }
