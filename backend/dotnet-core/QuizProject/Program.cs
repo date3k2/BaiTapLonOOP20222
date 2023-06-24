@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using QuizProject.Helpers;
 using QuizProject.Methods;
 using QuizProject.Models;
+using Test;
 
 namespace BookProject
 {
@@ -9,6 +10,10 @@ namespace BookProject
     {
         public static void Main(string[] args)
         {
+            //Test
+            TestExport.Mainly(args);
+
+            //Start
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.

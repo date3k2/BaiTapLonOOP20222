@@ -17,7 +17,7 @@ namespace QuizProject.Helpers
 
         public string ToLatex(Quiz quiz)
         {
-            string title = String.Format("\\title{{0}}\r\n\\author{Team OOP chạy dl xuyên hè}\n",quiz.QuizName);
+            string title = $"\\title{{{quiz.QuizName}}}\r\n\\author{{Team OOP chạy dl xuyên hè}}\n";
             const string BEGINDOC = "\\begin{document}\r\n\\maketitle\r\n\\begin{enumerate}\n";
             const string ENDDOC = "\\end{enumerate}\r\n\\end{document}";
 
@@ -33,7 +33,7 @@ namespace QuizProject.Helpers
         public string ToLatex(Question question)
         {
             string result = question.QuestionText + "\\\\\n";
-            string includeGraphic = String.Format("\\includegraphics[width = 0.3\\textwidth]{{0}}\n", question.QuestionMediaPath);
+            string includeGraphic = $"\\includegraphics[width = 0.3\\textwidth]{{{question.QuestionMediaPath}}}\n";
             if (question.QuestionMediaPath != null) { result += includeGraphic; }
             result += "\\begin{enumerate}[{\\Alph*.}]\n";
             List<KeyValuePair<double?, char>> answer = new();
@@ -48,14 +48,16 @@ namespace QuizProject.Helpers
                 if (a.Key < 1) ans += String.Format("{0}% {1} ", Math.Round((decimal)(a.Key * 100)), a.Value);
                 else ans += a.Value;
             }
-            result += String.Format("\\end{enumerate}\nANSWER: {0}");
+            result += $"\\end{{enumerate}}\nANSWER: {ans}";
             return result;
         }
 
+        public ExportFile() {}
+
         public string ToLatex(QuestionChoice choice)
         {
-            if (choice.ChoiceMediaPath != null) return String.Format("{0}\n\\includegraphics[width = 0.3\\textwidth]{{1}}", choice.ChoiceText, choice.ChoiceMediaPath);
-            else return choice.ChoiceMediaPath ?? "";
+            if (choice.ChoiceMediaPath != null) return $"{choice.ChoiceText}\n\\includegraphics[width = 0.3\\textwidth]{{{choice.ChoiceMediaPath}}}";
+            else return choice.ChoiceText ?? "<blank>";
         }
 
         void WriteLatex(Quiz quiz, string path)
