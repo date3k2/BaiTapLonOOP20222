@@ -12,8 +12,8 @@ namespace BookProject
         public static void Main(string[] args)
         {
             //Test
-            Console.OutputEncoding = Encoding.Default;
-            TestExport.Mainly(args);
+            // Console.OutputEncoding = Encoding.Default;
+            // TestExport.Mainly(args);
 
             //Start
             var builder = WebApplication.CreateBuilder(args);
