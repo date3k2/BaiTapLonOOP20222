@@ -42,7 +42,7 @@ public partial class QuizProjectContext : DbContext
 
             entity.HasOne(d => d.CategoryParent).WithMany(p => p.CategoryRelationships)
                 .HasForeignKey(d => d.CategoryParentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_CategoryRelationship_CategoryParentId");
         });
 
@@ -60,7 +60,7 @@ public partial class QuizProjectContext : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Questions_CategoryId");
         });
 

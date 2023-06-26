@@ -56,6 +56,11 @@ namespace QuizProject.Controllers
 
             _context.Entry(quiz).State = EntityState.Modified;
 
+            foreach (var question in quiz.Questions)
+            {
+                _context.Entry(question).State = EntityState.Modified;
+            }
+
             try
             {
                 await _context.SaveChangesAsync();
