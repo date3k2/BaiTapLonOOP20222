@@ -111,7 +111,7 @@ const Scoreboard = ({timeStart, timeCompleted, quizMarks, totalMark, maximumGrad
           <Row>{DAY_IN_WEEK[completedDate.getDay()] + ", " + completedDate.toLocaleString()}</Row>
           <Row>{timeTaken >= 3600 ? Math.floor(timeTaken / 3600).toString() + " hours" : null} {timeTaken >= 60 ? Math.floor((timeTaken % 3600) / 60).toString() + " mins" : null} {Math.floor(timeTaken % 60).toString() + " secs"}</Row>
           <Row>{quizMarks.toFixed(2)} / {totalMark.toFixed(2)}</Row>
-          <Row><p className='p-0 m-0'><span className='fw-bold'>{((quizMarks / totalMark) * maximumGrade).toFixed(2)}</span> out of {totalMark} (<span className='fw-bold'>{(quizMarks * 100 / totalMark).toFixed(0)}</span> %)</p></Row>
+          <Row><p className='p-0 m-0'><span className='fw-bold'>{((quizMarks / totalMark) * maximumGrade).toFixed(2)}</span> out of {totalMark.toFixed(2)} (<span className='fw-bold'>{(quizMarks * 100 / totalMark).toFixed(0)}</span> %)</p></Row>
         </Col>
       </Row>
     </Container>

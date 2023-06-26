@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const URL = "https://localhost:7114/api/v1";
-const URL = "//localhost:4000";
+const URL = "https://localhost:7114/api/v1";
+// const URL = "//localhost:4000";
 
 class apiServices {
     getQuestions(category, doesShowSub) {
@@ -49,7 +49,7 @@ class apiServices {
     }
 
     putQuiz(quizId, quizData){
-        return axios.put(`${URL}/${quizId}`, quizData);
+        return axios.put(`${URL}/quiz/${quizId}`, quizData);
     }
 }
 

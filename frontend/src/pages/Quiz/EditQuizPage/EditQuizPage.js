@@ -51,7 +51,7 @@ function QuizQuestion({isSelect, question, index, chosenQuestion, setChosenQuest
     <Stack className="mb-1 p-1" direction="horizontal" style={{backgroundColor: '#f0f0f0'}}>
       {isSelect && <Form.Check checked={chosenQuestion.includes(question.questionId)} onChange={handleSelect}></Form.Check>}
       <p className="m-0 me-1 px-2" style={{backgroundColor: '#d9d7d7'}}>{index}</p>
-      <p className="m-0">{question.questionName + question.questionText}</p>
+      <p className="m-0">{question.questionText}</p>
       <BsZoomIn className="ms-auto me-3" />
       <BsFillTrash3Fill style={{cursor:'pointer'}} onClick={handleDelete} className="me-3" />
       <input disabled type="text" value="1.00"  size={3}/>
@@ -61,7 +61,7 @@ function QuizQuestion({isSelect, question, index, chosenQuestion, setChosenQuest
 
 export default function EditQuizPage() {
 
-  const [totalGrade, setTotalGrade] = useState(10.0);
+  const [maxGrade, setTotalGrade] = useState(10.0);
   const [isShuffle, setIsShuffle] = useState(false);
   const [quizQuestions, setQuizQuestions] = useState([]);
   const [addOption, setAddOption] = useState(-1);
@@ -78,14 +78,13 @@ export default function EditQuizPage() {
     <ARandomQuestionModal setOption={setAddOption} quizQuestions={quizQuestions} setQuizQuestions={setQuizQuestions} />
   ]
 
-  const data = useParams();
-
   useEffect(() => {
     apiServices.getQuiz(quizId)
     .then(res => {
       setQuizQuestions(res.data.questions);
       setQuizData(res.data);
-      setTotalGrade(res.data.totalGrade)
+      setTotalGrade(res.data.maxGrade);
+      setIsShuffle(res.data.isShuffle);
     })
     .catch(err => console.log(err));
   }, [])
@@ -109,8 +108,9 @@ export default function EditQuizPage() {
 
   const handleSubmit = () => {
     quizData.questions = quizQuestions;
-    quizData.totalGrade = totalGrade;
-    apiServices.putQuiz(data.quizName, quizData)
+    quizData.maxGrade = maxGrade;
+    quizData.isShuffle = isShuffle;
+    apiServices.putQuiz(quizData.quizId, quizData)
     .then(res => console.log(res))
     .catch(err => console.log(err));
   }
@@ -128,7 +128,7 @@ export default function EditQuizPage() {
         <Col style={{ fontSize: "16px" }}>Question: {quizQuestions.length} | This quiz is open</Col>
         <div className="d-flex gap-1 align-items-center">
           <Col>Maximum grade</Col>
-          <input type="text" className="form-control" style={{ width: "70px" }} value={totalGrade.toFixed(2)} onChange={e => setTotalGrade(e.target.value)} />
+          <input type="text" className="form-control" style={{ width: "70px" }} value={maxGrade.toFixed(2)} onChange={e => setTotalGrade(e.target.value)} />
           <Button type="button" style={{ backgroundColor: "#0081C9" }} onClick={handleSubmit}>
             SAVE
           </Button>

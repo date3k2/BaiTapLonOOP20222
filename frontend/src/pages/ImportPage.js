@@ -5,13 +5,19 @@ import { FileUploader } from "react-drag-drop-files"
 import apiServices from '../services/apiServices'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Category from '../component/Category'
 
 export default function ImportPage() {
 
   const [file, setFile] = useState();
+  const [category, setCategory] = useState();
 
   const handleInputChange = (file) => {
     setFile(file);
+  }
+
+  const handleChooseCategory = (e) => {
+    setCategory(e.target.value);
   }
 
   const onUpload = () => {
@@ -19,9 +25,11 @@ export default function ImportPage() {
       toast.error("Please choose a file!");
       return;
     }
-    apiServices.postImportQuestions(0, file)
-    .then(res => toast.success("Success"))
-    .catch(err => console.log(err));
+    apiServices.postImportQuestions(category, file)
+    .then(res => {
+        toast.success(res.data);
+    })
+    .catch(err => toast.warning(err.response.data));
   }
 
   return (
@@ -46,6 +54,7 @@ export default function ImportPage() {
             <Row>
               <Col><p>Import</p></Col>
               <Col>
+                <Category handleCategory={handleChooseCategory} />
                 <FileUploader 
                   handleChange={(file) => handleInputChange(file)} 
                   name='file' 

@@ -22,7 +22,7 @@ function Question({question, chooseQuestion, setChooseQuestion}){
         {/* {chooseQuestion.length > 0 && chooseQuestion.includes(question.id) ? <Form.Check type='checkbox' checked onChange={handleChooseQuestion}/> : <Form.Check type='checkbox' onChange={handleChooseQuestion}/>} */}
         <Form.Check type='checkbox' checked={chooseQuestion.includes(question)} onChange={handleChooseQuestion}/>
       </td>
-      <td>{question.questionName + question.questionText}</td>
+      <td>{question.questionText}</td>
       <td width='2%'><BsZoomIn className="ms-auto me-3" /></td>
     </tr>
   );
