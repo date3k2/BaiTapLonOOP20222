@@ -1,7 +1,6 @@
 export class Choice{
-    constructor(choiceId, questionId, choiceMark, choiceText, choiceMediaPath){
-        this.choiceId = choiceId
-        this.questionId = questionId
+    constructor(choiceMark, choiceText, choiceMediaPath){
+        // this.choiceId = null
         this.choiceMark = choiceMark
         this.choiceText = choiceText
         this.choiceMediaPath = choiceMediaPath

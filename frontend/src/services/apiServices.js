@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const URL = "https://localhost:7114/api/v1";
-const URL = "//localhost:4000";
+const URL = "https://localhost:7114/api/v1";
+//const URL = "//localhost:4000";
 
 class apiServices {
     getQuestions(category, doesShowSub) {
@@ -17,15 +17,15 @@ class apiServices {
     }
 
     getQuestion(questionID) {
-        return axios.get(`${URL}/question?questionID=${questionID}`);
+        return axios.get(`${URL}/Questions/${questionID}`);
     }
 
     putQuestion(questionData, questionID) {
-        return axios.put(`${URL}/question?questionID=${questionID}`, questionData);
+        return axios.put(`${URL}/Questions/${questionID}`, questionData);
     }
 
     postQuestion(questionData) {
-        return axios.post(`${URL}/question`, questionData)
+        return axios.post(`${URL}/Questions/Single`, questionData)
     } 
 
     postImportQuestions(categoryId, ImportQuestionsFile){

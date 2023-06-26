@@ -1,6 +1,5 @@
 export class Question{
-    constructor(questionId, categoryId, questionCode, questionText, moreThanOneChoice, questionMediaPath, questionChoices) {
-        this.questionId = questionId
+    constructor(categoryId, questionCode, questionText, moreThanOneChoice, questionMediaPath, questionChoices) {
         this.categoryId = categoryId
         this.questionCode = questionCode
         this.questionText = questionText

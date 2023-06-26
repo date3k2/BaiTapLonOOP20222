@@ -30,8 +30,6 @@ export default function AddQuizPage() {
   };
   const handleTimeLimit = (event) => {
     const value = event.target.value
-    if (selected === 1) value *= 3600;
-    else value *= 60;
     setTimeLimit(value);
   };
   const handleQuizNameChange = (event) => {
@@ -43,8 +41,11 @@ export default function AddQuizPage() {
 
   const handleAddQuiz = (event) => {
     event.preventDefault();
-    const quizData = new Quiz(null, quizName, description, timeLimit, descriptionShow, null, null);
-
+    let timeLimitInSecond = timeLimit;
+    if (!selected) timeLimitInSecond *= 60;
+    else timeLimitInSecond *= 3600;
+    const quizData = new Quiz(quizName, description, timeLimitInSecond, descriptionShow, false);
+    console.log(quizData)
     apiServices.postQuiz(quizData)
       .then(res => {
         console.log(res.data);

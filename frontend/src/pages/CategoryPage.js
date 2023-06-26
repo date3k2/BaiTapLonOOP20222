@@ -41,6 +41,7 @@ export default function CategoryPage() {
   const handleAddCategory = (event) => {
     event.preventDefault();
     const categoryData = new Category(filledName,filledInfo);
+    console.log(parentID)
     apiServices.postCategory(parentID, categoryData)
       .then(res => {
         console.log(res.data);
@@ -81,9 +82,10 @@ export default function CategoryPage() {
           </Col>
         </Form.Group>
 
+
         <br />
 
-        <Form.Group as={Row}>
+        <Form.Group class="d-flex bd-highlight" as={Row}>
           <Form.Label column style={{ fontSize: '20px' }}>
             Name
           </Form.Label>
