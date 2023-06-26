@@ -11,8 +11,8 @@ import { Choice } from '../../models/Choice'
 
 export default function EditQuestionPage() {
   let choiceMarkList =
-    [100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333,
-      30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5];
+    [1, 0.9, 0.8333333, 0.8, 0.75, 0.7, 0.6666667, 0.6, 0.5, 0.4, 0.3333333,
+      0.3, 0.25, 0.2, 0.1666667, 0.1428571, 0.125, 0.1111111, 0.1, 0.05];
   let tmp = [];
   for (let i = 0; i < choiceMarkList.length; ++i) {
     tmp[i] = -choiceMarkList[choiceMarkList.length - i - 1];
@@ -39,7 +39,7 @@ export default function EditQuestionPage() {
     // console.log(paramValue);
     apiServices.getQuestion(paramValue)
       .then(res => {
-        setFilledName(res.data.questionName)
+        setFilledName(res.data.questionCode)
         setFilledText(res.data.questionText)
         setChoices(res.data.questionChoices)
         setCategoryID(res.data.categoryId)
@@ -71,7 +71,7 @@ export default function EditQuestionPage() {
     });
   }
 
-  const handleSaveQuestionInEditPage = (event) => {
+  const handleSaveAndContinueInEditPage = (event) => {
     event.preventDefault();
     const filteredChoices = choices.filter(choice => choice.choiceText !== "");
     let totalchoiceMark = 0;
@@ -79,7 +79,7 @@ export default function EditQuestionPage() {
       if (filteredChoices[i].choiceMark > 0)
         totalchoiceMark = totalchoiceMark + Number(filteredChoices[i].choiceMark);
     }
-    if (totalchoiceMark !== 100) {
+    if (totalchoiceMark !== 1) {
       toast.warning("Total choice mark must be 100%");
       return;
     }
@@ -87,12 +87,12 @@ export default function EditQuestionPage() {
     let countPositiveChoiceGrade = 0;
     let moreThanOneChoice = false;
     for (let i = 0; i < filteredChoices.length; ++i) {
-      QuestionChoices[i] = new Choice(i + 1, null, filteredChoices[i].choiceMark/100, filteredChoices[i].choiceText, null);
+      QuestionChoices[i] = new Choice(filteredChoices[i].choiceMark, filteredChoices[i].choiceText, null);
       if (filteredChoices[i].choiceMark > 0 ) countPositiveChoiceGrade++;
     };
     if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
     else moreThanOneChoice = false;
-    const questionData = new Question(null, categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
+    const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
     console.log(questionData);
     const params = new URLSearchParams(window.location.search);
     const paramValue = params.get('questionID');
@@ -103,7 +103,7 @@ export default function EditQuestionPage() {
       .catch(error => console.log(error));
   };
 
-  const handleAddQuestionInEditPage = (event) => {
+  const handleSaveInEditPage = (event) => {
     event.preventDefault();
     const filteredChoices = choices.filter(choice => choice.choiceText !== "");
     let totalchoiceMark = 0;
@@ -111,7 +111,7 @@ export default function EditQuestionPage() {
       if (filteredChoices[i].choiceMark > 0)
         totalchoiceMark = totalchoiceMark + Number(filteredChoices[i].choiceMark);
     }
-    if (totalchoiceMark !== 100) {
+    if (totalchoiceMark !== 1) {
       toast.warning("Total choice mark must be 100%");
       return;
     }
@@ -119,12 +119,12 @@ export default function EditQuestionPage() {
     let countPositiveChoiceGrade = 0;
     let moreThanOneChoice = false;
     for (let i = 0; i < filteredChoices.length; ++i) {
-      QuestionChoices[i] = new Choice(i + 1, null, filteredChoices[i].choiceMark/100, filteredChoices[i].choiceText, null);
+      QuestionChoices[i] = new Choice(filteredChoices[i].choiceMark, filteredChoices[i].choiceText, null);
       if (filteredChoices[i].choiceMark > 0 ) countPositiveChoiceGrade++;
     };
-    if (countPositiveChoiceGrade > 1) moreThanOneChoice=true;
-    else moreThanOneChoice=false;
-    const questionData = new Question(null, categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
+    if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
+    else moreThanOneChoice = false;
+    const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
     console.log(questionData);
     const params = new URLSearchParams(window.location.search);
     const paramValue = params.get('questionID');
@@ -136,7 +136,7 @@ export default function EditQuestionPage() {
     navigate('/')
   };
 
-  const handleSaveQuestionInAddPage = (event) => {
+  const handleSaveAndContinueInAddPage = (event) => {
     event.preventDefault();
     const filteredChoices = choices.filter(choice => choice.choiceText !== "");
     let totalchoiceMark = 0;
@@ -144,7 +144,7 @@ export default function EditQuestionPage() {
       if (filteredChoices[i].choiceMark > 0)
         totalchoiceMark = totalchoiceMark + Number(filteredChoices[i].choiceMark);
     }
-    if (totalchoiceMark !== 100) {
+    if (totalchoiceMark !== 1) {
       toast.warning("Total choice mark must be 100%");
       return;
     }
@@ -152,24 +152,23 @@ export default function EditQuestionPage() {
     let countPositiveChoiceGrade = 0;
     let moreThanOneChoice = false;
     for (let i = 0; i < filteredChoices.length; ++i) {
-      QuestionChoices[i] = new Choice(i + 1, null, filteredChoices[i].choiceMark/100, filteredChoices[i].choiceText, null);
+      QuestionChoices[i] = new Choice(filteredChoices[i].choiceMark, filteredChoices[i].choiceText, null);
       if (filteredChoices[i].choiceMark > 0 ) countPositiveChoiceGrade++;
     };
     if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
     else moreThanOneChoice = false;
-    const questionData = new Question(null, categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
+    const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
     console.log(questionData);
     let param = "";
     apiServices.postQuestion(questionData)
       .then(res => {
         param = res.data
-        console.log(param);
+        navigate(`/question/edit?questionID=${param}`)
       })
       .catch(error => console.log(error));
-    navigate(`/question/edit?questionID=${param}`);
   };
 
-  const handleAddQuestionInAddPage = (event) => {
+  const handleSaveInAddPage = (event) => {
     event.preventDefault();
     const filteredChoices = choices.filter(choice => choice.choiceText !== "");
     let totalchoiceMark = 0;
@@ -177,7 +176,7 @@ export default function EditQuestionPage() {
       if (filteredChoices[i].choiceMark > 0)
         totalchoiceMark = totalchoiceMark + Number(filteredChoices[i].choiceMark);
     }
-    if (totalchoiceMark !== 100) {
+    if (totalchoiceMark !== 1) {
       toast.warning("Total choice mark must be 100%");
       return;
     }
@@ -185,14 +184,12 @@ export default function EditQuestionPage() {
     let countPositiveChoiceGrade = 0;
     let moreThanOneChoice = false;
     for (let i = 0; i < filteredChoices.length; ++i) {
-      QuestionChoices[i] = new Choice(i + 1, null, filteredChoices[i].choiceMark/100, filteredChoices[i].choiceText, null);
+      QuestionChoices[i] = new Choice(filteredChoices[i].choiceMark, filteredChoices[i].choiceText, null);
       if (filteredChoices[i].choiceMark > 0 ) countPositiveChoiceGrade++;
     };
-    console.log(countPositiveChoiceGrade);
-    if (countPositiveChoiceGrade > 1) moreThanOneChoice=true;
-    else moreThanOneChoice=false;
-    console.log(QuestionChoices);
-    const questionData = new Question(null, categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
+    if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
+    else moreThanOneChoice = false;
+    const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
     console.log(questionData);
     apiServices.postQuestion(questionData)
       .then(res => {
@@ -338,7 +335,7 @@ export default function EditQuestionPage() {
                     >
                       <option value={0}> None</option>
                       {choiceMarkList.map((choiceMark) => (
-                        <option value={choiceMark}> {choiceMark}%</option>
+                        <option value={choiceMark}> {choiceMark*100}%</option>
                       ))}
                     </Form.Select>
                   </Col>
@@ -359,7 +356,7 @@ export default function EditQuestionPage() {
         </Button>
         <br />
         <Button
-          onClick={isEdit ? handleSaveQuestionInEditPage : handleSaveQuestionInAddPage}
+          onClick={isEdit ? handleSaveAndContinueInEditPage : handleSaveAndContinueInAddPage}
           variant="primary"
           style={{ marginLeft: "500px", marginTop: "60px" }}
         >
@@ -368,7 +365,7 @@ export default function EditQuestionPage() {
         <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
         <br />
         <Button
-          onClick={isEdit ? handleAddQuestionInEditPage : handleAddQuestionInAddPage}
+          onClick={isEdit ? handleSaveInEditPage : handleSaveInAddPage}
           variant="danger"
           style={{ marginLeft: "500px", marginTop: "30px" }}
         >
