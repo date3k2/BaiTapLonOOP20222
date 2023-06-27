@@ -9,6 +9,7 @@ import { useLocation, useParams } from "react-router-dom";
 import ANewQuestionModal from "./ANewQuestionModal";
 import FromQuestionBankModal from "./FromQuestionBankModal";
 import ARandomQuestionModal from "./ARandomQuestionModal";
+import { toast, ToastContainer } from "react-toastify";
 
 function HandleHighlight(props) {
   const [isHover, setIsHover] = useState(null);
@@ -108,10 +109,11 @@ export default function EditQuizPage() {
 
   const handleSubmit = () => {
     quizData.questions = quizQuestions;
-    quizData.maxGrade = maxGrade;
+    quizData.maxGrade = Number(maxGrade);
     quizData.isShuffle = isShuffle;
+    console.log(quizData);
     apiServices.putQuiz(quizData.quizId, quizData)
-    .then(res => console.log(res))
+    .then(res => toast.success('Change quiz successfully'))
     .catch(err => console.log(err));
   }
 
@@ -128,7 +130,7 @@ export default function EditQuizPage() {
         <Col style={{ fontSize: "16px" }}>Question: {quizQuestions.length} | This quiz is open</Col>
         <div className="d-flex gap-1 align-items-center">
           <Col>Maximum grade</Col>
-          <input type="text" className="form-control" style={{ width: "70px" }} value={maxGrade.toFixed(2)} onChange={e => setTotalGrade(e.target.value)} />
+          <input type="text" className="form-control" style={{ width: "70px" }} value={maxGrade} onChange={e => setTotalGrade(e.target.value)} />
           <Button type="button" style={{ backgroundColor: "#0081C9" }} onClick={handleSubmit}>
             SAVE
           </Button>
@@ -227,6 +229,8 @@ export default function EditQuizPage() {
           </option>
         </select>
       </div>
+
+      <ToastContainer hideProgressBar autoClose={3000} />
     </Container>
   );
 }

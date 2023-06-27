@@ -2,7 +2,7 @@
     {
         "questions": [
           {
-            "categoryId": "0ccac7fa-a723-49b0-913e-79ae4b0e7d15",
+            "categoryId": "5",
             "questionId": "cf7d81dd-ccb3-4fec-aaf5-acfa2b695964",
             "questionName": "non fugiat Lorem aute sint elit eiusmod",
             "questionChoices": [
@@ -27,7 +27,7 @@
                 "choiceMark": 29
               }
             ],
-            "isMultipleChoice": false
+            "moreThanOneChoice": false
           },
           {
             "categoryId": "00de0532-b9bf-4eac-aeb8-3ed2e672412e",
@@ -55,7 +55,7 @@
                 "choiceMark": 56
               }
             ],
-            "isMultipleChoice": false
+            "moreThanOneChoice": false
           },
           {
             "categoryId": "ed1f6059-78ae-4c64-a7b9-514a7e924853",
@@ -83,7 +83,7 @@
                 "choiceMark": 30
               }
             ],
-            "isMultipleChoice": true
+            "moreThanOneChoice": true
           },
           {
             "categoryId": "17c61b59-def7-4dbb-988b-d652643deafc",
@@ -111,7 +111,7 @@
                 "choiceMark": 28
               }
             ],
-            "isMultipleChoice": true
+            "moreThanOneChoice": true
           },
           {
             "categoryId": "c261eef2-6598-466b-93c1-ed329f1fec12",
@@ -139,7 +139,7 @@
                 "choiceMark": 36
               }
             ],
-            "isMultipleChoice": true
+            "moreThanOneChoice": true
           },
           {
             "categoryId": "113ad579-a1a1-448b-a34c-d22104ebd6cb",
@@ -167,7 +167,7 @@
                 "choiceMark": 91
               }
             ],
-            "isMultipleChoice": true
+            "moreThanOneChoice": true
           },
           {
             "categoryId": "37fe9acb-5a9e-4bd4-8e20-7979c5066293",
@@ -195,7 +195,7 @@
                 "choiceMark": 38
               }
             ],
-            "isMultipleChoice": true
+            "moreThanOneChoice": true
           },
           {
             "categoryId": "cbd8daca-ceda-4370-a3ea-afbcaf7a7991",
@@ -223,7 +223,7 @@
                 "choiceMark": 83
               }
             ],
-            "isMultipleChoice": true
+            "moreThanOneChoice": true
           },
           {
             "categoryId": "ffda0176-d199-4710-89a0-953010b9e8ea",
@@ -251,7 +251,7 @@
                 "choiceMark": 45
               }
             ],
-            "isMultipleChoice": true
+            "moreThanOneChoice": true
           },
           {
             "categoryId": "db37d3a2-ecdc-4838-8116-51b2a7d9d085",
@@ -279,7 +279,7 @@
                 "choiceMark": 40
               }
             ],
-            "isMultipleChoice": true
+            "moreThanOneChoice": true
           }
         ],
         "lazyLoader": {},
@@ -289,7 +289,8 @@
         "openTime": null,
         "closeTime": null,
         "timeLimitInSeconds": 70,
-        "maximumGrade": 10
+        "maxGrade": 10,
+        "isShuffle": true
       },
     {
         "quizId": 2,

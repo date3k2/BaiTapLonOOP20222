@@ -41,7 +41,7 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
         </Col>
         <Col className='p-0'>
           <Container className='m-0 p-2' style={{backgroundColor: '#dcf5f5'}}>
-            <p>{question.questionName}</p>
+            <p>{question.questionText}</p>
             {question.questionChoices.map((choice, index) => 
               <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.isMultipleChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
             )}

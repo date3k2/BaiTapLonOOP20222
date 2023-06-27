@@ -51,7 +51,7 @@ export default function EditQuestionPage() {
         setCategories(res.data)
       })
       .catch(error => console.log(error));
-  }, [])
+  }, [isEdit]);
 
   const handleChangeName = (event) => {
     setFilledName(event.target.value);
@@ -133,7 +133,7 @@ export default function EditQuestionPage() {
         console.log(res.data);
       })
       .catch(error => console.log(error));
-    navigate('/')
+    navigate('/question');
   };
 
   const handleSaveAndContinueInAddPage = (event) => {
@@ -163,7 +163,8 @@ export default function EditQuestionPage() {
     apiServices.postQuestion(questionData)
       .then(res => {
         param = res.data
-        navigate(`/question/edit?questionID=${param}`)
+        navigate(`/question/edit?questionID=${param}`);
+        navigate(0);
       })
       .catch(error => console.log(error));
   };
@@ -196,7 +197,7 @@ export default function EditQuestionPage() {
         console.log(res.data);
       })
       .catch(error => console.log(error));
-    navigate('/')
+      navigate('/question')
   };
 
   return (

@@ -51,10 +51,12 @@ app.post('/Categories', (req, res) => {
 
  // Question
 
-app.get('/questions', (req, res) => {
-    let category = req.query.category;
-    data = require('./data/questions.json')[category];
-    res.json(data);
+app.get('/questions', (req, res) => {``
+    let categoryId = req.query.categoryId;
+    let data = require('./data/questions.json');
+    if(categoryId == '1') return res.json(data['Kỹ thuật lập trình']);
+    if(categoryId == '2') return res.json(data['Mạng máy tính']);
+    if(categoryId == '3') return res.json(data['Tin học đại cương']);
 });
 
 app.get('/question', (req, res) => {
