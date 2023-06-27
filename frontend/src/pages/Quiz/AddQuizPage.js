@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import { Button, Container, FormCheck, FormControl, NavDropdown, Stack } from 'react-bootstrap'
-import Navbar from 'react-bootstrap/Navbar';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
+import { Button, Container, FormControl, NavDropdown, Stack } from 'react-bootstrap'
+import { Col, Form, Row, Navbar } from 'react-bootstrap';
 import alert from '../../icons/alert.png'
 import exam from '../../icons/exam.png'
+import { toast, ToastContainer } from 'react-toastify';
 import questionmark from '../../icons/questionmark.png'
 import calendar from '../../icons/calendar.png'
 import apiServices from '../../services/apiServices';
@@ -41,6 +39,10 @@ export default function AddQuizPage() {
 
   const handleAddQuiz = (event) => {
     event.preventDefault();
+    if (quizName == "") {
+      toast.warning("Name need to be completed");
+      return;
+    }
     let timeLimitInSecond = timeLimit;
     if (!selected) timeLimitInSecond *= 60;
     else timeLimitInSecond *= 3600;
@@ -111,7 +113,7 @@ export default function AddQuizPage() {
         <hr />
         <Stack direction="horizontal" gap={2}>
           <NavDropdown
-            style={{ color: 'blue', fontSize: '25px' }}>
+            style={{ color: 'blue', fontSize: '25px' }} disabled> 
           </NavDropdown>
           <Navbar.Text
             style={{ color: 'red', fontSize: '25px' }}>
@@ -181,12 +183,14 @@ export default function AddQuizPage() {
       </div>
       <br />
       <div style={{ display: "flex", justifyContent: 'center' }}>
-        <Button onClick={handleAddQuiz} variant="danger">Create </Button>
+        <Button onClick={handleAddQuiz} variant="danger"> Create </Button>
+        <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
         <Button variant="primary" style={{ marginLeft: '10px' }}>Cancel </Button>
       </div>
     </Container >
   )
 }
+
 
 function TimeQuizz() {
   let listDate = [];

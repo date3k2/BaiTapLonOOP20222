@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import OptionsPanel from '../component/OptionsPanel'
 import { Button, Container, NavDropdown, Stack } from 'react-bootstrap'
 import Navbar from 'react-bootstrap/Navbar';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
+import { Col, Form, Row } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
+import axios from "axios";
 import alert from '../icons/alert.png'
 import questionmark from '../icons/questionmark.png'
 import apiServices from '../services/apiServices';
@@ -13,18 +13,14 @@ import { Category } from '../models/Category'
 export default function CategoryPage() {
   const [filledName, setFilledName] = useState("");
   const [filledInfo, setFilledInfo] = useState("");
-  const [id, setId] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [parentID, setParentID] = useState(0);
+  const [parentID, setParentID] = useState(null);
 
   const handleChangeName = (event) => {
     setFilledName(event.target.value);
   };
   const handleChangeInfo = (event) => {
     setFilledInfo(event.target.value);
-  };
-  const handleChangeId = (event) => {
-    setId(event.target.value);
   };
   const handleParentSelect = (event) => {
     setParentID(event.target.value);
@@ -40,13 +36,26 @@ export default function CategoryPage() {
 
   const handleAddCategory = (event) => {
     event.preventDefault();
-    const categoryData = new Category(filledName,filledInfo);
+    if (filledName == "" || filledInfo == "") {
+      toast.warning("Name and info need to be completed");
+      return;
+    }
+    const categoryData = new Category(filledName, filledInfo);
     console.log(parentID)
-    apiServices.postCategory(parentID, categoryData)
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(error => console.log(error));
+    if (parentID == null) {
+      axios.post(`https://localhost:7114/api/v1/Categories`, categoryData)
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => console.log(error));
+    }
+    else {
+      apiServices.postCategory(parentID, categoryData)
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => console.log(error));
+    }
   };
 
   return (
@@ -73,9 +82,8 @@ export default function CategoryPage() {
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <Form.Select onChange={handleParentSelect} style={{ width: '350px' }}>
-                <option value={0}> Default </option>
                 {categories.map((category, index) => (
-                  <option key={index} value={category.id}> {category.name}</option>
+                  <option key={index} value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                 ))}
               </Form.Select>
             </Stack>
@@ -120,7 +128,7 @@ export default function CategoryPage() {
           <Col>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
-              <Form.Control onChange={handleChangeId} type="text" style={{ width: '100px' }} />
+              <Form.Control type="text" style={{ width: '100px' }} />
             </Stack>
           </Col>
         </Form.Group>
@@ -129,12 +137,13 @@ export default function CategoryPage() {
 
         <div style={{ display: "flex", justifyContent: 'center' }}>
           <Button
-            onClick={handleAddCategory }
+            onClick={handleAddCategory}
             variant='danger'
             href='/category'
           >
             ADD CATEGORY
           </Button>
+          <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
         </div>
         <br />
         <div style={{ display: "flex", justifyContent: 'center' }}>
