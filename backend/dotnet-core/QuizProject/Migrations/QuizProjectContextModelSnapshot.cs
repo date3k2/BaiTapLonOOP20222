@@ -31,7 +31,7 @@ namespace QuizProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 0L);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), -1L);
 
                     b.Property<string>("CategoryInfo")
                         .HasMaxLength(200)
@@ -185,6 +185,7 @@ namespace QuizProject.Migrations
                     b.HasOne("QuizProject.Models.Category", "CategoryParent")
                         .WithMany("CategoryRelationships")
                         .HasForeignKey("CategoryParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_CategoryRelationship_CategoryParentId");
 
@@ -196,6 +197,7 @@ namespace QuizProject.Migrations
                     b.HasOne("QuizProject.Models.Category", "Category")
                         .WithMany("Questions")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Questions_CategoryId");
 
