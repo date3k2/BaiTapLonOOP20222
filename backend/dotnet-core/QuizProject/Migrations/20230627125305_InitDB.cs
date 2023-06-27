@@ -16,7 +16,7 @@ namespace QuizProject.Migrations
                 columns: table => new
                 {
                     CategoryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "0, 1"),
+                        .Annotation("SqlServer:Identity", "-1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CategoryInfo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
                 },
@@ -59,7 +59,8 @@ namespace QuizProject.Migrations
                         name: "FK_CategoryRelationship_CategoryParentId",
                         column: x => x.CategoryParentId,
                         principalTable: "Categories",
-                        principalColumn: "CategoryId");
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,7 +81,8 @@ namespace QuizProject.Migrations
                         name: "FK_Questions_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "CategoryId");
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

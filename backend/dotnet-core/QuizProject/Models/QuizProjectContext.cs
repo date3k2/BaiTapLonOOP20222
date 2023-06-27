@@ -29,7 +29,7 @@ public partial class QuizProjectContext : DbContext
         {
             entity.HasKey(e => e.CategoryId).HasName("PK_Categories_CategoryId");
             entity.Property(e => e.CategoryId)
-        .UseIdentityColumn(seed: 0, increment: 1);
+        .UseIdentityColumn(seed: -1, increment: 1);
             entity.Property(e => e.CategoryInfo).HasMaxLength(200).IsUnicode(true);
             entity.Property(e => e.CategoryName).HasMaxLength(100).IsUnicode(true);
         });
