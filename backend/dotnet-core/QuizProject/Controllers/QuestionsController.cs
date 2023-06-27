@@ -95,7 +95,7 @@ namespace QuizProject.Controllers
             return question;
         }
 
-        // PUT: api/Questions/5
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutQuestion(Guid id, Question question)
         {
@@ -104,11 +104,47 @@ namespace QuizProject.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(question).State = EntityState.Modified;
+            var existingQuestion = await _context.Questions.FindAsync(id);
+            //.Include(q => q.QuestionChoices)
+            //.FirstOrDefaultAsync(q => q.QuestionId == id);
 
+            if (existingQuestion == null)
+            {
+                return NotFound();
+            }
+
+            // Cập nhật các thuộc tính của Question
+            existingQuestion.CategoryId = question.CategoryId;
+            existingQuestion.QuestionCode = question.QuestionCode;
+            existingQuestion.QuestionText = question.QuestionText;
+            existingQuestion.MoreThanOneChoice = question.MoreThanOneChoice;
+            existingQuestion.QuestionMediaPath = question.QuestionMediaPath;
+
+            // Xóa các QuestionChoice không còn tồn tại trong Question mới
+            var removedChoices = existingQuestion.QuestionChoices
+                .Where(c => !question.QuestionChoices.Any(newC => newC.ChoiceId == c.ChoiceId))
+                .ToList();
+            _context.QuestionChoices.RemoveRange(removedChoices);
+
+            // Cập nhật hoặc thêm các QuestionChoice mới
             foreach (var choice in question.QuestionChoices)
             {
-                _context.Entry(choice).State = EntityState.Modified;
+                if (choice.ChoiceId != null)
+                {
+                    var existingChoice = existingQuestion.QuestionChoices
+                        .FirstOrDefault(c => c.ChoiceId == choice.ChoiceId);
+
+                    existingChoice!.ChoiceText = choice.ChoiceText;
+                    existingChoice!.ChoiceMark = choice.ChoiceMark;
+                    existingChoice!.ChoiceMediaPath = choice.ChoiceMediaPath;
+
+                }
+
+                else
+                {
+                    choice.ChoiceId = Guid.NewGuid();
+                    existingQuestion.QuestionChoices.Add(choice);
+                }
             }
 
             try
@@ -122,6 +158,7 @@ namespace QuizProject.Controllers
 
             return Ok("Done");
         }
+
 
         /// <summary>
         /// API import câu hỏi từ file .txt và .docx dưới định dạng Aiken format

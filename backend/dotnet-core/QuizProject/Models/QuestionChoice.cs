@@ -4,7 +4,7 @@ namespace QuizProject.Models;
 
 public partial class QuestionChoice
 {
-    public Guid ChoiceId { get; set; }
+    public Guid? ChoiceId { get; set; }
 
     public Guid? QuestionId { get; set; }
 

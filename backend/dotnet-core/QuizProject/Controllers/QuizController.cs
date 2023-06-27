@@ -44,41 +44,54 @@ namespace QuizProject.Controllers
             return quiz;
         }
 
-        // PUT: api/Quiz/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuiz(Guid id, Quiz quiz)
+        public async Task<IActionResult> PutQuiz(Guid id, QuizUpdate quizUpdate)
         {
-            if (id != quiz.QuizId)
+            if (id != quizUpdate.QuizId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(quiz).State = EntityState.Modified;
+            var existingQuiz = await _context.Quizzes.FindAsync(id);
 
-            foreach (var question in quiz.Questions)
+            if (existingQuiz == null)
             {
-                _context.Entry(question).State = EntityState.Modified;
+                return NotFound();
             }
 
+            // Cập nhật các thuộc tính của Quiz
+            existingQuiz.QuizName = quizUpdate.QuizName;
+            existingQuiz.QuizDescription = quizUpdate.QuizDescription;
+            existingQuiz.OpenTime = quizUpdate.OpenTime;
+            existingQuiz.CloseTime = quizUpdate.CloseTime;
+            existingQuiz.TimeLimitInSeconds = quizUpdate.TimeLimitInSeconds;
+            existingQuiz.ShowDescription = quizUpdate.ShowDescription;
+            existingQuiz.IsShuffle = quizUpdate.IsShuffle;
+            existingQuiz.MaxGrade = quizUpdate.MaxGrade;
+
+            // Thay đổi các câu hỏi trong Quiz
+            var deleteQuery = $"DELETE FROM QuizQuestion WHERE QuizId = '{id}'";
+            await _context.Database.ExecuteSqlRawAsync(deleteQuery);
+
+            foreach (var questionId in quizUpdate.ListQuestionId)
+            {
+                var insertQuery = $"INSERT INTO QuizQuestion (QuizId, QuestionId) VALUES ('{id}', '{questionId}')";
+                await _context.Database.ExecuteSqlRawAsync(insertQuery);
+            }
             try
             {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!QuizExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             return NoContent();
         }
+
 
         // POST: api/Quiz
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
