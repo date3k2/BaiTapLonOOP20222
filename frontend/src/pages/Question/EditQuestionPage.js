@@ -76,7 +76,7 @@ export default function EditQuestionPage() {
 
   const handleSaveAndContinue = (event) => {
     event.preventDefault();
-    if ( filledName == "" || filledText == "") {
+    if (filledName == "" || filledText == "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
@@ -86,7 +86,7 @@ export default function EditQuestionPage() {
       if (filteredChoices[i].choiceMark > 0)
         totalchoiceMark = totalchoiceMark + Number(filteredChoices[i].choiceMark);
     }
-    if (totalchoiceMark !== 1) {
+    if (totalchoiceMark > 1.001 || totalchoiceMark < 0.999) {
       toast.warning("Total grades must be 100%");
       return;
     }
@@ -98,6 +98,7 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      questionData.categoryId = categoryID;
       questionData.questionCode = filledName;
       questionData.questionText = filledText;
       questionData.moreThanOneChoice = moreThanOneChoice;
@@ -135,7 +136,7 @@ export default function EditQuestionPage() {
 
   const handleSave = (event) => {
     event.preventDefault();
-    if ( filledName == "" || filledText == "") {
+    if (filledName == "" || filledText == "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
@@ -157,6 +158,7 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      questionData.categoryId = categoryID;
       questionData.questionCode = filledName;
       questionData.questionText = filledText;
       questionData.moreThanOneChoice = moreThanOneChoice;
@@ -168,7 +170,7 @@ export default function EditQuestionPage() {
           console.log(res.data);
         })
         .catch(error => console.log(error));
-        navigate('/question');
+      navigate('/question');
     }
     else {
       const QuestionChoices = [];
@@ -182,7 +184,7 @@ export default function EditQuestionPage() {
       else moreThanOneChoice = false;
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
       console.log(questionData);
-      apiServices.putQuestion(questionData, questionId)
+      apiServices.postQuestion(questionData, questionId)
         .then(res => {
           console.log(res.data);
         })
@@ -203,34 +205,32 @@ export default function EditQuestionPage() {
       }
       <div style={{ padding: "25px" }}>
         <Stack direction="horizontal" gap={2}>
-          <NavDropdown
-            disabled
-            style={{ color: "blue", fontSize: "25px" }}
-          ></NavDropdown>
+          <NavDropdown disabled style={{ color: "blue", fontSize: "25px" }}>
+          </NavDropdown>
           <Navbar.Text style={{ color: "red", fontSize: "25px" }}>
             General
           </Navbar.Text>
         </Stack>
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: "20px" }}>
+
+        <div className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Category
-          </Form.Label>
-          <Col>
+          </Col>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "350px" }}>
               {categories.map((category) => (
                 <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
               ))}
             </Form.Select>
           </Col>
-        </Form.Group>
+        </div>
 
         <br />
-
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: "20px" }}>
+        <div className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Question name
-          </Form.Label>
-          <Col>
+          </Col>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width="13" height="13" alt="img" />
               <Form.Control
@@ -242,23 +242,16 @@ export default function EditQuestionPage() {
               />
             </Stack>
           </Col>
-        </Form.Group>
+        </div>
 
         <br />
-
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: "20px" }}>
+        <div className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Question text
-          </Form.Label>
-          <Col>
+          </Col>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
-              <img
-                src={alert}
-                width="13"
-                height="13"
-                style={{ marginBottom: "260px" }}
-                alt="Img"
-              />
+              <img src={alert} width="13" height="13" style={{ marginBottom: "260px" }} alt="Img" />
               <Form.Control value={filledText} onChange={handleChangeText}
                 type="text"
                 placeholder="Question text"
@@ -267,37 +260,25 @@ export default function EditQuestionPage() {
               />
             </Stack>
           </Col>
-        </Form.Group>
+        </div>
 
         <br />
-
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: "20px" }}>
+        <div className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Default mark
-          </Form.Label>
-          <Col>
+          </Col>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width="13" height="13" alt="Img" />
-              <Form.Control
-                type="text"
-                style={{ width: "100px" }}
-                defaultValue={1}
-              />
+              <Form.Control type="text" style={{ width: "100px" }} defaultValue={1} />
             </Stack>
           </Col>
-        </Form.Group>
+        </div>
+
         <br />
         {
           choices.map((choice, index) => (
-            <Card
-              style={{
-                width: "550px",
-                height: "300px",
-                marginLeft: "560px",
-                marginTop: "20px",
-                backgroundColor: "#f0eeed",
-              }}
-            >
+            <Card className="d-flex" style={{ width: "550px", height: "300px", marginLeft: "45%", marginTop: "20px", backgroundColor: "#f0eeed"}}>
               <Card.Body>
                 <Form.Group as={Row}>
                   <Form.Label column style={{ fontSize: "20px" }}>
@@ -338,34 +319,33 @@ export default function EditQuestionPage() {
         <Button
           onClick={() => {
             setChoices(choices => [...choices, { choiceText: "", choiceMark: 0 }, { choiceText: "", choiceMark: 0 }, { choiceText: "", choiceMark: 0 }])
-          }
-          }
+          }}
           variant="primary"
-          style={{ marginLeft: "550px", marginTop: "50px" }}
+          style={{ marginLeft: "45%", marginTop: "50px" }}
         >
           BLANKS FOR 3 MORE CHOICES
         </Button>
-        <br />
+        
         <Button
           onClick={handleSaveAndContinue}
           variant="primary"
-          style={{ marginLeft: "500px", marginTop: "60px" }}
+          style={{ marginLeft: "40%", marginTop: "70px" }}
         >
           SAVE CHANGE AND CONTINUE EDITING
         </Button>
         <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
-        <br />
+
         <Button
           onClick={handleSave}
           variant="danger"
-          style={{ marginLeft: "500px", marginTop: "30px" }}
+          style={{ marginLeft: "40%", marginTop: "30px" }}
         >
           SAVE CHANGES
         </Button>
         <Button
           variant="primary"
           style={{ marginLeft: "20px", marginTop: "30px" }}
-          href="/"
+          href="/question"
         >
           CANCEL
         </Button>

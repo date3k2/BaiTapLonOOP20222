@@ -8,6 +8,7 @@ import questionmark from '../../icons/questionmark.png'
 import calendar from '../../icons/calendar.png'
 import apiServices from '../../services/apiServices';
 import { Quiz } from '../../models/Quiz'
+import { Navigate, redirect, useNavigate } from 'react-router-dom'
 
 export default function AddQuizPage() {
   const [quizName, setQuizName] = useState("");
@@ -16,6 +17,7 @@ export default function AddQuizPage() {
   const [description, setDescription] = useState("");
   const [timeLimit, setTimeLimit] = useState(null);
   const [selected, setSelected] = useState(0);
+  const navigate = useNavigate()
 
   const handleDescriptionShowChange = (event) => {
     setDescriptionShow(event.target.checked);
@@ -40,7 +42,7 @@ export default function AddQuizPage() {
   const handleAddQuiz = (event) => {
     event.preventDefault();
     if (quizName == "") {
-      toast.warning("Name need to be completed");
+      toast.warning("Quiz name need to be completed");
       return;
     }
     let timeLimitInSecond = timeLimit;
@@ -51,6 +53,7 @@ export default function AddQuizPage() {
     apiServices.postQuiz(quizData)
       .then(res => {
         console.log(res.data);
+        navigate('/')
       })
       .catch(error => console.log(error));
   };
@@ -59,8 +62,7 @@ export default function AddQuizPage() {
     <Container className='border p-2'>
       <Stack direction="horizontal" gap={2}>
         <img src={exam} width='15px' height='17px' style={{ marginBottom: '10px' }} />
-        <p
-          style={{ color: 'red', fontSize: '30px' }}>
+        <p style={{ color: 'red', fontSize: '30px' }}>
           Adding a new Quiz
         </p>
         <img src={questionmark} width='15px' height='15px' style={{ marginBottom: '10px' }} />
@@ -68,110 +70,99 @@ export default function AddQuizPage() {
 
       <div style={{ padding: '25px' }}>
         <Stack direction="horizontal" gap={2}>
-          <NavDropdown
-            disabled
-            style={{ color: 'blue', fontSize: '25px' }}>
+          <NavDropdown disabled style={{ color: 'blue', fontSize: '25px' }}>
           </NavDropdown>
-          <Navbar.Text
-            style={{ color: 'red', fontSize: '25px' }}>
+          <Navbar.Text style={{ color: 'red', fontSize: '25px' }}>
             General
           </Navbar.Text>
         </Stack>
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: '20px' }}>
+
+        <div className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Name
-          </Form.Label>
-          <Col>
+          </Col>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' />
               <Form.Control onChange={handleQuizNameChange} type='text' style={{ width: '500px' }} />
             </Stack>
           </Col>
-        </Form.Group>
+        </div>
 
         <br />
-
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: '20px' }}>
+        <div className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Description
-          </Form.Label>
-          <Col style={{ marginLeft: '42px' }} >
-            <Form.Control onChange={handleDescriptionChange} type="text" as="textarea" style={{ height: '300px' }} />
-
-            <Stack direction="horizontal" gap={2}>
-              <Form.Check
-                type='checkbox'
-                label='Display description on course page'
-                checked={descriptionShow}
-                onChange={handleDescriptionShowChange}
-              />
-              <img src={questionmark} width='13px' height='13px' />
-            </Stack>
           </Col>
-        </Form.Group>
+          <Col style={{ marginLeft: '71px' }} className='col-4'>
+            <div>
+              <Form.Control onChange={handleDescriptionChange} type="text" as="textarea" style={{ width: '600px', height: '300px' }} />
+              <Stack direction="horizontal" gap={2}>
+                <Form.Check
+                  type='checkbox'
+                  label='Display description on course page'
+                  checked={descriptionShow}
+                  onChange={handleDescriptionShowChange} />
+                <img src={questionmark} width='13px' height='13px' />
+              </Stack>
+            </div>
+          </Col>
+        </div>
 
         <hr />
         <Stack direction="horizontal" gap={2}>
-          <NavDropdown
-            style={{ color: 'blue', fontSize: '25px' }} disabled> 
+          <NavDropdown style={{ color: 'blue', fontSize: '25px' }} disabled>
           </NavDropdown>
-          <Navbar.Text
-            style={{ color: 'red', fontSize: '25px' }}>
+          <Navbar.Text style={{ color: 'red', fontSize: '25px' }}>
             Timing
           </Navbar.Text>
         </Stack>
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: '20px' }}>
+
+        <div className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Open the quizz
-          </Form.Label>
-          <Col>
+          </Col>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <TimeQuizz />
             </Stack>
           </Col>
-        </Form.Group>
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: '20px' }}>
+        </div>
+
+        <div style={{ marginTop: '15px' }} className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Close the quizz
-          </Form.Label>
-          <Col style={{ marginLeft: '42px' }}>
+          </Col>
+          <Col style={{ marginLeft: '71px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <TimeQuizz />
             </Stack>
           </Col>
-        </Form.Group>
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: '20px' }}>
+        </div>
+
+        <div style={{ marginTop: '15px' }} className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             Time limit
-          </Form.Label>
-          <Col>
+          </Col>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <FormControl disabled={isChecked ? null : 'disabled'} onChange={handleTimeLimit} type='text' style={{ width: '100px' }} />
               <Form.Select disabled={isChecked ? null : 'disabled'} onChange={handleSelectedChange} style={{ width: '115px' }}>
-                <option value={0}>
-                  minutes
-                </option>
-                <option value={1}>
-                  hours
-                </option>
+                <option value={0}>  minutes </option>
+                <option value={1}> hours </option>
               </Form.Select>
-
-              <Form.Check
-                type='checkbox'
-                label='Enable'
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
+              <Form.Check type='checkbox' label='Enable' checked={isChecked} onChange={handleCheckboxChange} />
             </Stack>
           </Col>
-        </Form.Group>
-        <Form.Group as={Row}>
-          <Form.Label column style={{ fontSize: '20px' }}>
+        </div>
+
+        <div style={{ marginTop: '15px' }} className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
             When time expires
-          </Form.Label>
-          <Col>
+          </Col>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <Form.Select style={{ width: '340px' }}>
@@ -179,13 +170,13 @@ export default function AddQuizPage() {
               </Form.Select>
             </Stack>
           </Col>
-        </Form.Group>
+        </div>
       </div>
-      <br />
-      <div style={{ display: "flex", justifyContent: 'center' }}>
+
+      <div style={{ marginTop: '30px', display: "flex", justifyContent: 'center' }}>
         <Button onClick={handleAddQuiz} variant="danger"> Create </Button>
         <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
-        <Button variant="primary" style={{ marginLeft: '10px' }}>Cancel </Button>
+        <Button variant="primary" style={{ marginLeft: '20px' }} href='/'> Cancel </Button>
       </div>
     </Container >
   )
@@ -297,10 +288,7 @@ function TimeQuizz() {
       </Form.Select>
 
       <img src={calendar} width='15px' height='15px' />
-      <Form.Check
-        type='checkbox'
-        label='Enable'
-      />
+      <Form.Check type='checkbox' label='Enable' />
     </>
   );
 }
