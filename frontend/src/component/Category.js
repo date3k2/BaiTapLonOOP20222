@@ -17,7 +17,6 @@ export default function Category({handleCategory}) {
       <p className='me-2 mt-2'>Select a category: </p>
       <Form.Select style={{width: "250px"}} defaultValue='-1' onChange={handleCategory}>
         <option value='-1' disabled hidden>--- Select a category ---</option>
-        <option value='0'>Default</option>
           {
             categories.map((item, index) => {
             let space = `${'\xa0'.repeat(item.level*2)}`;

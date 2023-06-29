@@ -43,7 +43,7 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
           <Container className='m-0 p-2' style={{backgroundColor: '#dcf5f5'}}>
             <p>{question.questionText}</p>
             {question.questionChoices.map((choice, index) => 
-              <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.isMultipleChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
+              <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
             )}
           </Container>
         </Col>
@@ -111,7 +111,7 @@ const Scoreboard = ({timeStart, timeCompleted, quizMarks, totalMark, maximumGrad
           <Row>{DAY_IN_WEEK[completedDate.getDay()] + ", " + completedDate.toLocaleString()}</Row>
           <Row>{timeTaken >= 3600 ? Math.floor(timeTaken / 3600).toString() + " hours" : null} {timeTaken >= 60 ? Math.floor((timeTaken % 3600) / 60).toString() + " mins" : null} {Math.floor(timeTaken % 60).toString() + " secs"}</Row>
           <Row>{quizMarks.toFixed(2)} / {totalMark.toFixed(2)}</Row>
-          <Row><p className='p-0 m-0'><span className='fw-bold'>{((quizMarks / totalMark) * maximumGrade).toFixed(2)}</span> out of {totalMark.toFixed(2)} (<span className='fw-bold'>{(quizMarks * 100 / totalMark).toFixed(0)}</span> %)</p></Row>
+          <Row><p className='p-0 m-0'><span className='fw-bold'>{((quizMarks / totalMark) * maximumGrade).toFixed(2)}</span> out of {maximumGrade.toFixed(2)} (<span className='fw-bold'>{(quizMarks * 100 / totalMark).toFixed(0)}</span> %)</p></Row>
         </Col>
       </Row>
     </Container>
@@ -153,8 +153,9 @@ export default function ExamPage() {
   const handleSubmit = () => {
     let totalMark = 0;
     answer.forEach(item => {
-      item.forEach(i => totalMark += i.choiceMark / 100);
+      item.forEach(i => totalMark += i.choiceMark);
     });
+    console.log(totalMark);
     setTotalMark(totalMark);
     setTimeQuizFinished(Date.now());
     setIsQuizFinished(true);
@@ -177,7 +178,7 @@ export default function ExamPage() {
         <Col xs={9} className='border p-2 me-2'>
           {
             isQuizFinished ? 
-            <Scoreboard timeStart={timeQuizStart} timeCompleted={timeQuizFinished} quizMarks={totalMark} totalMark={quizData.questions.length} maximumGrade={quizData.maximumGrade}/>
+            <Scoreboard timeStart={timeQuizStart} timeCompleted={timeQuizFinished} quizMarks={totalMark} totalMark={quizData.questions.length} maximumGrade={quizData.maxGrade}/>
             : <Timer quizTimeLimit={quizTimeLimit} handleSubmit={() => handleSubmit()} />
           }
           {

@@ -108,10 +108,13 @@ export default function EditQuizPage() {
   }
 
   const handleSubmit = () => {
-    quizData.questions = quizQuestions;
+    // console.log(typeof quizData)
+    delete quizData['questions'];
+    let quizQuestionId = quizQuestions.map(question => question.questionId);
+    quizData.listQuestionId = quizQuestionId;
     quizData.maxGrade = Number(maxGrade);
     quizData.isShuffle = isShuffle;
-    console.log(quizData);
+    // console.log(quizData);
     apiServices.putQuiz(quizData.quizId, quizData)
     .then(res => toast.success('Change quiz successfully'))
     .catch(err => console.log(err));
