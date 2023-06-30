@@ -4,7 +4,19 @@ import apiServices from '../services/apiServices';
 import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Countdown from 'react-countdown';
 
-function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinished}){
+function ShuffledQuestionChoices(question){
+
+  let shuffleQuestionChoices = question.questionChoices;
+
+  for (let i = shuffleQuestionChoices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffleQuestionChoices[i], shuffleQuestionChoices[j]] = [shuffleQuestionChoices[j], shuffleQuestionChoices[i]];
+  }
+
+  return shuffleQuestionChoices;
+}
+
+function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinished, isShuffle}){
 
   let correctChoiceList = [];
   question.questionChoices.forEach(choice => {
@@ -42,9 +54,17 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
         <Col className='p-0'>
           <Container className='m-0 p-2' style={{backgroundColor: '#dcf5f5'}}>
             <p>{question.questionText}</p>
-            {question.questionChoices.map((choice, index) => 
-              <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
-            )}
+            {
+              isShuffle ? 
+              ShuffledQuestionChoices(question).map((choice, index) => 
+                <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
+              ) 
+              :
+              question.questionChoices.map((choice, index) => 
+                <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
+              )
+            }
+
           </Container>
         </Col>
         {
@@ -182,7 +202,7 @@ export default function ExamPage() {
             : <Timer quizTimeLimit={quizTimeLimit} handleSubmit={() => handleSubmit()} />
           }
           {
-            quizData && quizData.questions.map((question, index) => <ExamQuestion getMap={getMap} key={question.questionId} question={question} index={index} answer={answer} setAnswer={setAnswer} isQuizFinished={isQuizFinished}/>)
+            quizData && quizData.questions.map((question, index) => <ExamQuestion getMap={getMap} key={question.questionId} question={question} index={index} answer={answer} setAnswer={setAnswer} isQuizFinished={isQuizFinished} isShuffle={quizData.isShuffle}/>)
           }
         </Col>
         <Col className='border'>

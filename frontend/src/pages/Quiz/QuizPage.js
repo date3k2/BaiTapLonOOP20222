@@ -12,7 +12,7 @@ function formatTime(seconds) {
   // const formattedHours = String(hours).padStart(2, '0'); 
   // const formattedMinutes = String(remainingMinutes).padStart(2, '0'); 
   // return `${formattedMinutes}hours:${formattedMinutes}minutes`; 
-  return (hours ? hours + (hours > 1 ? ' hours ' : ' hour ') : '') + (remainingMinutes ? remainingMinutes + (remainingMinutes > 1 ? ' minutes ' : ' minute ') : '') + (seconds - 60 * minutes ? seconds - 60 * minutes + (seconds - 60 * minutes > 1 ? ' seconds ' : ' second ') : '');
+  return (hours ? hours + (hours > 1 ? ' hours' : ' hour') : '') + (remainingMinutes ? remainingMinutes + (remainingMinutes > 1 ? ' minutes' : ' minute') : '') + (seconds - 60 * minutes ? seconds - 60 * minutes + (seconds - 60 * minutes > 1 ? ' seconds' : ' second') : '');
 }
 export default function PreviewQuiz() {
     
