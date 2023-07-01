@@ -9,12 +9,14 @@ import alert from '../icons/alert.png'
 import questionmark from '../icons/questionmark.png'
 import apiServices from '../services/apiServices';
 import { Category } from '../models/Category'
+import { Navigate, redirect, useNavigate } from 'react-router-dom'
 
 export default function CategoryPage() {
   const [filledName, setFilledName] = useState("");
   const [filledInfo, setFilledInfo] = useState("");
   const [categories, setCategories] = useState([]);
   const [parentID, setParentID] = useState(null);
+  const navigate = useNavigate()
 
   const handleChangeName = (event) => {
     setFilledName(event.target.value);
@@ -42,10 +44,11 @@ export default function CategoryPage() {
     }
     const categoryData = new Category(filledName, filledInfo);
     console.log(parentID)
-    if (parentID == null) {
+    if (parentID == 'Default' || parentID == null) {
       axios.post(`https://localhost:7114/api/v1/Categories`, categoryData)
         .then(res => {
           console.log(res.data);
+          navigate(0);
         })
         .catch(error => console.log(error));
     }
@@ -53,6 +56,7 @@ export default function CategoryPage() {
       apiServices.postCategory(parentID, categoryData)
         .then(res => {
           console.log(res.data);
+          navigate(0);
         })
         .catch(error => console.log(error));
     }
@@ -78,8 +82,9 @@ export default function CategoryPage() {
           <Col style={{marginLeft: '50px'}} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
-              <Form.Select onChange={handleParentSelect} style={{ width: '350px' }}>
-                {categories.map((category, index) => (
+              <Form.Select value={parentID} onChange={handleParentSelect} style={{ width: '300px' }}>
+                <option>Default </option>
+                {categories.slice(1).map((category, index) => (
                   <option key={index} value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                 ))}
               </Form.Select>
@@ -87,9 +92,7 @@ export default function CategoryPage() {
           </Col>
         </div>
 
-
         <br />
-
         <div className='row justify-content-start'>
           <Col className='col-4' style={{ fontSize: '20px' }}>
             Name
@@ -97,7 +100,7 @@ export default function CategoryPage() {
           <Col style={{marginLeft: '50px'}} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' />
-              <Form.Control onChange={handleChangeName} type="text" style={{ width: '480px' }} />
+              <Form.Control onChange={handleChangeName} type="text" style={{ width: '400px' }} />
             </Stack>
           </Col>
         </div>

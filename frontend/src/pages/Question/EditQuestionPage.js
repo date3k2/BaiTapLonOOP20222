@@ -217,7 +217,7 @@ export default function EditQuestionPage() {
             Category
           </Col>
           <Col style={{ marginLeft: '50px' }} className='col-6'>
-            <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "350px" }}>
+            <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }}>
               {categories.map((category) => (
                 <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
               ))}
@@ -238,7 +238,7 @@ export default function EditQuestionPage() {
                 onChange={handleChangeName}
                 type="text"
                 placeholder="Question name"
-                style={{ width: "480px" }}
+                style={{ width: "400px" }}
               />
             </Stack>
           </Col>
@@ -251,12 +251,12 @@ export default function EditQuestionPage() {
           </Col>
           <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
-              <img src={alert} width="13" height="13" style={{ marginBottom: "260px" }} alt="Img" />
+              <img src={alert} width="13" height="13" style={{ marginBottom: "270px" }} alt="Img" />
               <Form.Control value={filledText} onChange={handleChangeText}
                 type="text"
                 placeholder="Question text"
                 as="textarea"
-                style={{ height: "300px" }}
+                style={{ width:'600px', height: '300px' }}
               />
             </Stack>
           </Col>

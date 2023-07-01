@@ -84,7 +84,7 @@ export default function AddQuizPage() {
           <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' />
-              <Form.Control onChange={handleQuizNameChange} type='text' style={{ width: '500px' }} />
+              <Form.Control onChange={handleQuizNameChange} type='text' style={{ width: '400px' }} />
             </Stack>
           </Col>
         </div>
@@ -109,7 +109,7 @@ export default function AddQuizPage() {
           </Col>
         </div>
 
-        <hr />
+        <br/> <hr/>
         <Stack direction="horizontal" gap={2}>
           <NavDropdown style={{ color: 'blue', fontSize: '25px' }} disabled>
           </NavDropdown>
