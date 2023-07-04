@@ -35,10 +35,11 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const [category, setCategory] = useState();
 
-  let data = useParams();
-
   const handleSubmit = () => {
-    setQuizQuestions(quizQuestions => [...quizQuestions, ...chooseQuestion])
+    let filteredChooseQuestion = [];
+    for(let i = 0 ; i < chooseQuestion.length ; ++i)
+    if(quizQuestions.filter(question => question.questionId === chooseQuestion[i].questionId).length === 0) filteredChooseQuestion.push(chooseQuestion[i]);
+    setQuizQuestions([...quizQuestions, ...filteredChooseQuestion]);
   }
 
   useEffect(() => {

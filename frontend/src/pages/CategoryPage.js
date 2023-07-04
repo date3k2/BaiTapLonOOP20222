@@ -15,7 +15,7 @@ export default function CategoryPage() {
   const [filledName, setFilledName] = useState("");
   const [filledInfo, setFilledInfo] = useState("");
   const [categories, setCategories] = useState([]);
-  const [parentID, setParentID] = useState(null);
+  const [parentID, setParentID] = useState(0);
   const navigate = useNavigate()
 
   const handleChangeName = (event) => {
@@ -43,22 +43,21 @@ export default function CategoryPage() {
       return;
     }
     const categoryData = new Category(filledName, filledInfo);
-    console.log(parentID)
-    if (parentID == 'Default' || parentID == null) {
-      axios.post(`https://localhost:7114/api/v1/Categories`, categoryData)
+    if (parentID == 0) {
+      apiServices.postCategory(categoryData)
         .then(res => {
           console.log(res.data);
-          navigate(0);
         })
         .catch(error => console.log(error));
+      navigate(0);
     }
     else {
       apiServices.postCategory(parentID, categoryData)
         .then(res => {
           console.log(res.data);
-          navigate(0);
         })
         .catch(error => console.log(error));
+      navigate(0);
     }
   };
 
@@ -83,7 +82,7 @@ export default function CategoryPage() {
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <Form.Select value={parentID} onChange={handleParentSelect} style={{ width: '300px' }}>
-                <option>Default </option>
+                <option value ={0}>Default </option>
                 {categories.slice(1).map((category, index) => (
                   <option key={index} value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                 ))}

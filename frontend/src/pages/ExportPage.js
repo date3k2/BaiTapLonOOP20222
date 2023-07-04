@@ -8,9 +8,14 @@ export default function ExportPage() {
   const [quizList, setQuizList] = useState([]);
   const [hasPassword, setHasPassword] = useState(false);
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleExport = () => {
-
+    if(confirmPassword !== password){
+      setErrorMessage("Confirm password doesn't match password!");
+      return;
+    } else setErrorMessage("");
   }
 
   useEffect(() => {
@@ -37,9 +42,25 @@ export default function ExportPage() {
               })
             } 
             </Form.Select>
-            <Form.Check value={hasPassword} label="Set password" onChange={() => {setHasPassword(hasPassword => !hasPassword); setPassword('');}}/>
+            <Form.Check value={hasPassword} label="Set password" onChange={() => {setHasPassword(hasPassword => !hasPassword); setPassword(''); setConfirmPassword(''); setErrorMessage('')}}/>
             { hasPassword ?
-              <Form.Control value={password} style={{width: '300px'}} onChange={e => setPassword(e.target.value)} />
+              <Col>
+                <Row className='my-2'>
+                  <Col><p>Password:</p></Col>
+                  <Col xs={10}><Form.Control value={password} style={{width: '300px'}} onChange={e => setPassword(e.target.value)} /></Col>
+                </Row>
+                <Row>
+                  <Col><p>Confirm password:</p></Col>
+                  <Col xs={10}><Form.Control value={confirmPassword} style={{width: '300px'}} onChange={e => setConfirmPassword(e.target.value)} /></Col>
+                </Row>
+              </Col>
+              : null
+            }
+            {
+              errorMessage.length > 0 ?
+              <p className='m-0 text-danger fw-bold'>
+                {errorMessage}
+              </p>
               : null
             }
             <Button className='mt-3' onClick={handleExport}>Export</Button>

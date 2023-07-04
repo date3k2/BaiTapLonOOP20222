@@ -128,9 +128,9 @@ export default function EditQuestionPage() {
         .then(res => {
           param = res.data
           navigate(`/question/edit?questionID=${param}`);
-          navigate(0);
         })
         .catch(error => console.log(error));
+      navigate(0);
     }
   };
 
@@ -146,7 +146,7 @@ export default function EditQuestionPage() {
       if (filteredChoices[i].choiceMark > 0)
         totalchoiceMark = totalchoiceMark + Number(filteredChoices[i].choiceMark);
     }
-    if (totalchoiceMark !== 1) {
+    if (totalchoiceMark > 1.001 || totalchoiceMark < 0.999) {
       toast.warning("Total grades must be 100%");
       return;
     }
