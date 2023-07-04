@@ -26,7 +26,7 @@ namespace QuizProject.Controllers
             }
             if (categoryId == 0)
             {
-                var ques = await _context.Questions.ToListAsync();
+                var ques = await _context.Questions.Where(e => e.CategoryId == 0).ToListAsync();
                 return StatusCode(200, ques);
             }
             var questions = new List<Question>();

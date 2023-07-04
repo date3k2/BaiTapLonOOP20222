@@ -4,18 +4,6 @@ import apiServices from '../services/apiServices';
 import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Countdown from 'react-countdown';
 
-function ShuffledQuestionChoices(question){
-
-  let shuffleQuestionChoices = question.questionChoices;
-
-  for (let i = shuffleQuestionChoices.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffleQuestionChoices[i], shuffleQuestionChoices[j]] = [shuffleQuestionChoices[j], shuffleQuestionChoices[i]];
-  }
-
-  return shuffleQuestionChoices;
-}
-
 function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinished, isShuffle}){
 
   let correctChoiceList = [];
@@ -55,11 +43,6 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
           <Container className='m-0 p-2' style={{backgroundColor: '#dcf5f5'}}>
             <p>{question.questionText}</p>
             {
-              isShuffle ? 
-              ShuffledQuestionChoices(question).map((choice, index) => 
-                <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
-              ) 
-              :
               question.questionChoices.map((choice, index) => 
                 <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
               )
