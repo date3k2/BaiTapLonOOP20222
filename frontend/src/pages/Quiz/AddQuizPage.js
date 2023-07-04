@@ -12,11 +12,11 @@ import { Navigate, redirect, useNavigate } from 'react-router-dom'
 
 export default function AddQuizPage() {
   const [quizName, setQuizName] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
   const [descriptionShow, setDescriptionShow] = useState(false);
   const [description, setDescription] = useState("");
   const [timeLimit, setTimeLimit] = useState("");
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(0);
   const navigate = useNavigate();
 
   const handleDescriptionShowChange = (event) => {
@@ -46,15 +46,20 @@ export default function AddQuizPage() {
       return;
     }
     if (isNaN(timeLimit)){
-      toast.warning("The time limit must be a real number");
+      toast.warning("The time limit must be a number");
       return;
     }
     let timeLimitInSecond = timeLimit;
     if (timeLimit == "") timeLimitInSecond = null;
+    else if (timeLimit <= 0) {
+      toast.warning("The time limit must be positive");
+      return;
+    }
     else {
       if (selected == 0) timeLimitInSecond *= 60;
       else timeLimitInSecond *= 3600;
     }
+    console.log(typeof(timeLimitInSecond))
     const quizData = new Quiz(quizName, description, timeLimitInSecond, descriptionShow, false);
     console.log(quizData)
     apiServices.postQuiz(quizData)
