@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
+    "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
   },
   "projects": {
-    "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
+    "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "projectUniqueName": "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
         "projectName": "QuizProject",
-        "projectPath": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
-        "packagesPath": "C:\\Users\\huula\\.nuget\\packages\\",
-        "outputPath": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
+        "projectPath": "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "packagesPath": "C:\\Users\\ngocs\\.nuget\\packages\\",
+        "outputPath": "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\huula\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ngocs\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -42,13 +45,13 @@
               "target": "Package",
               "version": "[23.6.0, )"
             },
-            "Aspose.TeX": {
-              "target": "Package",
-              "version": "[23.6.0, )"
-            },
             "DocumentFormat.OpenXml": {
               "target": "Package",
               "version": "[2.20.0, )"
+            },
+            "GroupDocs.Conversion": {
+              "target": "Package",
+              "version": "[23.6.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -106,7 +109,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

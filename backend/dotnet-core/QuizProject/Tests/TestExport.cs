@@ -54,8 +54,8 @@ namespace Test
                         QuestionText: "1+2 bằng mấy?",
                         Choices: new List<Choice>() {
                             new Choice("2", 0),
-                            new Choice("3", 1),
-                            new Choice("4", 0)
+                            new Choice("3", 0.5),
+                            new Choice("4", 0.5)
                         }
                     ),
                     new Question(
@@ -69,11 +69,13 @@ namespace Test
                 }
             );
             QuizProject.Helpers.ExportFile helper = new ExportFile();
-            string input = Path.Combine(Directory.GetCurrentDirectory(), "Testquiz.ltx");
-            string output = Path.Combine(Directory.GetCurrentDirectory());
-            helper.WriteLatex(quiz, input);
-            helper.LatexToPdf(input, output);
-            helper.SetPdfPassword(Path.Combine(output, "Testquiz.pdf"), "12345678");
+            string input = Path.Combine(Directory.GetCurrentDirectory(), "Testquiz.md");
+            string output = Path.Combine(Directory.GetCurrentDirectory(), "Testquiz.pdf");
+            helper.WriteMarkdown(quiz, input);
+            Console.WriteLine("Done1");
+            helper.MarkdownToPdf(input, output);
+            Console.WriteLine("Done2");
+            helper.SetPdfPassword(output, "12345678");
     }
 }
 }

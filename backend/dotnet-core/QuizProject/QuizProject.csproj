@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Aspose.PDF" Version="23.6.0" />
-    <PackageReference Include="Aspose.TeX" Version="23.6.0" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
+    <PackageReference Include="GroupDocs.Conversion" Version="23.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>

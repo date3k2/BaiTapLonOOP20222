@@ -13,7 +13,7 @@ namespace BookProject
         {
             //Test
             // Console.OutputEncoding = Encoding.Default;
-            // TestExport.Mainly(args);
+            TestExport.Mainly(args);
 
             //Start
             var builder = WebApplication.CreateBuilder(args);
