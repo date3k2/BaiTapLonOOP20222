@@ -29,7 +29,7 @@ export default function ImportPage() {
     .then(res => {
         toast.success(res.data);
     })
-    .catch(err => toast.warning(err.response.data));
+    .catch(err => console.log(err.response));
   }
 
   return (
