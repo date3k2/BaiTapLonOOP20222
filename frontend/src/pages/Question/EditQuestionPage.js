@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, NavDropdown, Stack } from "react-bootstrap";
+import { Button, Container, NavDropdown, Stack, Image } from "react-bootstrap";
 import { Navigate, redirect, useNavigate } from 'react-router-dom'
 import Navbar from "react-bootstrap/Navbar";
 import { Col, Form, Row, Card } from 'react-bootstrap';
@@ -22,12 +22,15 @@ export default function EditQuestionPage() {
   const [isEdit, setIsEdit] = useState(false);
   const [filledName, setFilledName] = useState("");
   const [filledText, setFilledText] = useState("");
+  const [questionMediaPath, setQuestionMediaPath] = useState();
   const [choices, setChoices] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryID, setCategoryID] = useState(0);
   const [questionId, setQuestionId] = useState("");
-  const [questionData, setQuestionData] = useState()
+  const [questionData, setQuestionData] = useState();
   const navigate = useNavigate()
+
+  const reader = new FileReader();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -36,7 +39,7 @@ export default function EditQuestionPage() {
       setIsEdit(true);
     }
     else {
-      setChoices([{ choiceText: "", choiceMark: 0 }, { choiceText: "", choiceMark: 0 }]);
+      setChoices([{ choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }]);
     }
     apiServices.getQuestion(paramValue)
       .then(res => {
@@ -66,8 +69,25 @@ export default function EditQuestionPage() {
     setCategoryID(event.target.value);
   }
 
+  const getMediaType = (s) => {
+    return s.split(';')[0].split(':')[1].split('/')[0];
+  }
+
   const handleUpdateChoices = (index, key, newValue) => {
-    setChoices(prevChoices => {
+    if(key == 'choiceMediaPath'){
+      reader.readAsDataURL(newValue);
+      reader.onloadend = () => {
+        // console.log(index)
+        // console.log(key)
+        // console.log(reader.result)
+        setChoices(prevChoices => {
+          const updatedChoices = [...prevChoices];
+          updatedChoices[index][key] = reader.result;
+          return updatedChoices;
+        });
+      }
+    }
+    else setChoices(prevChoices => {
       const updatedChoices = [...prevChoices];
       updatedChoices[index][key] = newValue;
       return updatedChoices;
@@ -102,7 +122,7 @@ export default function EditQuestionPage() {
       questionData.questionCode = filledName;
       questionData.questionText = filledText;
       questionData.moreThanOneChoice = moreThanOneChoice;
-      questionData.questionMediaPath = null;
+      questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
       console.log(questionData);
       apiServices.putQuestion(questionData, questionId)
@@ -116,12 +136,12 @@ export default function EditQuestionPage() {
       let countPositiveChoiceGrade = 0;
       let moreThanOneChoice = false;
       for (let i = 0; i < filteredChoices.length; ++i) {
-        QuestionChoices[i] = new Choice(filteredChoices[i].choiceMark, filteredChoices[i].choiceText, null);
+        QuestionChoices[i] = new Choice(filteredChoices[i].choiceMark, filteredChoices[i].choiceText, filteredChoices[i].choiceMediaPath);
         if (filteredChoices[i].choiceMark > 0) countPositiveChoiceGrade++;
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
-      const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
+      const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       console.log(questionData);
       let param = "";
       apiServices.postQuestion(questionData)
@@ -140,7 +160,7 @@ export default function EditQuestionPage() {
       toast.warning("Question name and text need to be completed");
       return;
     }
-    const filteredChoices = choices.filter(choice => choice.choiceText !== "");
+    const filteredChoices = choices.filter(choice => choice.choiceText !== "" || choice.choiceMediaPath != null);
     let totalchoiceMark = 0;
     for (let i = 0; i < filteredChoices.length; ++i) {
       if (filteredChoices[i].choiceMark > 0)
@@ -162,34 +182,34 @@ export default function EditQuestionPage() {
       questionData.questionCode = filledName;
       questionData.questionText = filledText;
       questionData.moreThanOneChoice = moreThanOneChoice;
-      questionData.questionMediaPath = null;
+      questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
       console.log(questionData);
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
           console.log(res.data);
+          navigate('/question');
         })
         .catch(error => console.log(error));
-      navigate('/question');
     }
     else {
       const QuestionChoices = [];
       let countPositiveChoiceGrade = 0;
       let moreThanOneChoice = false;
       for (let i = 0; i < filteredChoices.length; ++i) {
-        QuestionChoices[i] = new Choice(filteredChoices[i].choiceMark, filteredChoices[i].choiceText, null);
+        QuestionChoices[i] = new Choice(filteredChoices[i].choiceMark, filteredChoices[i].choiceText, filteredChoices[i].choiceMediaPath);
         if (filteredChoices[i].choiceMark > 0) countPositiveChoiceGrade++;
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
-      const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, null, QuestionChoices);
+      const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       console.log(questionData);
       apiServices.postQuestion(questionData, questionId)
         .then(res => {
           console.log(res.data);
+          navigate('/question');
         })
         .catch(error => console.log(error));
-      navigate('/question');
     }
   };
 
@@ -238,7 +258,6 @@ export default function EditQuestionPage() {
                 onChange={handleChangeName}
                 type="text"
                 placeholder="Question name"
-                style={{ width: "400px" }}
               />
             </Stack>
           </Col>
@@ -256,11 +275,40 @@ export default function EditQuestionPage() {
                 type="text"
                 placeholder="Question text"
                 as="textarea"
-                style={{ width:'600px', height: '300px' }}
+                style={{height: '300px' }}
               />
             </Stack>
           </Col>
         </div>
+
+        <br />
+        <div className='row justify-content-start'>
+          <Col className='col-4' style={{ fontSize: '20px' }}>
+            Question media
+          </Col>
+          <Col style={{ marginLeft: '80px' }} className='col-6'>
+            <Row>
+              <Form.Control type="file" accept="image/*, video/*" onChange={e => {
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onloadend = () => {
+                  setQuestionMediaPath(reader.result);
+                }
+              }}/>
+            </Row>
+            {
+              questionMediaPath ? 
+              <Row className="m-0 p-0 mt-2">
+                {
+                  getMediaType(questionMediaPath) == "image" ?
+                  <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={questionMediaPath} /> :
+                  <video controls src={questionMediaPath} />
+                }
+              </Row> :
+              null
+            }
+          </Col>
+        </div>
+        <br />
 
         <br />
         <div className='row justify-content-start'>
@@ -278,32 +326,36 @@ export default function EditQuestionPage() {
         <br />
         {
           choices.map((choice, index) => (
-            <Card className="d-flex" style={{ width: "550px", height: "300px", marginLeft: "45%", marginTop: "20px", backgroundColor: "#f0eeed"}}>
+            <Card className="d-flex" style={{ width: "550px", marginLeft: "45%", marginTop: "20px", backgroundColor: "#f0eeed"}}>
               <Card.Body>
                 <Form.Group as={Row}>
-                  <Form.Label column style={{ fontSize: "20px" }}>
-                    Choice {index + 1}
-                  </Form.Label>
+                  <Col xs={3}>
+                    <Form.Label style={{ fontSize: "20px" }}>
+                      Choice {index + 1}
+                    </Form.Label>
+                  </Col>
                   <Col>
                     <Form.Control
                       onChange={event => handleUpdateChoices(index, 'choiceText', event.target.value)}
                       value={choice.choiceText}
                       as="textarea"
                       type="text"
-                      style={{ width: "410px", height: "80px" }}
+                      style={{ height: "80px" }}
                     />
                   </Col>
                 </Form.Group>
                 <br />
                 <Form.Group as={Row}>
-                  <Form.Label column style={{ fontSize: "20px" }}>
-                    Grade
-                  </Form.Label>
+                  <Col xs={3}>
+                    <Form.Label style={{ fontSize: "20px" }}>
+                      Grade
+                    </Form.Label>
+                  </Col>
                   <Col>
                     <Form.Select
                       value={choice.choiceMark}
                       onChange={event => handleUpdateChoices(index, 'choiceMark', event.target.value)}
-                      style={{ marginRight: "250px", width: "160px" }}
+                      style={{width: "160px" }}
                     >
                       <option value={0}> None</option>
                       {choiceMarkList.map((choiceMark) => (
@@ -312,13 +364,33 @@ export default function EditQuestionPage() {
                     </Form.Select>
                   </Col>
                 </Form.Group>
+                <br />
+                <Form.Group as={Row}>
+                  <Col xs={3}>
+                    <Form.Label style={{ fontSize: "20px" }}>Media</Form.Label>
+                  </Col>
+                  <Col>
+                    <Row className="m-0 p-0">
+                      <Form.Control type="file" accept="image/*, video/*" onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])}/>
+                    </Row>
+                    {choice.choiceMediaPath ? 
+                      <Row className="m-0 p-0 mt-2">
+                        {
+                          getMediaType(choice.choiceMediaPath) === "image" ?
+                          <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={choice.choiceMediaPath}/> :
+                          <video controls src={choice.choiceMediaPath} />
+                        }
+                      </Row>
+                    : null}
+                  </Col>
+                </Form.Group>
               </Card.Body>
             </Card>
           ))
         }
         <Button
           onClick={() => {
-            setChoices(choices => [...choices, { choiceText: "", choiceMark: 0 }, { choiceText: "", choiceMark: 0 }, { choiceText: "", choiceMark: 0 }])
+            setChoices(choices => [...choices, { choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null  }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }])
           }}
           variant="primary"
           style={{ marginLeft: "45%", marginTop: "50px" }}

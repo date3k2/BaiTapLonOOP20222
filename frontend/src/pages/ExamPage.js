@@ -7,8 +7,13 @@ import Countdown from 'react-countdown';
 function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinished, isShuffle}){
 
   let correctChoiceList = [];
-  question.questionChoices.forEach(choice => {
-    if(choice.choiceMark > 0) correctChoiceList.push(choice.choiceText);
+  question.questionChoices.forEach((choice, index) => {
+    if(choice.choiceMark > 0){
+      if(choice.choiceText === ""){
+        correctChoiceList.push(String.fromCharCode(index + 65));
+      }
+      else correctChoiceList.push(choice.choiceText);
+    } 
   })
   const correctChoice = correctChoiceList.join(", ");
 
@@ -21,6 +26,10 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
       choices.push(choice);
       setAnswer(answer => new Map(answer.set(question.questionId, choices)));
     }
+  }
+
+  const getMediaType = (s) => {
+    return s.split(';')[0].split(':')[1].split('/')[0];
   }
 
   return(
@@ -43,11 +52,32 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
           <Container className='m-0 p-2' style={{backgroundColor: '#dcf5f5'}}>
             <p>{question.questionText}</p>
             {
+              question.questionMediaPath ? 
+              <Container>
+                {
+                  getMediaType(question.questionMediaPath) == "image" ?
+                  <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={question.questionMediaPath} /> :
+                  <video style={{maxHeight: '400px', maxWidth: "800px"}} controls src={question.questionMediaPath} />
+                }
+              </Container> :
+              null
+            }
+            {
               question.questionChoices.map((choice, index) => 
-                <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
+                <Container>
+                  <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
+                  {choice.choiceMediaPath ? 
+                  <Container>
+                    {
+                      getMediaType(choice.choiceMediaPath) === "image" ?
+                      <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={choice.choiceMediaPath}/> :
+                      <video controls src={choice.choiceMediaPath} />
+                    }
+                  </Container> : 
+                  null}
+                </Container>
               )
             }
-
           </Container>
         </Col>
         {
@@ -181,8 +211,14 @@ export default function ExamPage() {
         <Col xs={9} className='border p-2 me-2'>
           {
             isQuizFinished ? 
-            <Scoreboard timeStart={timeQuizStart} timeCompleted={timeQuizFinished} quizMarks={totalMark} totalMark={quizData.questions.length} maximumGrade={quizData.maxGrade}/>
-            : <Timer quizTimeLimit={quizTimeLimit} handleSubmit={() => handleSubmit()} />
+            <Scoreboard timeStart={timeQuizStart} timeCompleted={timeQuizFinished} quizMarks={totalMark} totalMark={quizData.questions.length} maximumGrade={quizData.maxGrade}/>: 
+            <Container>
+              {
+                quizData && quizData.timeLimitInSeconds != null ?
+                <Timer quizTimeLimit={quizTimeLimit} handleSubmit={() => handleSubmit()} />
+                : null
+              }
+            </Container>
           }
           {
             quizData && quizData.questions.map((question, index) => <ExamQuestion getMap={getMap} key={question.questionId} question={question} index={index} answer={answer} setAnswer={setAnswer} isQuizFinished={isQuizFinished} isShuffle={quizData.isShuffle}/>)

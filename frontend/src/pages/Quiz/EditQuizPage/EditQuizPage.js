@@ -52,7 +52,7 @@ function QuizQuestion({isSelect, question, index, chosenQuestion, setChosenQuest
     <Stack className="mb-1 p-1" direction="horizontal" style={{backgroundColor: '#f0f0f0'}}>
       {isSelect && <Form.Check checked={chosenQuestion.includes(question.questionId)} onChange={handleSelect}></Form.Check>}
       <p className="m-0 me-1 px-2" style={{backgroundColor: '#d9d7d7'}}>{index}</p>
-      <p className="m-0">{question.questionText}</p>
+      <p className="m-0">{question.questionCode ? question.questionCode : null} {question.questionText}</p>
       <BsZoomIn className="ms-auto me-3" />
       <BsFillTrash3Fill style={{cursor:'pointer'}} onClick={handleDelete} className="me-3" />
       <input disabled type="text" value="1.00"  size={3}/>
