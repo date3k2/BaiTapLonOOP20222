@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using QuizProject.Helpers;
 using QuizProject.Models;
 
@@ -11,53 +12,34 @@ namespace QuizProject.Controllers
     {
         private readonly QuizProjectContext _context;
         private readonly ICategoryHelper _categoryHelper;
-        public CategoriesController(QuizProjectContext context, ICategoryHelper categoryHelper)
+        private readonly IMemoryCache _cache;
+        private readonly DBHelper _dbHelper;
+        public CategoriesController(QuizProjectContext context, ICategoryHelper categoryHelper, IMemoryCache cache)
         {
             _context = context;
             _categoryHelper = categoryHelper;
+            _cache = cache;
+            _dbHelper = new DBHelper(_context, _categoryHelper);
         }
 
         // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<List<object>>> GetCategories()
         {
-            if (_context.Categories == null)
-            {
-                return NotFound();
-            }
-            var ans = new List<object>();
-            var categoryRelationships = await _context.CategoryRelationships.ToListAsync();
-            var categories = await _context.Categories.Select(c => new { c.CategoryId, c.CategoryName }).ToListAsync();
-            var categoryMap = categories.ToDictionary(c => c.CategoryId, c => c.CategoryName);
-            var adj = _categoryHelper.GetAdjencyList(categoryRelationships);
-            foreach (var item in categoryRelationships)
-            {
-                var u = item.CategoryParentId;
-                if (u == item.CategoryChildId)
-                {
-                    var level = new Dictionary<int, int>
-                    {
-                        [u] = 0
-                    };
-                    var tree = new List<int> { u };
-                    _categoryHelper.DFS(u, adj, level, tree);
-                    foreach (var i in tree)
-                    {
-                        var cat = await _context.Categories.FindAsync(i);
-                        var category = new
-                        {
-                            id = i,
-                            name = categoryMap[i],
-                            level = level[i],
-                            numberOfQuestions = cat!.Questions.Count
-                        };
-                        ans.Add(category);
-                    }
+            var cacheKey = "categories";
 
-                }
+            if (_cache.TryGetValue<List<object>>(cacheKey, out var cachedCategories))
+            {
+                // Trả về dữ liệu từ cache nếu đã tồn tại
+                return cachedCategories!;
             }
+            var ans = await _dbHelper.GetCategoriesFromDB();
+            // Lưu dữ liệu vào cache 
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(3));
+            _cache.Set(cacheKey, ans, cacheEntryOptions);
             return ans;
         }
+
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
@@ -89,6 +71,7 @@ namespace QuizProject.Controllers
                 parentId ??= category.CategoryId;
                 _context.CategoryRelationships.Add(new CategoryRelationship { CategoryChildId = category.CategoryId, CategoryParentId = (int)parentId });
                 await _context.SaveChangesAsync();
+                _cache.Set("categories", await _dbHelper.GetCategoriesFromDB());
             }
             catch (DbUpdateException e)
             {
