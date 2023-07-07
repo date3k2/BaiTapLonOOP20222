@@ -17,13 +17,18 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
   })
   const correctChoice = correctChoiceList.join(", ");
 
-  const handleChooseChoice = (choice) => {
+  const handleChooseChoice = (choice, moreThanOneChoice) => {
     if(answer.get(question.questionId).includes(choice)){
       setAnswer(answer => new Map(answer.set(question.questionId, answer.get(question.questionId).filter(item => item != choice))));
     }
     else{ 
-      let choices = answer.get(question.questionId);
-      choices.push(choice);
+      let choices;
+      if(moreThanOneChoice){
+        choices = answer.get(question.questionId);
+        choices.push(choice);
+      } else {
+        choices = [choice];
+      }
       setAnswer(answer => new Map(answer.set(question.questionId, choices)));
     }
   }
@@ -65,7 +70,7 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
             {
               question.questionChoices.map((choice, index) => 
                 <Container>
-                  <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice)}/>
+                  <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)}/>
                   {choice.choiceMediaPath ? 
                   <Container>
                     {
