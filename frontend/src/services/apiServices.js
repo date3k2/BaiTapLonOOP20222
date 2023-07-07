@@ -16,6 +16,10 @@ class apiServices {
         return axios.post(`${URL}/Categories?parentId=${parentId}`, categoryData);
     }
 
+    postCategory(categoryData){
+        return axios.post(`${URL}/Categories`, categoryData)
+    }
+
     getQuestion(questionID) {
         return axios.get(`${URL}/Questions/${questionID}`);
     }

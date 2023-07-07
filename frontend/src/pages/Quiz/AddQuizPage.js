@@ -15,9 +15,9 @@ export default function AddQuizPage() {
   const [isChecked, setIsChecked] = useState(true);
   const [descriptionShow, setDescriptionShow] = useState(false);
   const [description, setDescription] = useState("");
-  const [timeLimit, setTimeLimit] = useState(null);
+  const [timeLimit, setTimeLimit] = useState("");
   const [selected, setSelected] = useState(0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleDescriptionShowChange = (event) => {
     setDescriptionShow(event.target.checked);
@@ -45,9 +45,21 @@ export default function AddQuizPage() {
       toast.warning("Quiz name need to be completed");
       return;
     }
+    if (isNaN(timeLimit)){
+      toast.warning("The time limit must be a number");
+      return;
+    }
     let timeLimitInSecond = timeLimit;
-    if (!selected) timeLimitInSecond *= 60;
-    else timeLimitInSecond *= 3600;
+    if (timeLimit == "") timeLimitInSecond = null;
+    else if (timeLimit <= 0) {
+      toast.warning("The time limit must be positive");
+      return;
+    }
+    else {
+      if (selected == 0) timeLimitInSecond *= 60;
+      else timeLimitInSecond *= 3600;
+    }
+    console.log(typeof(timeLimitInSecond))
     const quizData = new Quiz(quizName, description, timeLimitInSecond, descriptionShow, false);
     console.log(quizData)
     apiServices.postQuiz(quizData)
@@ -149,7 +161,7 @@ export default function AddQuizPage() {
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <FormControl disabled={isChecked ? null : 'disabled'} onChange={handleTimeLimit} type='text' style={{ width: '100px' }} />
-              <Form.Select disabled={isChecked ? null : 'disabled'} onChange={handleSelectedChange} style={{ width: '115px' }}>
+              <Form.Select disabled={isChecked ? null : 'disabled'} value={selected} onChange={handleSelectedChange} style={{ width: '115px' }}>
                 <option value={0}>  minutes </option>
                 <option value={1}> hours </option>
               </Form.Select>
@@ -181,7 +193,6 @@ export default function AddQuizPage() {
     </Container >
   )
 }
-
 
 function TimeQuizz() {
   let listDate = [];
