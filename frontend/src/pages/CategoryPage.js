@@ -43,8 +43,8 @@ export default function CategoryPage() {
       return;
     }
     const categoryData = new Category(filledName, filledInfo);
-    if (parentID == 0) {
-      apiServices.postCategory(categoryData)
+    if (parentID === 0) {
+      apiServices.postCategoryDefault(categoryData)
         .then(res => {
           console.log(res.data);
         })

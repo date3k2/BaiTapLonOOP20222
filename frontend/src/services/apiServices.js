@@ -16,7 +16,7 @@ class apiServices {
         return axios.post(`${URL}/Categories?parentId=${parentId}`, categoryData);
     }
 
-    postCategory(categoryData){
+    postCategoryDefault(categoryData){
         return axios.post(`${URL}/Categories`, categoryData)
     }
 
