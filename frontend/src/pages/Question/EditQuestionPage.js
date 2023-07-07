@@ -49,6 +49,7 @@ export default function EditQuestionPage() {
         setChoices(res.data.questionChoices)
         setCategoryID(res.data.categoryId)
         setQuestionId(res.data.questionId)
+        setQuestionMediaPath(res.data.questionMediaPath)
       })
       .catch(error => console.log(error));
 
