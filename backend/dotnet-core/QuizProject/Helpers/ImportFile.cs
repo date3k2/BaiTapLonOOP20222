@@ -3,7 +3,9 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using QuizProject.Models;
 using System.Drawing;
+using System;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace QuizProject.Helpers
 {
@@ -172,15 +174,16 @@ namespace QuizProject.Helpers
 
         public static void HandleImage(AikenHelper kit, byte[] image)
         {
+             string base64Image = Convert.ToBase64String(image);
              if (kit.Ques.QuestionText == "") throw new Exception($"Error in line: {kit.LineIter}"); //Chưa có câu hỏi mà đã có ảnh -> lỗi
              else if (kit.Ques.QuestionChoices.Count == 0)
              {
-                if (kit.Ques.QuestionMediaPath == null) kit.Ques.QuestionMediaPath = image.ToString();
+                if (kit.Ques.QuestionMediaPath == null) kit.Ques.QuestionMediaPath = base64Image;
                 else throw new Exception($"Error in line: {kit.LineIter}"); //Có 2 ảnh = Chưa có choice mà đã có ảnh mà question có ảnh rồi -> lỗi
              }
              else
              {
-                if (kit.Ques.QuestionChoices.Last().ChoiceMediaPath == null) kit.Ques.QuestionChoices.Last().ChoiceMediaPath = image.ToString();
+                if (kit.Ques.QuestionChoices.Last().ChoiceMediaPath == null) kit.Ques.QuestionChoices.Last().ChoiceMediaPath = base64Image;
                 else throw new Exception($"Error in line: {kit.LineIter}"); //2 ảnh cùng 1 choices
              }
              if (image == null) throw new Exception($"Error in line: {kit.LineIter}");
