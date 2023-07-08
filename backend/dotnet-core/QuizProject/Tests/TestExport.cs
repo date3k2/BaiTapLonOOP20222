@@ -61,7 +61,7 @@ namespace Test
                     new Question(
                         QuestionText: "1+3 bằng mấy?",
                         Choices: new List<Choice>() {
-                            new Choice("2", 0),
+                            new Choice("2", 0, "iVBORw0KGgoAAAANSUhEUgAAAEYAAAAUCAAAAAAVAxSkAAABrUlEQVQ4y+3TPUvDQBgH8OdDOGa+oUMgk2MpdHIIgpSUiqC0OKirgxYX8QVFRQRpBRF8KShqLbgIYkUEteCgFVuqUEVxEIkvJFhae3m8S2KbSkcFBw9yHP88+eXucgH8kQZ/jSm4VDaIy9RKCpKac9NKgU4uEJNwhHhK3qvPBVO8rxRWmFXPF+NSM1KVMbwriAMwhDgVcrxeMZm85GR0PhvGJAAmyozJsbsxgNEir4iEjIK0SYqGd8sOR3rJAGN2BCEkOxhxMhpd8Mk0CXtZacxi1hr20mI/rzgnxayoidevcGuHXTC/q6QuYSMt1jC+gBIiMg12v2vb5NlklChiWnhmFZpwvxDGzuUzV8kOg+N8UUvNBp64vy9q3UN7gDXhwWLY2nMC3zRDibfsY7wjEkY79CdMZhrxSqqzxf4ZRPXwzWJirMicDa5KwiPeARygHXKNMQHEy3rMopDR20XNZGbJzUtrwDC/KshlLDWyqdmhxZzCsdYmf2fWZPoxCEDyfIvdtNQH0PRkH6Q51g8rFO3Qzxh2LbItcDCOpmuOsV7ntNaERe3v/lP/zO8yn4N+yNPrekmPAAAAAElFTkSuQmCC"),
                             new Choice("3", 0),
                             new Choice("4", 1)
                         }
@@ -69,11 +69,11 @@ namespace Test
                 }
             );
             QuizProject.Helpers.ExportFile helper = new ExportFile();
-            string input = Path.Combine(Directory.GetCurrentDirectory(), "Testquiz.ltx");
-            string output = Path.Combine(Directory.GetCurrentDirectory());
-            helper.WriteLatex(quiz, input);
-            helper.LatexToPdf(input, output);
-            helper.SetPdfPassword(Path.Combine(output, "Testquiz.pdf"), "12345678");
+            string input = Path.Combine(Directory.GetCurrentDirectory(), "Documents", "Input.md");
+            string output = Path.Combine(Directory.GetCurrentDirectory(), "Documents", "Output.pdf");
+            helper.WriteMarkdown(quiz, input);
+            helper.MarkdownToPdf(input, output);
+            helper.SetPdfPassword(output, "12345678");
     }
 }
 }
