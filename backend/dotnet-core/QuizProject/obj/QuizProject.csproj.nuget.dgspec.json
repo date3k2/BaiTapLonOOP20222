@@ -53,6 +53,10 @@
               "target": "Package",
               "version": "[2.20.0, )"
             },
+            "GroupDocs.Conversion": {
+              "target": "Package",
+              "version": "[23.6.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.5, )"
