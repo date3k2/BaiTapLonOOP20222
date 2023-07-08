@@ -107,6 +107,7 @@ namespace QuizProject.Helpers
         public void WriteMarkdown(Quiz quiz, string path)
         {
             StreamWriter stream = new StreamWriter(path);
+            File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
             stream.Write(ToMarkdown(quiz));
             stream.Close();
         }
@@ -119,6 +120,7 @@ namespace QuizProject.Helpers
                 var options = new PdfConvertOptions();
                 converter.Convert(output, options);
             }
+            File.Delete(input);
         }
 
         public ExportFile() { }
