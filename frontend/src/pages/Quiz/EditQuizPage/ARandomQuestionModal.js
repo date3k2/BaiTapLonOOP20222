@@ -101,7 +101,7 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
         }
         {
           questions.length > 0 && questions.slice((chosenPage - 1) * MAX_QUESTIONS_PER_PAGE, chosenPage * MAX_QUESTIONS_PER_PAGE).map(item => 
-            <p className='border p-2 m-0'>{item.questionName + item.questionText}</p>
+            <p className='border p-2 m-0'>{item.questionCode ? item.questionCode : null} {item.questionText}</p>
           )
         }
         <Button onClick={handleSubmit} className='mt-2'>ADD RANDOM QUESTION TO THE QUIZ</Button>

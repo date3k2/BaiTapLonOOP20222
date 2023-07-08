@@ -1,8 +1,10 @@
 import React, { memo, useEffect, useRef, useState } from 'react'
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import apiServices from '../services/apiServices';
-import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Countdown from 'react-countdown';
+import correct from '../icons/correct.png'
+import wrong from '../icons/wrong.png'
 
 function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinished, isShuffle}){
 
@@ -69,17 +71,30 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
             }
             {
               question.questionChoices.map((choice, index) => 
-                <Container>
-                  <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)}/>
-                  {choice.choiceMediaPath ? 
-                  <Container>
+                <Container >
+                  <Stack direction='horizontal' className='m-0 p-0'>
+                    <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)}/>
+                    {choice.choiceMediaPath ? 
+                    <Container>
+                      {
+                        getMediaType(choice.choiceMediaPath) === "image" ?
+                        <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={choice.choiceMediaPath}/> :
+                        <video controls src={choice.choiceMediaPath} />
+                      }
+                    </Container> : 
+                    null}
                     {
-                      getMediaType(choice.choiceMediaPath) === "image" ?
-                      <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={choice.choiceMediaPath}/> :
-                      <video controls src={choice.choiceMediaPath} />
+                      isQuizFinished && answer.get(question.questionId).includes(choice) ? 
+                      <Container className='mx-1 p-0' style={{maxWidth: '40px'}}>
+                        {
+                          correctChoiceList.includes(choice.choiceText) ?
+                          <img style={{width: '15px', height: '15px'}} src={correct}/> :
+                          <img style={{width: '15px', height: '15px'}} src={wrong}/>
+                        }
+                      </Container> :
+                      null
                     }
-                  </Container> : 
-                  null}
+                  </Stack>
                 </Container>
               )
             }

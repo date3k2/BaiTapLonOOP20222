@@ -125,10 +125,9 @@ export default function EditQuestionPage() {
       questionData.moreThanOneChoice = moreThanOneChoice;
       questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
-      console.log(questionData);
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
-          console.log(res.data);
+          toast.success("Update question successfully!");
         })
         .catch(error => console.log(error));
     }
@@ -185,10 +184,8 @@ export default function EditQuestionPage() {
       questionData.moreThanOneChoice = moreThanOneChoice;
       questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
-      console.log(questionData);
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
-          console.log(res.data);
           navigate('/question');
         })
         .catch(error => console.log(error));
@@ -204,10 +201,8 @@ export default function EditQuestionPage() {
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
-      console.log(questionData);
       apiServices.postQuestion(questionData, questionId)
         .then(res => {
-          console.log(res.data);
           navigate('/question');
         })
         .catch(error => console.log(error));
