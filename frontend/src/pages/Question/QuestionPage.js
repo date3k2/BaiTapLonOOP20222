@@ -33,7 +33,6 @@ export default function EditQuestionPage() {
 
   const handleCategory = e => {
     const category = e.target.value;
-    console.log(e.target.value);
     setCategory(category);
     apiServices.getQuestions(category, doesShowSub)
     .then(res => {

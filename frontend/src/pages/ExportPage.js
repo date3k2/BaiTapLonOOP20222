@@ -10,17 +10,27 @@ export default function ExportPage() {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [infoMessage, setInfoMessage] = useState('');
+  const [quizId, setQuizId] = useState();
 
   const handleExport = () => {
-    if(password === ""){
-      setErrorMessage("Please enter password!");
-      return;
+    if(hasPassword){
+      if(password === ""){
+        setErrorMessage("Please enter password!");
+        return;
+      }
+      if(confirmPassword !== password){
+        setErrorMessage("Confirm password doesn't match password!");
+        return;
+      }
     }
-    if(confirmPassword !== password){
-      setErrorMessage("Confirm password doesn't match password!");
-      return;
-    }
+    setInfoMessage("Exporting ...");
     setErrorMessage("");
+    apiServices.exportQuiz(quizId, password)
+    .then(res => {
+      setInfoMessage(`Exported to: ${res.data}`);
+    })
+    .catch(err => console.log(err));
   }
 
   useEffect(() => {
@@ -39,7 +49,7 @@ export default function ExportPage() {
             <p className='pt-1 text-danger'>Choose quiz to export:</p>
           </Col>
           <Col>
-            <Form.Select className='mb-3' style={{width: "250px"}} defaultValue='-1'>
+            <Form.Select className='mb-3' style={{width: "250px"}} defaultValue='-1' onChange={e => {setQuizId(e.target.value); setInfoMessage(""); setPassword(""); setConfirmPassword("")}}>
             <option value='-1' disabled hidden>--- Select a quiz ---</option>
               {
                 quizList.map((item, index) => {
@@ -67,6 +77,13 @@ export default function ExportPage() {
                 {errorMessage}
               </p>
               : null
+            }
+            {
+              infoMessage.length > 0 ?
+              <p className='m-0 text-info'>
+                {infoMessage}
+              </p> :
+              null
             }
             <Button className='mt-3' onClick={handleExport}>Export</Button>
           </Col>

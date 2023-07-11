@@ -55,6 +55,10 @@ class apiServices {
     putQuiz(quizId, quizData){
         return axios.put(`${URL}/quiz/${quizId}`, quizData);
     }
+
+    exportQuiz(quizID, quizPassword){
+        return axios.post(`${URL}/Quiz/Export?quizID=${quizID}&password=${quizPassword}`);
+    }
 }
 
 export default new apiServices();
