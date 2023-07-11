@@ -101,7 +101,8 @@ export default function EditQuestionPage() {
       toast.warning("Question name and text need to be completed");
       return;
     }
-    const filteredChoices = choices.filter(choice => choice.choiceText !== "");
+    const filteredChoices = choices.filter(choice => choice.choiceText !== "" || choice.choiceMediaPath != null);
+    console.log(filteredChoices);
     let totalchoiceMark = 0;
     for (let i = 0; i < filteredChoices.length; ++i) {
       if (filteredChoices[i].choiceMark > 0)
@@ -147,10 +148,11 @@ export default function EditQuestionPage() {
       apiServices.postQuestion(questionData)
         .then(res => {
           param = res.data
+          console.log(res.data)
           navigate(`/question/edit?questionID=${param}`);
+          navigate(0)
         })
         .catch(error => console.log(error));
-      navigate(0);
     }
   };
 
@@ -355,7 +357,7 @@ export default function EditQuestionPage() {
                     >
                       <option value={0}> None</option>
                       {choiceMarkList.map((choiceMark) => (
-                        <option value={choiceMark}> {choiceMark * 100}%</option>
+                        <option value={choiceMark}>{(choiceMark * 100)}%</option>
                       ))}
                     </Form.Select>
                   </Col>

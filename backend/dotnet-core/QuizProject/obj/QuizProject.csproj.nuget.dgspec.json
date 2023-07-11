@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
+    "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
   },
   "projects": {
-    "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
+    "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "projectUniqueName": "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
         "projectName": "QuizProject",
-        "projectPath": "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
-        "packagesPath": "C:\\Users\\ngocs\\.nuget\\packages\\",
-        "outputPath": "D:\\Data_Backup\\Projects\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
+        "projectPath": "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ngocs\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -113,7 +112,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
