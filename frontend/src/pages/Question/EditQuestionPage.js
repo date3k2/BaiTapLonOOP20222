@@ -367,7 +367,7 @@ export default function EditQuestionPage() {
                     >
                       <option value={0}> None</option>
                       {choiceMarkList.map((choiceMark) => (
-                        <option value={choiceMark}>{(choiceMark * 100)}%</option>
+                        <option value={choiceMark}>{(choiceMark * 100).toString()}%</option>
                       ))}
                     </Form.Select>
                   </Col>

@@ -24,6 +24,7 @@ export default function AddQuizPage() {
   };
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
+    setTimeLimit("");
   };
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value)
