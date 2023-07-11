@@ -208,7 +208,7 @@ export default function ExamPage() {
     answer.forEach(item => {
       item.forEach(i => totalMark += i.choiceMark);
     });
-    console.log(totalMark);
+    totalMark = Math.max(0, totalMark);
     setTotalMark(totalMark);
     setTimeQuizFinished(Date.now());
     setIsQuizFinished(true);

@@ -6,6 +6,7 @@ import apiServices from "../../services/apiServices";
 import { Link, useLocation, useParams } from "react-router-dom";
 
 function formatTime(seconds) {
+  if(seconds === null) return 'Infinite';
   const minutes = Math.floor(seconds / 60); 
   const hours = Math.floor(seconds / 3600);
   const remainingMinutes = minutes % 60; 
