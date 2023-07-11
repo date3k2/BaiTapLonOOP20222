@@ -175,6 +175,7 @@ namespace QuizProject.Helpers
         public static void HandleImage(AikenHelper kit, byte[] image)
         {
              string base64Image = Convert.ToBase64String(image);
+            base64Image = $"data:image/png;base64,{base64Image}";
              if (kit.Ques.QuestionText == "") throw new Exception($"Error in line: {kit.LineIter}"); //Chưa có câu hỏi mà đã có ảnh -> lỗi
              else if (kit.Ques.QuestionChoices.Count == 0)
              {

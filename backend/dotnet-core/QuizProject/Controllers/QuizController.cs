@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuizProject.Helpers;
 using QuizProject.Models;
 
 namespace QuizProject.Controllers
@@ -145,6 +146,22 @@ namespace QuizProject.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+        [HttpPost("Export")]
+        public async Task<IActionResult> ExportQuiz(Guid quizId, string? password)
+        {
+            var quiz = _context.Quizzes.Find(quizId)!;
+            var exp = new ExportFile();
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string input = Path.Combine(desktopPath, "Input.md");
+            string output = Path.Combine(desktopPath, $"{quiz.QuizName}.pdf");
+            exp.WriteMarkdown(quiz, input);
+            exp.MarkdownToPdf(input, output);
+            if (password != null)
+            {
+                exp.SetPdfPassword(output, password);
+            }
+            return StatusCode(201, output);
         }
 
         private bool QuizExists(Guid id)
