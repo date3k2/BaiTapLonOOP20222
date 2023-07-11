@@ -24,7 +24,6 @@ export default function AddQuizPage() {
   };
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
-    setTimeLimit("");
   };
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value)
@@ -46,12 +45,12 @@ export default function AddQuizPage() {
       toast.warning("Quiz name need to be completed");
       return;
     }
-    if (isNaN(timeLimit)){
+    let timeLimitInSecond = timeLimit;
+    if (timeLimit == "" || isChecked == false) timeLimitInSecond = null;
+    else if (isNaN(timeLimit)){
       toast.warning("The time limit must be a number");
       return;
     }
-    let timeLimitInSecond = timeLimit;
-    if (timeLimit == "") timeLimitInSecond = null;
     else if (timeLimit <= 0) {
       toast.warning("The time limit must be positive");
       return;
@@ -60,7 +59,6 @@ export default function AddQuizPage() {
       if (selected == 0) timeLimitInSecond *= 60;
       else timeLimitInSecond *= 3600;
     }
-    console.log(typeof(timeLimitInSecond))
     const quizData = new Quiz(quizName, description, timeLimitInSecond, descriptionShow, false);
     console.log(quizData)
     apiServices.postQuiz(quizData)
@@ -161,7 +159,7 @@ export default function AddQuizPage() {
           <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
-              <FormControl disabled={isChecked ? null : 'disabled'} onChange={handleTimeLimit} type='text' style={{ width: '100px' }} />
+              <FormControl disabled={isChecked ? null : 'disabled'} value ={timeLimit} onChange={handleTimeLimit} type='text' style={{ width: '100px' }} />
               <Form.Select disabled={isChecked ? null : 'disabled'} value={selected} onChange={handleSelectedChange} style={{ width: '115px' }}>
                 <option value={0}>  minutes </option>
                 <option value={1}> hours </option>
