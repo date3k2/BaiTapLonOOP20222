@@ -76,16 +76,21 @@ export default function EditQuestionPage() {
 
   const handleUpdateChoices = (index, key, newValue) => {
     if(key == 'choiceMediaPath'){
-      reader.readAsDataURL(newValue);
-      reader.onloadend = () => {
-        // console.log(index)
-        // console.log(key)
-        // console.log(reader.result)
+      if(typeof newValue === 'undefined'){
         setChoices(prevChoices => {
           const updatedChoices = [...prevChoices];
-          updatedChoices[index][key] = reader.result;
+          updatedChoices[index][key] = "";
           return updatedChoices;
         });
+      } else {
+        reader.readAsDataURL(newValue);
+        reader.onloadend = () => {
+          setChoices(prevChoices => {
+            const updatedChoices = [...prevChoices];
+            updatedChoices[index][key] = reader.result;
+            return updatedChoices;
+          });
+        }
       }
     }
     else setChoices(prevChoices => {
@@ -285,9 +290,14 @@ export default function EditQuestionPage() {
           <Col style={{ marginLeft: '80px' }} className='col-6'>
             <Row>
               <Form.Control type="file" accept="image/*, video/*" onChange={e => {
-                reader.readAsDataURL(e.target.files[0]);
-                reader.onloadend = () => {
-                  setQuestionMediaPath(reader.result);
+                const mediaFile = e.target.files[0];
+                if(typeof mediaFile === "undefined"){
+                  setQuestionMediaPath("");
+                } else {
+                  reader.readAsDataURL(e.target.files[0]);
+                  reader.onloadend = () => {
+                    setQuestionMediaPath(reader.result);
+                  }
                 }
               }}/>
             </Row>

@@ -12,10 +12,15 @@ export default function ExportPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleExport = () => {
+    if(password === ""){
+      setErrorMessage("Please enter password!");
+      return;
+    }
     if(confirmPassword !== password){
       setErrorMessage("Confirm password doesn't match password!");
       return;
-    } else setErrorMessage("");
+    }
+    setErrorMessage("");
   }
 
   useEffect(() => {

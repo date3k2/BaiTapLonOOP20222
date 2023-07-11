@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 export default function ANewQuestionModal({setOption, quizQuestions, setQuizQuestions}) {
 
   const MAX_QUESTIONS_PER_PAGE = 10;
-  const [doesShowSub, setDoesShowSub] = useState(true);
+  const [doesShowSub, setDoesShowSub] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [category, setCategory] = useState();
   const [optionsList, setOptionsList] = useState([]);
@@ -20,7 +20,12 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
   useEffect(() => {
     apiServices.getQuestions(category, doesShowSub)
     .then(res => {
-      setQuestions(res.data)
+      setQuestions(res.data);
+      const arr = Array.from(
+        {length: res.data.length},
+        (_, index) => index + 1
+      );
+      setOptionsList(arr);
     })
     .catch(err => console.log(err))
   }, [doesShowSub]);
