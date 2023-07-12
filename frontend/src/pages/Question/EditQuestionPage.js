@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, NavDropdown, Stack, Image } from "react-bootstrap";
+import { Button, Container, NavDropdown, Stack } from "react-bootstrap";
 import { Navigate, redirect, useNavigate } from 'react-router-dom'
 import Navbar from "react-bootstrap/Navbar";
 import { Col, Form, Row, Card } from 'react-bootstrap';
@@ -60,6 +60,37 @@ export default function EditQuestionPage() {
       .catch(error => console.log(error));
   }, [isEdit]);
 
+  function resizeImage(base64Str, maxWidth = 500, maxHeight = 300) {
+    return new Promise((resolve) => {
+      let img = new Image()
+      img.src = base64Str
+      img.onload = () => {
+        let canvas = document.createElement('canvas')
+        const MAX_WIDTH = maxWidth
+        const MAX_HEIGHT = maxHeight
+        let width = img.width
+        let height = img.height
+  
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width
+            width = MAX_WIDTH
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height
+            height = MAX_HEIGHT
+          }
+        }
+        canvas.width = width
+        canvas.height = height
+        let ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, width, height)
+        resolve(canvas.toDataURL())
+      }
+    })
+  }
+
   const handleChangeName = (event) => {
     setFilledName(event.target.value);
   };
@@ -76,19 +107,16 @@ export default function EditQuestionPage() {
 
   const handleUpdateChoices = (index, key, newValue) => {
     if(key == 'choiceMediaPath'){
-      if(typeof newValue === 'undefined'){
-        setChoices(prevChoices => {
-          const updatedChoices = [...prevChoices];
-          updatedChoices[index][key] = "";
-          return updatedChoices;
-        });
-      } else {
+      if(typeof newValue !== 'undefined'){
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
-          setChoices(prevChoices => {
-            const updatedChoices = [...prevChoices];
-            updatedChoices[index][key] = reader.result;
-            return updatedChoices;
+          resizeImage(reader.result)
+          .then(res => {
+            setChoices(prevChoices => {
+              let updatedChoices = [...prevChoices];
+              updatedChoices[index][key] = res;
+              return updatedChoices;
+            });
           });
         }
       }
@@ -291,27 +319,31 @@ export default function EditQuestionPage() {
           </Col>
           <Col style={{ marginLeft: '80px' }} className='col-6'>
             <Row>
-              <Form.Control type="file" accept="image/*, video/*" onChange={e => {
+              <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => {
                 const mediaFile = e.target.files[0];
-                if(typeof mediaFile === "undefined"){
-                  setQuestionMediaPath("");
-                } else {
+                if(typeof mediaFile !== "undefined"){
                   reader.readAsDataURL(e.target.files[0]);
                   reader.onloadend = () => {
-                    setQuestionMediaPath(reader.result);
+                    resizeImage(reader.result)
+                    .then(res => setQuestionMediaPath(res));
                   }
                 }
               }}/>
             </Row>
             {
               questionMediaPath ? 
-              <Row className="m-0 p-0 mt-2">
-                {
-                  getMediaType(questionMediaPath) == "image" ?
-                  <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={questionMediaPath} /> :
-                  <video controls src={questionMediaPath} />
-                }
-              </Row> :
+              <Col>
+                <Row className="m-0 p-0 mt-2">
+                  {
+                    getMediaType(questionMediaPath) == "image" ?
+                    <img src={questionMediaPath} /> :
+                    <video controls src={questionMediaPath} />
+                  }
+                </Row> 
+                <Row>
+                  <p className="text-danger ms-4 mt-2" style={{cursor: 'pointer'}} onClick={() => setQuestionMediaPath(null)}>Remove media file</p>
+                </Row>
+              </Col> :
               null
             }
           </Col>
@@ -379,16 +411,21 @@ export default function EditQuestionPage() {
                   </Col>
                   <Col>
                     <Row className="m-0 p-0">
-                      <Form.Control type="file" accept="image/*, video/*" onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])}/>
+                      <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])}/>
                     </Row>
                     {choice.choiceMediaPath ? 
-                      <Row className="m-0 p-0 mt-2">
-                        {
-                          getMediaType(choice.choiceMediaPath) === "image" ?
-                          <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={choice.choiceMediaPath}/> :
-                          <video controls src={choice.choiceMediaPath} />
-                        }
-                      </Row>
+                      <Col>
+                        <Row className="m-0 p-0 mt-2">
+                          {
+                            getMediaType(choice.choiceMediaPath) === "image" ?
+                            <img src={choice.choiceMediaPath}/> :
+                            <video controls src={choice.choiceMediaPath} />
+                          }
+                        </Row>
+                        <Row>
+                          <p className="text-danger ms-3 mt-2" style={{cursor: 'pointer'}} onClick={() => handleUpdateChoices(index, 'choiceMediaPath', null)}>Remove media file</p>
+                        </Row>
+                      </Col>
                     : null}
                   </Col>
                 </Form.Group>
