@@ -11,8 +11,8 @@ import { Choice } from '../../models/Choice'
 
 export default function EditQuestionPage() {
   let choiceMarkList =
-    [1, 0.9, 0.8333333, 0.8, 0.75, 0.7, 0.6666667, 0.6, 0.5, 0.4, 0.3333333,
-      0.3, 0.25, 0.2, 0.1666667, 0.1428571, 0.125, 0.1111111, 0.1, 0.05];
+    [100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333,
+      30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5];
   let tmp = [];
   for (let i = 0; i < choiceMarkList.length; ++i) {
     tmp[i] = -choiceMarkList[choiceMarkList.length - i - 1];
@@ -106,8 +106,19 @@ export default function EditQuestionPage() {
   }
 
   const handleUpdateChoices = (index, key, newValue) => {
+<<<<<<< HEAD
     if(key == 'choiceMediaPath'){
       if(typeof newValue !== 'undefined'){
+=======
+    if (key == 'choiceMediaPath') {
+      if (typeof newValue === 'undefined') {
+        setChoices(prevChoices => {
+          const updatedChoices = [...prevChoices];
+          updatedChoices[index][key] = "";
+          return updatedChoices;
+        });
+      } else {
+>>>>>>> 73f5afa3c499b2ae9f32d174db1f8161b91b53d9
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
           resizeImage(reader.result)
@@ -306,7 +317,7 @@ export default function EditQuestionPage() {
                 type="text"
                 placeholder="Question text"
                 as="textarea"
-                style={{height: '300px' }}
+                style={{ height: '300px' }}
               />
             </Stack>
           </Col>
@@ -321,16 +332,23 @@ export default function EditQuestionPage() {
             <Row>
               <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => {
                 const mediaFile = e.target.files[0];
+<<<<<<< HEAD
                 if(typeof mediaFile !== "undefined"){
+=======
+                if (typeof mediaFile === "undefined") {
+                  setQuestionMediaPath("");
+                } else {
+>>>>>>> 73f5afa3c499b2ae9f32d174db1f8161b91b53d9
                   reader.readAsDataURL(e.target.files[0]);
                   reader.onloadend = () => {
                     resizeImage(reader.result)
                     .then(res => setQuestionMediaPath(res));
                   }
                 }
-              }}/>
+              }} />
             </Row>
             {
+<<<<<<< HEAD
               questionMediaPath ? 
               <Col>
                 <Row className="m-0 p-0 mt-2">
@@ -345,6 +363,17 @@ export default function EditQuestionPage() {
                 </Row>
               </Col> :
               null
+=======
+              questionMediaPath ?
+                <Row className="m-0 p-0 mt-2">
+                  {
+                    getMediaType(questionMediaPath) == "image" ?
+                      <img style={{ objectFit: 'fill', maxHeight: '200px', maxWidth: "300px" }} src={questionMediaPath} /> :
+                      <video controls src={questionMediaPath} />
+                  }
+                </Row> :
+                null
+>>>>>>> 73f5afa3c499b2ae9f32d174db1f8161b91b53d9
             }
           </Col>
         </div>
@@ -366,7 +395,7 @@ export default function EditQuestionPage() {
         <br />
         {
           choices.map((choice, index) => (
-            <Card className="d-flex" style={{ width: "550px", marginLeft: "45%", marginTop: "20px", backgroundColor: "#f0eeed"}}>
+            <Card className="d-flex" style={{ width: "550px", marginLeft: "45%", marginTop: "20px", backgroundColor: "#f0eeed" }}>
               <Card.Body>
                 <Form.Group as={Row}>
                   <Col xs={3}>
@@ -395,12 +424,12 @@ export default function EditQuestionPage() {
                     <Form.Select
                       value={choice.choiceMark}
                       onChange={event => handleUpdateChoices(index, 'choiceMark', event.target.value)}
-                      style={{width: "160px" }}
+                      style={{ width: "160px" }}
                     >
                       <option value={0}> None</option>
                       {choiceMarkList.map((choiceMark) => (
-                        <option value={choiceMark}>{(choiceMark * 100)}%</option>
-                      ))}
+                          <option value={(choiceMark/100).toFixed(7)}>{choiceMark}%</option>
+                        ))}
                     </Form.Select>
                   </Col>
                 </Form.Group>
@@ -411,6 +440,7 @@ export default function EditQuestionPage() {
                   </Col>
                   <Col>
                     <Row className="m-0 p-0">
+<<<<<<< HEAD
                       <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])}/>
                     </Row>
                     {choice.choiceMediaPath ? 
@@ -427,6 +457,19 @@ export default function EditQuestionPage() {
                         </Row>
                       </Col>
                     : null}
+=======
+                      <Form.Control type="file" accept="image/*, video/*" onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])} />
+                    </Row>
+                    {choice.choiceMediaPath ?
+                      <Row className="m-0 p-0 mt-2">
+                        {
+                          getMediaType(choice.choiceMediaPath) === "image" ?
+                            <img style={{ objectFit: 'fill', maxHeight: '200px', maxWidth: "300px" }} src={choice.choiceMediaPath} /> :
+                            <video controls src={choice.choiceMediaPath} />
+                        }
+                      </Row>
+                      : null}
+>>>>>>> 73f5afa3c499b2ae9f32d174db1f8161b91b53d9
                   </Col>
                 </Form.Group>
               </Card.Body>
@@ -435,14 +478,14 @@ export default function EditQuestionPage() {
         }
         <Button
           onClick={() => {
-            setChoices(choices => [...choices, { choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null  }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }])
+            setChoices(choices => [...choices, { choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }])
           }}
           variant="primary"
           style={{ marginLeft: "45%", marginTop: "50px" }}
         >
           BLANKS FOR 3 MORE CHOICES
         </Button>
-        
+
         <Button
           onClick={handleSaveAndContinue}
           variant="primary"

@@ -99,7 +99,7 @@ export default function CategoryPage() {
           <Col style={{marginLeft: '50px'}} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' />
-              <Form.Control onChange={handleChangeName} type="text" style={{ width: '400px' }} />
+              <Form.Control onChange={handleChangeName} type="text" style={{ width: '600px' }} />
             </Stack>
           </Col>
         </div>
