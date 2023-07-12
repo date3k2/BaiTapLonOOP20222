@@ -157,7 +157,7 @@ namespace QuizProject.Controllers
             return NoContent();
         }
         [HttpPost("Export")]
-        public async Task<IActionResult> ExportQuiz(Guid quizId, string? password)
+        public IActionResult ExportQuiz(Guid quizId, string? password)
         {
             var quiz = _context.Quizzes.Find(quizId)!;
             var exp = new ExportFile();
