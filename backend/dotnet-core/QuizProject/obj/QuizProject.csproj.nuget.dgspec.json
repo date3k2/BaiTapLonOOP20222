@@ -1,47 +1,28 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
-    "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
+    "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
   },
   "projects": {
-    "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
+    "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "projectUniqueName": "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
         "projectName": "QuizProject",
-        "projectPath": "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
-        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "D:\\STUDY\\FUNDAMENT\\Object Oriented Programming\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
+        "projectPath": "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
+        "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nguye\\Source\\Repos\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-=======
-    "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {}
-  },
-  "projects": {
-    "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
-        "projectName": "QuizProject",
-        "projectPath": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\QuizProject.csproj",
-        "packagesPath": "C:\\Users\\huula\\.nuget\\packages\\",
-        "outputPath": "D:\\BaiTapLonOOP20222\\backend\\dotnet-core\\QuizProject\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\huula\\AppData\\Roaming\\NuGet\\NuGet.Config"
->>>>>>> f98c80d88de2d1b17f29c055b850d763ec32149f
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-<<<<<<< HEAD
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-=======
->>>>>>> f98c80d88de2d1b17f29c055b850d763ec32149f
+          "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -132,11 +113,7 @@
               "privateAssets": "all"
             }
           },
-<<<<<<< HEAD
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
-=======
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.408\\RuntimeIdentifierGraph.json"
->>>>>>> f98c80d88de2d1b17f29c055b850d763ec32149f
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -42,6 +42,15 @@ namespace QuizProject.Controllers
                 return NotFound();
             }
 
+            if (quiz.IsShuffle)
+            {
+                Random random = new();
+                quiz.Questions = quiz.Questions.OrderBy(x => random.Next()).ToArray();
+                foreach (var question in quiz.Questions)
+                {
+                    question.QuestionChoices = question.QuestionChoices.OrderBy(x => random.Next()).ToArray();
+                }
+            }
             return quiz;
         }
 
