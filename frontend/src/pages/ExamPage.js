@@ -21,7 +21,7 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
 
   const handleChooseChoice = (choice, moreThanOneChoice) => {
     if(answer.get(question.questionId).includes(choice)){
-      setAnswer(answer => new Map(answer.set(question.questionId, answer.get(question.questionId).filter(item => item != choice))));
+      setAnswer(answer => new Map(answer.set(question.questionId, answer.get(question.questionId).filter(item => item !== choice))));
     }
     else{ 
       let choices;
@@ -51,7 +51,7 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
       <Row>
         <Col className='border me-3 p-1' xs={2} style={{backgroundColor: '#e8ebeb'}}>
           <p className='m-0' style={{color: 'red'}}>Question <span style={{fontSize: '22px', fontWeight: 'bold'}}>{index + 1}</span></p>
-          {answer && answer.get(question.questionId).length ? "Answered" : "Not yet answered"}
+          {answer && answer.get(question.questionId).length ? "Answered" : isQuizFinished ? "Not answered" : "Not yet answered"}
           <p className='m-0'>Marked out of 1.00</p>
           <p className='m-0'>Flag question</p>
         </Col>
@@ -62,7 +62,7 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
               question.questionMediaPath ? 
               <Container>
                 {
-                  getMediaType(question.questionMediaPath) == "image" ?
+                  getMediaType(question.questionMediaPath) === "image" ?
                   <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={question.questionMediaPath} /> :
                   <video style={{maxHeight: '400px', maxWidth: "800px"}} controls src={question.questionMediaPath} />
                 }
@@ -73,16 +73,18 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
               question.questionChoices.map((choice, index) => 
                 <Container >
                   <Stack direction='horizontal' className='m-0 p-0'>
-                    <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)}/>
-                    {choice.choiceMediaPath ? 
-                    <Container>
-                      {
-                        getMediaType(choice.choiceMediaPath) === "image" ?
-                        <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={choice.choiceMediaPath}/> :
-                        <video controls src={choice.choiceMediaPath} />
-                      }
-                    </Container> : 
-                    null}
+                    <Stack className='m-0 p-0'>
+                      <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)}/>
+                      {choice.choiceMediaPath ? 
+                      <Container>
+                        {
+                          getMediaType(choice.choiceMediaPath) === "image" ?
+                          <img style={{objectFit: 'fill', maxHeight: '200px', maxWidth: "300px"}} src={choice.choiceMediaPath}/> :
+                          <video controls src={choice.choiceMediaPath} />
+                        }
+                      </Container> : 
+                      null}
+                    </Stack>
                     {
                       isQuizFinished && answer.get(question.questionId).includes(choice) ? 
                       <Container className='mx-1 p-0' style={{maxWidth: '40px'}}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, NavDropdown, Stack } from "react-bootstrap";
-import { Navigate, redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Navbar from "react-bootstrap/Navbar";
 import { Col, Form, Row, Card } from 'react-bootstrap';
 import alert from "../../icons/alert.png";
@@ -106,7 +106,7 @@ export default function EditQuestionPage() {
   }
 
   const handleUpdateChoices = (index, key, newValue) => {
-    if(key == 'choiceMediaPath'){
+    if(key === 'choiceMediaPath'){
       if(typeof newValue !== 'undefined'){
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
@@ -130,7 +130,7 @@ export default function EditQuestionPage() {
 
   const handleSaveAndContinue = (event) => {
     event.preventDefault();
-    if (filledName == "" || filledText == "") {
+    if (filledName === "" || filledText === "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
@@ -191,7 +191,7 @@ export default function EditQuestionPage() {
 
   const handleSave = (event) => {
     event.preventDefault();
-    if (filledName == "" || filledText == "") {
+    if (filledName === "" || filledText === "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
@@ -335,7 +335,7 @@ export default function EditQuestionPage() {
               <Col>
                 <Row className="m-0 p-0 mt-2">
                   {
-                    getMediaType(questionMediaPath) == "image" ?
+                    getMediaType(questionMediaPath) === "image" ?
                     <img src={questionMediaPath} /> :
                     <video controls src={questionMediaPath} />
                   }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Container, FormControl, NavDropdown, Stack } from 'react-bootstrap'
-import { Col, Form, Row, Navbar } from 'react-bootstrap';
+import { Col, Form, Navbar } from 'react-bootstrap';
 import alert from '../../icons/alert.png'
 import exam from '../../icons/exam.png'
 import { toast, ToastContainer } from 'react-toastify';
@@ -8,7 +8,7 @@ import questionmark from '../../icons/questionmark.png'
 import calendar from '../../icons/calendar.png'
 import apiServices from '../../services/apiServices';
 import { Quiz } from '../../models/Quiz'
-import { Navigate, redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function AddQuizPage() {
   const [quizName, setQuizName] = useState("");
@@ -41,12 +41,12 @@ export default function AddQuizPage() {
 
   const handleAddQuiz = (event) => {
     event.preventDefault();
-    if (quizName == "") {
+    if (quizName === "") {
       toast.warning("Quiz name need to be completed");
       return;
     }
     let timeLimitInSecond = timeLimit;
-    if (timeLimit == "" || isChecked == false) timeLimitInSecond = null;
+    if (timeLimit === "" || isChecked === false) timeLimitInSecond = null;
     else if (isNaN(timeLimit)){
       toast.warning("The time limit must be a number");
       return;
@@ -56,7 +56,7 @@ export default function AddQuizPage() {
       return;
     }
     else {
-      if (selected == 0) timeLimitInSecond *= 60;
+      if (selected === 0) timeLimitInSecond *= 60;
       else timeLimitInSecond *= 3600;
     }
     const quizData = new Quiz(quizName, description, timeLimitInSecond, descriptionShow, false);
@@ -214,36 +214,36 @@ function TimeQuizz() {
   const handleDaySelect = (event) => {
     const value = event.target.value;
     setSelectedDay(value);
-    if (value == 31) {
-      if (selectedMonth == 'April' || selectedMonth == 'June' || selectedMonth == 'September' || selectedMonth == 'November') {
+    if (value === 31) {
+      if (selectedMonth === 'April' || selectedMonth === 'June' || selectedMonth === 'September' || selectedMonth === 'November') {
         setSelectedDay(30);
       }
-      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(29);
-      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(28);
+      if (selectedMonth === 'February' && selectedYear % 4 === 0) setSelectedDay(29);
+      if (selectedMonth === 'February' && selectedYear % 4 !== 0) setSelectedDay(28);
     }
-    if (value == 30) {
-      if (selectedMonth == 'February' && selectedYear % 4 == 0) setSelectedDay(29);
-      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(28);
+    if (value === 30) {
+      if (selectedMonth === 'February' && selectedYear % 4 === 0) setSelectedDay(29);
+      if (selectedMonth === 'February' && selectedYear % 4 !== 0) setSelectedDay(28);
     }
-    if (value == 29) {
-      if (selectedMonth == 'February' && selectedYear % 4 != 0) setSelectedDay(28);
+    if (value === 29) {
+      if (selectedMonth === 'February' && selectedYear % 4 !== 0) setSelectedDay(28);
     }
   };
 
   const handleMonthSelect = (event) => {
     const value = event.target.value;
-    if (value == 'April' || value == 'June' || value == 'September' || value == 'November') checkMonth = true;
+    if (value === 'April' || value === 'June' || value === 'September' || value === 'November') checkMonth = true;
     else checkMonth = false;
     setSelectedMonth(value);
-    if (selectedDay == 31 && checkMonth == true) {
+    if (selectedDay === 31 && checkMonth === true) {
       setSelectedDay(30);
     }
-    if (value == 'February') {
-      if (selectedYear % 4 != 0) {
-        if (selectedDay == 31 || selectedDay == 30 || selectedDay == 29) setSelectedDay(28);
+    if (value === 'February') {
+      if (selectedYear % 4 !== 0) {
+        if (selectedDay === 31 || selectedDay === 30 || selectedDay === 29) setSelectedDay(28);
       }
       else {
-        if (selectedDay == 31 || selectedDay == 30) setSelectedDay(29);
+        if (selectedDay === 31 || selectedDay === 30) setSelectedDay(29);
       }
     }
   };
@@ -251,8 +251,8 @@ function TimeQuizz() {
   const handleYearSelect = (event) => {
     const value = event.target.value;
     setSelectedYear(value);
-    if (value % 4 != 0) {
-      if (selectedMonth == 'February' && selectedDay == 29) {
+    if (value % 4 !== 0) {
+      if (selectedMonth === 'February' && selectedDay === 29) {
         setSelectedDay(28);
       }
     }

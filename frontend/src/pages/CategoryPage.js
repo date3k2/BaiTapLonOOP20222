@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react'
 import OptionsPanel from '../component/OptionsPanel'
 import { Button, Container, NavDropdown, Stack } from 'react-bootstrap'
 import Navbar from 'react-bootstrap/Navbar';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Col, Form } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
-import axios from "axios";
 import alert from '../icons/alert.png'
 import questionmark from '../icons/questionmark.png'
 import apiServices from '../services/apiServices';
 import { Category } from '../models/Category'
-import { Navigate, redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function CategoryPage() {
   const [filledName, setFilledName] = useState("");
@@ -38,7 +37,7 @@ export default function CategoryPage() {
 
   const handleAddCategory = (event) => {
     event.preventDefault();
-    if (filledName == "" || filledInfo == "") {
+    if (filledName === "" || filledInfo === "") {
       toast.warning("Name and info need to be completed");
       return;
     }
