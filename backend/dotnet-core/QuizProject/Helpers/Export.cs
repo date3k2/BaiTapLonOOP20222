@@ -22,7 +22,7 @@ namespace QuizProject.Helpers
         private string ToMarkdown(Question question)
         {
             string res = $"{question.QuestionText}  \n";
-            if (question.QuestionMediaPath != null && isPng(question.QuestionMediaPath)) res += $"![ảnh]({question.QuestionMediaPath})";
+            if (question.QuestionMediaPath != null && isPng(question.QuestionMediaPath)) res += $"![ảnh]({question.QuestionMediaPath})\n";
             List<char> answers = new List<char>();
             for (int i = 0; i < question.QuestionChoices.Count; i++)
             {
