@@ -106,19 +106,8 @@ export default function EditQuestionPage() {
   }
 
   const handleUpdateChoices = (index, key, newValue) => {
-<<<<<<< HEAD
     if(key == 'choiceMediaPath'){
       if(typeof newValue !== 'undefined'){
-=======
-    if (key == 'choiceMediaPath') {
-      if (typeof newValue === 'undefined') {
-        setChoices(prevChoices => {
-          const updatedChoices = [...prevChoices];
-          updatedChoices[index][key] = "";
-          return updatedChoices;
-        });
-      } else {
->>>>>>> 73f5afa3c499b2ae9f32d174db1f8161b91b53d9
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
           resizeImage(reader.result)
@@ -332,13 +321,7 @@ export default function EditQuestionPage() {
             <Row>
               <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => {
                 const mediaFile = e.target.files[0];
-<<<<<<< HEAD
                 if(typeof mediaFile !== "undefined"){
-=======
-                if (typeof mediaFile === "undefined") {
-                  setQuestionMediaPath("");
-                } else {
->>>>>>> 73f5afa3c499b2ae9f32d174db1f8161b91b53d9
                   reader.readAsDataURL(e.target.files[0]);
                   reader.onloadend = () => {
                     resizeImage(reader.result)
@@ -348,7 +331,6 @@ export default function EditQuestionPage() {
               }} />
             </Row>
             {
-<<<<<<< HEAD
               questionMediaPath ? 
               <Col>
                 <Row className="m-0 p-0 mt-2">
@@ -363,17 +345,6 @@ export default function EditQuestionPage() {
                 </Row>
               </Col> :
               null
-=======
-              questionMediaPath ?
-                <Row className="m-0 p-0 mt-2">
-                  {
-                    getMediaType(questionMediaPath) == "image" ?
-                      <img style={{ objectFit: 'fill', maxHeight: '200px', maxWidth: "300px" }} src={questionMediaPath} /> :
-                      <video controls src={questionMediaPath} />
-                  }
-                </Row> :
-                null
->>>>>>> 73f5afa3c499b2ae9f32d174db1f8161b91b53d9
             }
           </Col>
         </div>
@@ -440,7 +411,6 @@ export default function EditQuestionPage() {
                   </Col>
                   <Col>
                     <Row className="m-0 p-0">
-<<<<<<< HEAD
                       <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])}/>
                     </Row>
                     {choice.choiceMediaPath ? 
@@ -457,19 +427,6 @@ export default function EditQuestionPage() {
                         </Row>
                       </Col>
                     : null}
-=======
-                      <Form.Control type="file" accept="image/*, video/*" onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])} />
-                    </Row>
-                    {choice.choiceMediaPath ?
-                      <Row className="m-0 p-0 mt-2">
-                        {
-                          getMediaType(choice.choiceMediaPath) === "image" ?
-                            <img style={{ objectFit: 'fill', maxHeight: '200px', maxWidth: "300px" }} src={choice.choiceMediaPath} /> :
-                            <video controls src={choice.choiceMediaPath} />
-                        }
-                      </Row>
-                      : null}
->>>>>>> 73f5afa3c499b2ae9f32d174db1f8161b91b53d9
                   </Col>
                 </Form.Group>
               </Card.Body>
