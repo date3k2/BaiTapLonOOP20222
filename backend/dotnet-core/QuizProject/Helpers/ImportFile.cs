@@ -1,29 +1,27 @@
-﻿using DocumentFormat.OpenXml.Office2016.Drawing.Command;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using QuizProject.Models;
-using System.Drawing;
-using System;
 using System.Text;
-using System.Security.Cryptography;
 
 namespace QuizProject.Helpers
 {
     public class ImportFile
     {
-        public class ParagraphInfo {
+        public class ParagraphInfo
+        {
             public string? text;
             public byte[]? image;
 
             public ParagraphInfo(string text, byte[] image) { this.text = text; this.image = image; }
-            public ParagraphInfo(string text, Image? image) { 
+            public ParagraphInfo(string text, System.Drawing.Image? image)
+            {
                 this.text = text;
-                if (image ==  null) { this.image = null; }
-                else using (var stream  = new MemoryStream())
-                {
-                    image.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-                    this.image = stream.ToArray();
-                } 
+                if (image == null) { this.image = null; }
+                else using (var stream = new MemoryStream())
+                    {
+                        image.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                        this.image = stream.ToArray();
+                    }
             }
         }
         public (List<Question>, List<QuestionChoice>) ImportFromTXT(Stream file)
@@ -68,7 +66,7 @@ namespace QuizProject.Helpers
                 {
                     ParagraphInfo info = GetInfo(paragraph, doc);
                     string? paragraphText = info.text;
-                    if (paragraphText != "" || (kit.IsNextQuestion && info.image == null)) HandleLine(kit, paragraphText!);          
+                    if (paragraphText != "" || (kit.IsNextQuestion && info.image == null)) HandleLine(kit, paragraphText!);
                     if (info.image != null) HandleImage(kit, info.image);
                 }
                 // Xử lý câu hỏi thừa nhưng không đủ lựa chọn ở cuối
@@ -103,20 +101,20 @@ namespace QuizProject.Helpers
                     var imageFirst = graphic!.GraphicData!.Descendants<DocumentFormat.OpenXml.Drawing.Pictures.Picture>().FirstOrDefault();
                     var blip = imageFirst!.BlipFill!.Blip!.Embed!.Value;
                     img = (ImagePart)doc.MainDocumentPart!.GetPartById(blip!);
-                    
+
                 }
                 string runText = run.InnerText;
                 sb.Append(runText);
             }
 
-            Image? bitmap = null;
-            if (img != null) bitmap = Image.FromStream(img.GetStream());
+            System.Drawing.Image? bitmap = null;
+            if (img != null) bitmap = System.Drawing.Image.FromStream(img.GetStream());
             return new ParagraphInfo(sb.ToString(), bitmap);
         }
 
         //static byte[] GetImage(Paragraph paragraph)
         //{
-            
+
         //}
 
         public static void HandleLine(AikenHelper kit, string line)
@@ -174,20 +172,20 @@ namespace QuizProject.Helpers
 
         public static void HandleImage(AikenHelper kit, byte[] image)
         {
-             string base64Image = Convert.ToBase64String(image);
+            string base64Image = Convert.ToBase64String(image);
             base64Image = $"data:image/png;base64,{base64Image}";
-             if (kit.Ques.QuestionText == "") throw new Exception($"Error in line: {kit.LineIter}"); //Chưa có câu hỏi mà đã có ảnh -> lỗi
-             else if (kit.Ques.QuestionChoices.Count == 0)
-             {
+            if (kit.Ques.QuestionText == "") throw new Exception($"Error in line: {kit.LineIter}"); //Chưa có câu hỏi mà đã có ảnh -> lỗi
+            else if (kit.Ques.QuestionChoices.Count == 0)
+            {
                 if (kit.Ques.QuestionMediaPath == null) kit.Ques.QuestionMediaPath = base64Image;
                 else throw new Exception($"Error in line: {kit.LineIter}"); //Có 2 ảnh = Chưa có choice mà đã có ảnh mà question có ảnh rồi -> lỗi
-             }
-             else
-             {
+            }
+            else
+            {
                 if (kit.Ques.QuestionChoices.Last().ChoiceMediaPath == null) kit.Ques.QuestionChoices.Last().ChoiceMediaPath = base64Image;
                 else throw new Exception($"Error in line: {kit.LineIter}"); //2 ảnh cùng 1 choices
-             }
-             if (image == null) throw new Exception($"Error in line: {kit.LineIter}");
+            }
+            if (image == null) throw new Exception($"Error in line: {kit.LineIter}");
         }
     }
 }

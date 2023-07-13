@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iTextSharp.text.pdf;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuizProject.Helpers;
 using QuizProject.Models;
+using System.Diagnostics;
 
 namespace QuizProject.Controllers
 {
@@ -157,20 +159,33 @@ namespace QuizProject.Controllers
             return NoContent();
         }
         [HttpPost("Export")]
-        public IActionResult ExportQuiz(Guid quizId)
+        public IActionResult ExportQuiz(Guid quizId, string? password)
         {
             var quiz = _context.Quizzes.Find(quizId)!;
             var exp = new ExportFile();
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string input = Path.Combine(desktopPath, "quiz.md");
-            //string output = Path.Combine(desktopPath, $"{quiz.QuizName}.pdf");
+            string input = Path.Combine(desktopPath, $"quiz.md");
+
+            string output = Path.Combine(desktopPath, $"quiz.pdf");
+            string realOutput = Path.Combine(desktopPath, $"{quiz.QuizName}.pdf");
             exp.WriteMarkdown(quiz, input);
-            //exp.MarkdownToPdf(input, output);
-            //if (password != null)
-            //{
-            //    exp.SetPdfPassword(output, password);
-            //}
-            return StatusCode(201, input);
+
+            //Convert to PDF
+            Process process = new();
+            process.StartInfo.FileName = "cmd.exe";
+            process.StartInfo.Arguments = $"/c md-to-pdf {input}";
+            process.Start();
+            process.WaitForExit();
+
+            if (password != null)
+            {
+                PdfReader reader = new PdfReader(output);
+                PdfStamper stamper = new PdfStamper(reader, new FileStream(realOutput, FileMode.Create));
+                stamper.SetEncryption(PdfWriter.STRENGTH128BITS, password, password, PdfWriter.AllowPrinting);
+                stamper.Close();
+                reader.Close();
+            }
+            return StatusCode(201, realOutput);
         }
     }
 }

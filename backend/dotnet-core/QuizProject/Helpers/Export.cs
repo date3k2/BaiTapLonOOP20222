@@ -62,7 +62,7 @@ namespace QuizProject.Helpers
         //Set password: document: Not encrypted pdf -> encrypted pdf
         public void SetPdfPassword(string output, string password)
         {
-            Aspose.Pdf.Document document = new Document(output);
+            Aspose.Pdf.Document document = new(output);
             document.Encrypt(password, password, 0, CryptoAlgorithm.AESx256);
             document.Save(output);
         }
