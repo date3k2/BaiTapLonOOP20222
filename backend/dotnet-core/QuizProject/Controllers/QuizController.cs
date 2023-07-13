@@ -42,6 +42,15 @@ namespace QuizProject.Controllers
                 return NotFound();
             }
 
+            if (quiz.IsShuffle)
+            {
+                Random random = new();
+                quiz.Questions = quiz.Questions.OrderBy(x => random.Next()).ToArray();
+                foreach (var question in quiz.Questions)
+                {
+                    question.QuestionChoices = question.QuestionChoices.OrderBy(x => random.Next()).ToArray();
+                }
+            }
             return quiz;
         }
 
@@ -148,7 +157,7 @@ namespace QuizProject.Controllers
             return NoContent();
         }
         [HttpPost("Export")]
-        public async Task<IActionResult> ExportQuiz(Guid quizId, string? password)
+        public IActionResult ExportQuiz(Guid quizId, string? password)
         {
             var quiz = _context.Quizzes.Find(quizId)!;
             var exp = new ExportFile();
