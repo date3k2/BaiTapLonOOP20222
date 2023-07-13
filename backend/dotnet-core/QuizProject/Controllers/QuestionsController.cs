@@ -10,10 +10,12 @@ namespace QuizProject.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly QuizProjectContext _context;
+        private readonly ICategoryHelper _categoryHelper;
 
-        public QuestionsController(QuizProjectContext context)
+        public QuestionsController(QuizProjectContext context, ICategoryHelper categoryHelper)
         {
             _context = context;
+            _categoryHelper = categoryHelper;
         }
 
         // GET: api/Questions
@@ -30,22 +32,26 @@ namespace QuizProject.Controllers
                 return StatusCode(200, ques);
             }
             var questions = new List<Question>();
+            // Cây chứa các categoryId
+            var tree = new List<int> { categoryId };
             if (showSubCategory)
             {
-                var allChildrenId = await _context.CategoryRelationships.Where(e => e.CategoryParentId == categoryId).Select(e => e.CategoryChildId).ToListAsync();
-                if (!allChildrenId.Contains(categoryId))
-                    allChildrenId.Add(categoryId);
-                foreach (var childrenId in allChildrenId)
+                var categoryRelationships = await _context.CategoryRelationships.ToListAsync();
+                var adj = _categoryHelper.GetAdjencyList(categoryRelationships);
+
+                var level = new Dictionary<int, int>
                 {
-                    var category = await _context.Categories.FindAsync(childrenId);
-                    questions.AddRange(category!.Questions);
-                }
+                    [categoryId] = 0
+                };
+
+                _categoryHelper.DFS(categoryId, adj, level, tree);
             }
-            else
+            foreach (var catId in tree)
             {
-                var category = await _context.Categories.FindAsync(categoryId);
+                var category = await _context.Categories.FindAsync(catId);
                 questions.AddRange(category!.Questions);
             }
+
             return Ok(questions);
         }
 
