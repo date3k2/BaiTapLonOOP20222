@@ -56,7 +56,7 @@ export default function AddQuizPage() {
       return;
     }
     else {
-      if (selected === 0) timeLimitInSecond *= 60;
+      if (selected == 0) timeLimitInSecond *= 60;
       else timeLimitInSecond *= 3600;
     }
     const quizData = new Quiz(quizName, description, timeLimitInSecond, descriptionShow, false);
