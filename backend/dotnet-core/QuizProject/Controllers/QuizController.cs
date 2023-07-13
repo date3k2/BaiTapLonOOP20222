@@ -157,25 +157,20 @@ namespace QuizProject.Controllers
             return NoContent();
         }
         [HttpPost("Export")]
-        public IActionResult ExportQuiz(Guid quizId, string? password)
+        public IActionResult ExportQuiz(Guid quizId)
         {
             var quiz = _context.Quizzes.Find(quizId)!;
             var exp = new ExportFile();
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string input = Path.Combine(desktopPath, "Input.md");
-            string output = Path.Combine(desktopPath, $"{quiz.QuizName}.pdf");
+            string input = Path.Combine(desktopPath, "quiz.md");
+            //string output = Path.Combine(desktopPath, $"{quiz.QuizName}.pdf");
             exp.WriteMarkdown(quiz, input);
-            exp.MarkdownToPdf(input, output);
-            if (password != null)
-            {
-                exp.SetPdfPassword(output, password);
-            }
-            return StatusCode(201, output);
-        }
-
-        private bool QuizExists(Guid id)
-        {
-            return (_context.Quizzes?.Any(e => e.QuizId == id)).GetValueOrDefault();
+            //exp.MarkdownToPdf(input, output);
+            //if (password != null)
+            //{
+            //    exp.SetPdfPassword(output, password);
+            //}
+            return StatusCode(201, input);
         }
     }
 }

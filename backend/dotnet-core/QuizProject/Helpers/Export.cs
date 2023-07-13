@@ -1,7 +1,6 @@
-﻿using QuizProject.Models;
-using Aspose.Pdf;
+﻿using Aspose.Pdf;
 using GroupDocs.Conversion.Options.Convert;
-using Aspose.Pdf.Plugins;
+using QuizProject.Models;
 
 namespace QuizProject.Helpers
 {
@@ -43,8 +42,7 @@ namespace QuizProject.Helpers
 
         public void WriteMarkdown(Quiz quiz, string path)
         {
-            StreamWriter stream = new StreamWriter(path);
-            File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
+            StreamWriter stream = new(path);
             stream.Write(ToMarkdown(quiz));
             stream.Close();
         }
@@ -57,7 +55,6 @@ namespace QuizProject.Helpers
                 var options = new PdfConvertOptions();
                 converter.Convert(output, options);
             }
-            File.Delete(input);
         }
 
         public ExportFile() { }
@@ -65,7 +62,7 @@ namespace QuizProject.Helpers
         //Set password: document: Not encrypted pdf -> encrypted pdf
         public void SetPdfPassword(string output, string password)
         {
-            Aspose.Pdf.Document document = new Aspose.Pdf.Document(output);
+            Aspose.Pdf.Document document = new Document(output);
             document.Encrypt(password, password, 0, CryptoAlgorithm.AESx256);
             document.Save(output);
         }
