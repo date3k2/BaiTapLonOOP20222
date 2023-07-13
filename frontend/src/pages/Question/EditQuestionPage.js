@@ -42,7 +42,7 @@ export default function EditQuestionPage() {
       setChoices([{ choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }]);
     }
     apiServices.getQuestion(paramValue)
-      .then(res => {
+      .then(res => {  
         setQuestionData(res.data)
         setFilledName(res.data.questionCode)
         setFilledText(res.data.questionText)
