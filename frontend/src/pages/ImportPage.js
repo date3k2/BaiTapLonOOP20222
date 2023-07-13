@@ -25,11 +25,15 @@ export default function ImportPage() {
       toast.error("Please choose a file!");
       return;
     }
+    if(category == null){
+      toast.error("Please choose a category!");
+      return;
+    }
     apiServices.postImportQuestions(category, file)
     .then(res => {
         toast.success(res.data);
     })
-    .catch(err => console.log(err.response));
+    .catch(err => toast.error(err.response.data));
   }
 
   return (

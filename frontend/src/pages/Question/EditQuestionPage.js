@@ -8,6 +8,7 @@ import apiServices from '../../services/apiServices';
 import { toast, ToastContainer } from 'react-toastify';
 import { Question } from '../../models/Question'
 import { Choice } from '../../models/Choice'
+import Loading from '../../component/Loading';
 
 export default function EditQuestionPage() {
   let choiceMarkList =
@@ -28,6 +29,9 @@ export default function EditQuestionPage() {
   const [categoryID, setCategoryID] = useState(0);
   const [questionId, setQuestionId] = useState("");
   const [questionData, setQuestionData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [editLoading, setEditLoading] = useState(true);
+  const [saveLoading, setSaveLoading] = useState(true);
   const navigate = useNavigate()
 
   const reader = new FileReader();
@@ -56,6 +60,7 @@ export default function EditQuestionPage() {
     apiServices.getCategory()
       .then(res => {
         setCategories(res.data)
+        setIsLoading(false);
       })
       .catch(error => console.log(error));
   }, [isEdit]);
@@ -70,7 +75,7 @@ export default function EditQuestionPage() {
         const MAX_HEIGHT = maxHeight
         let width = img.width
         let height = img.height
-  
+
         if (width > height) {
           if (width > MAX_WIDTH) {
             height *= MAX_WIDTH / width
@@ -106,19 +111,19 @@ export default function EditQuestionPage() {
   }
 
   const handleUpdateChoices = (index, key, newValue) => {
-    if(key === 'choiceMediaPath'){
-      if(typeof newValue !== 'undefined'){
+    if (key === 'choiceMediaPath') {
+      if (typeof newValue !== 'undefined') {
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
-          if(getMediaType(reader.result) === "image"){
+          if (getMediaType(reader.result) === "image") {
             resizeImage(reader.result)
-            .then(res => {
-              setChoices(prevChoices => {
-                let updatedChoices = [...prevChoices];
-                updatedChoices[index][key] = res;
-                return updatedChoices;
+              .then(res => {
+                setChoices(prevChoices => {
+                  let updatedChoices = [...prevChoices];
+                  updatedChoices[index][key] = res;
+                  return updatedChoices;
+                });
               });
-            });
           } else {
             setChoices(prevChoices => {
               let updatedChoices = [...prevChoices];
@@ -167,9 +172,11 @@ export default function EditQuestionPage() {
       questionData.moreThanOneChoice = moreThanOneChoice;
       questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
+      setEditLoading(false);
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
           toast.success("Update question successfully!");
+          setEditLoading(true);
         })
         .catch(error => console.log(error));
     }
@@ -185,6 +192,7 @@ export default function EditQuestionPage() {
       else moreThanOneChoice = false;
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       let param = "";
+      setEditLoading(false);
       apiServices.postQuestion(questionData)
         .then(res => {
           param = res.data
@@ -225,6 +233,7 @@ export default function EditQuestionPage() {
       questionData.moreThanOneChoice = moreThanOneChoice;
       questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
+      setSaveLoading(false);
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
           navigate('/question');
@@ -242,6 +251,7 @@ export default function EditQuestionPage() {
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
+      setSaveLoading(false);
       apiServices.postQuestion(questionData, questionId)
         .then(res => {
           navigate('/question');
@@ -260,223 +270,240 @@ export default function EditQuestionPage() {
           Adding a Multiple choice question
         </p>
       }
-      <div style={{ padding: "25px" }}>
-        <Stack direction="horizontal" gap={2}>
-          <NavDropdown disabled style={{ color: "blue", fontSize: "25px" }}>
-          </NavDropdown>
-          <Navbar.Text style={{ color: "red", fontSize: "25px" }}>
-            General
-          </Navbar.Text>
-        </Stack>
-
-        <div className='row justify-content-start'>
-          <Col className='col-4' style={{ fontSize: '20px' }}>
-            Category
-          </Col>
-          <Col style={{ marginLeft: '50px' }} className='col-6'>
-            <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }}>
-              {categories.map((category) => (
-                <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
-              ))}
-            </Form.Select>
-          </Col>
-        </div>
-
-        <br />
-        <div className='row justify-content-start'>
-          <Col className='col-4' style={{ fontSize: '20px' }}>
-            Question name
-          </Col>
-          <Col style={{ marginLeft: '50px' }} className='col-6'>
+      <div>
+        {isLoading && isEdit ? <Loading /> :
+          <div style={{ padding: "25px" }}>
             <Stack direction="horizontal" gap={2}>
-              <img src={alert} width="13" height="13" alt="img" />
-              <Form.Control
-                value={filledName}
-                onChange={handleChangeName}
-                type="text"
-                placeholder="Question name"
-              />
+              <NavDropdown disabled style={{ color: "blue", fontSize: "25px" }}>
+              </NavDropdown>
+              <Navbar.Text style={{ color: "red", fontSize: "25px" }}>
+                General
+              </Navbar.Text>
             </Stack>
-          </Col>
-        </div>
 
-        <br />
-        <div className='row justify-content-start'>
-          <Col className='col-4' style={{ fontSize: '20px' }}>
-            Question text
-          </Col>
-          <Col style={{ marginLeft: '50px' }} className='col-6'>
-            <Stack direction="horizontal" gap={2}>
-              <img src={alert} width="13" height="13" style={{ marginBottom: "270px" }} alt="Img" />
-              <Form.Control value={filledText} onChange={handleChangeText}
-                type="text"
-                placeholder="Question text"
-                as="textarea"
-                style={{ height: '300px' }}
-              />
-            </Stack>
-          </Col>
-        </div>
+            <div className='row justify-content-start'>
+              <Col className='col-4' style={{ fontSize: '20px' }}>
+                Category
+              </Col>
+              <Col style={{ marginLeft: '50px' }} className='col-6'>
+                <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }}>
+                  {categories.map((category) => (
+                    <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </div>
 
-        <br />
-        <div className='row justify-content-start'>
-          <Col className='col-4' style={{ fontSize: '20px' }}>
-            Question media
-          </Col>
-          <Col style={{ marginLeft: '80px' }} className='col-6'>
-            <Row>
-              <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => {
-                const mediaFile = e.target.files[0];
-                if(typeof mediaFile !== "undefined"){
-                  reader.readAsDataURL(e.target.files[0]);
-                  reader.onloadend = () => {
-                    if(getMediaType(reader.result) === "image"){
-                      resizeImage(reader.result)
-                      .then(res => setQuestionMediaPath(res));
-                    } else {
-                      setQuestionMediaPath(reader.result);
-                      console.log(reader.result)
-                    }
-                  }
-                }
-              }} />
-            </Row>
-            {
-              questionMediaPath ? 
-              <Col>
-                <Row className="m-0 p-0 mt-2">
-                  {
-                    getMediaType(questionMediaPath) === "image" ?
-                    <img src={questionMediaPath} /> :
-                    <video controls src={questionMediaPath} />
-                  }
-                </Row> 
+            <br />
+            <div className='row justify-content-start'>
+              <Col className='col-4' style={{ fontSize: '20px' }}>
+                Question name
+              </Col>
+              <Col style={{ marginLeft: '50px' }} className='col-6'>
+                <Stack direction="horizontal" gap={2}>
+                  <img src={alert} width="13" height="13" alt="img" />
+                  <Form.Control
+                    value={filledName}
+                    onChange={handleChangeName}
+                    type="text"
+                    placeholder="Question name"
+                  />
+                </Stack>
+              </Col>
+            </div>
+
+            <br />
+            <div className='row justify-content-start'>
+              <Col className='col-4' style={{ fontSize: '20px' }}>
+                Question text
+              </Col>
+              <Col style={{ marginLeft: '50px' }} className='col-6'>
+                <Stack direction="horizontal" gap={2}>
+                  <img src={alert} width="13" height="13" style={{ marginBottom: "270px" }} alt="Img" />
+                  <Form.Control value={filledText} onChange={handleChangeText}
+                    type="text"
+                    placeholder="Question text"
+                    as="textarea"
+                    style={{ height: '300px' }}
+                  />
+                </Stack>
+              </Col>
+            </div>
+
+            <br />
+            <div className='row justify-content-start'>
+              <Col className='col-4' style={{ fontSize: '20px' }}>
+                Question media
+              </Col>
+              <Col style={{ marginLeft: '80px' }} className='col-6'>
                 <Row>
-                  <p className="text-danger ms-4 mt-2" style={{cursor: 'pointer'}} onClick={() => setQuestionMediaPath(null)}>Remove media file</p>
+                  <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => {
+                    const mediaFile = e.target.files[0];
+                    if (typeof mediaFile !== "undefined") {
+                      reader.readAsDataURL(e.target.files[0]);
+                      reader.onloadend = () => {
+                        if (getMediaType(reader.result) === "image") {
+                          resizeImage(reader.result)
+                            .then(res => setQuestionMediaPath(res));
+                        } else {
+                          setQuestionMediaPath(reader.result);
+                          console.log(reader.result)
+                        }
+                      }
+                    }
+                  }} />
                 </Row>
-              </Col> :
-              null
-            }
-          </Col>
-        </div>
-        <br />
+                {
+                  questionMediaPath ?
+                    <Col>
+                      <Row className="m-0 p-0 mt-2">
+                        {
+                          getMediaType(questionMediaPath) === "image" ?
+                            <img src={questionMediaPath} /> :
+                            <video controls src={questionMediaPath} />
+                        }
+                      </Row>
+                      <Row>
+                        <p className="text-danger ms-4 mt-2" style={{ cursor: 'pointer' }} onClick={() => setQuestionMediaPath(null)}>Remove media file</p>
+                      </Row>
+                    </Col> :
+                    null
+                }
+              </Col>
+            </div>
+            <br />
 
-        <br />
-        <div className='row justify-content-start'>
-          <Col className='col-4' style={{ fontSize: '20px' }}>
-            Default mark
-          </Col>
-          <Col style={{ marginLeft: '50px' }} className='col-6'>
-            <Stack direction="horizontal" gap={2}>
-              <img src={alert} width="13" height="13" alt="Img" />
-              <Form.Control type="text" style={{ width: "100px" }} defaultValue={1} />
-            </Stack>
-          </Col>
-        </div>
+            <br />
+            <div className='row justify-content-start'>
+              <Col className='col-4' style={{ fontSize: '20px' }}>
+                Default mark
+              </Col>
+              <Col style={{ marginLeft: '50px' }} className='col-6'>
+                <Stack direction="horizontal" gap={2}>
+                  <img src={alert} width="13" height="13" alt="Img" />
+                  <Form.Control type="text" style={{ width: "100px" }} defaultValue={1} />
+                </Stack>
+              </Col>
+            </div>
 
-        <br />
-        {
-          choices.map((choice, index) => (
-            <Card className="d-flex" style={{ width: "550px", marginLeft: "45%", marginTop: "20px", backgroundColor: "#f0eeed" }}>
-              <Card.Body>
-                <Form.Group as={Row}>
-                  <Col xs={3}>
-                    <Form.Label style={{ fontSize: "20px" }}>
-                      Choice {index + 1}
-                    </Form.Label>
-                  </Col>
-                  <Col>
-                    <Form.Control
-                      onChange={event => handleUpdateChoices(index, 'choiceText', event.target.value)}
-                      value={choice.choiceText}
-                      as="textarea"
-                      type="text"
-                      style={{ height: "80px" }}
-                    />
-                  </Col>
-                </Form.Group>
-                <br />
-                <Form.Group as={Row}>
-                  <Col xs={3}>
-                    <Form.Label style={{ fontSize: "20px" }}>
-                      Grade
-                    </Form.Label>
-                  </Col>
-                  <Col>
-                    <Form.Select
-                      value={choice.choiceMark}
-                      onChange={event => handleUpdateChoices(index, 'choiceMark', event.target.value)}
-                      style={{ width: "160px" }}
-                    >
-                      <option value={0}> None</option>
-                      {choiceMarkList.map((choiceMark) => (
-                          <option value={(choiceMark/100)}>{choiceMark}%</option>
-                        ))}
-                    </Form.Select>
-                  </Col>
-                </Form.Group>
-                <br />
-                <Form.Group as={Row}>
-                  <Col xs={3}>
-                    <Form.Label style={{ fontSize: "20px" }}>Media</Form.Label>
-                  </Col>
-                  <Col>
-                    <Row className="m-0 p-0">
-                      <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])}/>
-                    </Row>
-                    {choice.choiceMediaPath ? 
-                      <Col>
-                        <Row className="m-0 p-0 mt-2">
-                          {
-                            getMediaType(choice.choiceMediaPath) === "image" ?
-                            <img src={choice.choiceMediaPath}/> :
-                            <video controls src={choice.choiceMediaPath} />
-                          }
-                        </Row>
-                        <Row>
-                          <p className="text-danger ms-3 mt-2" style={{cursor: 'pointer'}} onClick={() => handleUpdateChoices(index, 'choiceMediaPath', null)}>Remove media file</p>
-                        </Row>
+            <br />
+            {
+              choices.map((choice, index) => (
+                <Card className="d-flex" style={{ width: "550px", marginLeft: "45%", marginTop: "20px", backgroundColor: "#f0eeed" }}>
+                  <Card.Body>
+                    <Form.Group as={Row}>
+                      <Col xs={3}>
+                        <Form.Label style={{ fontSize: "20px" }}>
+                          Choice {index + 1}
+                        </Form.Label>
                       </Col>
-                    : null}
-                  </Col>
-                </Form.Group>
-              </Card.Body>
-            </Card>
-          ))
+                      <Col>
+                        <Form.Control
+                          onChange={event => handleUpdateChoices(index, 'choiceText', event.target.value)}
+                          value={choice.choiceText}
+                          as="textarea"
+                          type="text"
+                          style={{ height: "80px" }}
+                        />
+                      </Col>
+                    </Form.Group>
+                    <br />
+                    <Form.Group as={Row}>
+                      <Col xs={3}>
+                        <Form.Label style={{ fontSize: "20px" }}>
+                          Grade
+                        </Form.Label>
+                      </Col>
+                      <Col>
+                        <Form.Select
+                          value={choice.choiceMark}
+                          onChange={event => handleUpdateChoices(index, 'choiceMark', event.target.value)}
+                          style={{ width: "160px" }}
+                        >
+                          <option value={0}> None</option>
+                          {choiceMarkList.map((choiceMark) => (
+                            <option value={(choiceMark / 100)}>{choiceMark}%</option>
+                          ))}
+                        </Form.Select>
+                      </Col>
+                    </Form.Group>
+                    <br />
+                    <Form.Group as={Row}>
+                      <Col xs={3}>
+                        <Form.Label style={{ fontSize: "20px" }}>Media</Form.Label>
+                      </Col>
+                      <Col>
+                        <Row className="m-0 p-0">
+                          <Form.Control type="file" accept="image/*, video/*" onClick={e => e.target.value = null} onChange={e => handleUpdateChoices(index, 'choiceMediaPath', e.target.files[0])} />
+                        </Row>
+                        {choice.choiceMediaPath ?
+                          <Col>
+                            <Row className="m-0 p-0 mt-2">
+                              {
+                                getMediaType(choice.choiceMediaPath) === "image" ?
+                                  <img src={choice.choiceMediaPath} /> :
+                                  <video controls src={choice.choiceMediaPath} />
+                              }
+                            </Row>
+                            <Row>
+                              <p className="text-danger ms-3 mt-2" style={{ cursor: 'pointer' }} onClick={() => handleUpdateChoices(index, 'choiceMediaPath', null)}>Remove media file</p>
+                            </Row>
+                          </Col>
+                          : null}
+                      </Col>
+                    </Form.Group>
+                  </Card.Body>
+                </Card>
+              ))
+            }
+            <Button
+              onClick={() => {
+                setChoices(choices => [...choices, { choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }])
+              }}
+              variant="primary"
+              style={{ marginLeft: "45%", marginTop: "50px" }}
+            >
+              BLANKS FOR 3 MORE CHOICES
+            </Button>
+            {editLoading ?
+              <Button
+                onClick={handleSaveAndContinue}
+                variant="primary"
+                style={{ marginLeft: "40%", marginTop: "70px" }}
+              >
+                SAVE CHANGE AND CONTINUE EDITING
+              </Button>
+              : <Button variant="primary"
+                style={{ marginLeft: "40%", marginTop: "70px" }}>
+                <span class="spinner-border spinner-border-sm"></span>
+                Loading...
+              </Button>
+            }
+            <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
+            {saveLoading ?
+              <Button
+                onClick={handleSave}
+                variant="danger"
+                style={{ marginLeft: "40%", marginTop: "30px" }}
+              >
+                SAVE CHANGES
+              </Button>
+              : 
+              <Button variant="danger"
+                style={{ marginLeft: "40%", marginTop: "30px" }}>
+                <span class="spinner-border spinner-border-sm"></span>
+                Loading...
+              </Button>
+            }
+            <Button
+              variant="primary"
+              style={{ marginLeft: "20px", marginTop: "30px" }}
+              href="/question"
+            >
+              CANCEL
+            </Button>
+          </div>
         }
-        <Button
-          onClick={() => {
-            setChoices(choices => [...choices, { choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }, { choiceText: "", choiceMark: 0, choiceMediaPath: null }])
-          }}
-          variant="primary"
-          style={{ marginLeft: "45%", marginTop: "50px" }}
-        >
-          BLANKS FOR 3 MORE CHOICES
-        </Button>
-
-        <Button
-          onClick={handleSaveAndContinue}
-          variant="primary"
-          style={{ marginLeft: "40%", marginTop: "70px" }}
-        >
-          SAVE CHANGE AND CONTINUE EDITING
-        </Button>
-        <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
-
-        <Button
-          onClick={handleSave}
-          variant="danger"
-          style={{ marginLeft: "40%", marginTop: "30px" }}
-        >
-          SAVE CHANGES
-        </Button>
-        <Button
-          variant="primary"
-          style={{ marginLeft: "20px", marginTop: "30px" }}
-          href="/question"
-        >
-          CANCEL
-        </Button>
       </div>
     </Container >
   );

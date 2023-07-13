@@ -46,6 +46,7 @@ export default function CategoryPage() {
       apiServices.postCategoryDefault(categoryData)
         .then(res => {
           console.log(res.data);
+          toast.success("Add category successfully!");
         })
         .catch(error => console.log(error));
       navigate(0);
@@ -53,7 +54,8 @@ export default function CategoryPage() {
     else {
       apiServices.postCategory(parentID, categoryData)
         .then(res => {
-          console.log(res.data);
+          console.log(res.data);  
+          toast.success("Add category successfully!");
         })
         .catch(error => console.log(error));
       navigate(0);
