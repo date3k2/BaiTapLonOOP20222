@@ -89,7 +89,7 @@ function ExamQuestion({getMap, index, question, answer, setAnswer, isQuizFinishe
                       isQuizFinished && answer.get(question.questionId).includes(choice) ? 
                       <Container className='mx-1 p-0' style={{maxWidth: '40px'}}>
                         {
-                          correctChoiceList.includes(choice.choiceText) ?
+                          correctChoiceList.includes(choice.choiceText) || (choice.choiceText === "" && correctChoiceList.includes(String.fromCharCode(index + 65))) ?
                           <img style={{width: '15px', height: '15px'}} src={correct}/> :
                           <img style={{width: '15px', height: '15px'}} src={wrong}/>
                         }

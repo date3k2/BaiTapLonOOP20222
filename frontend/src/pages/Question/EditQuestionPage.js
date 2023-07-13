@@ -110,14 +110,22 @@ export default function EditQuestionPage() {
       if(typeof newValue !== 'undefined'){
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
-          resizeImage(reader.result)
-          .then(res => {
+          if(getMediaType(reader.result) === "image"){
+            resizeImage(reader.result)
+            .then(res => {
+              setChoices(prevChoices => {
+                let updatedChoices = [...prevChoices];
+                updatedChoices[index][key] = res;
+                return updatedChoices;
+              });
+            });
+          } else {
             setChoices(prevChoices => {
               let updatedChoices = [...prevChoices];
-              updatedChoices[index][key] = res;
+              updatedChoices[index][key] = reader.result;
               return updatedChoices;
             });
-          });
+          }
         }
       }
     }
@@ -176,12 +184,10 @@ export default function EditQuestionPage() {
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
-      console.log(questionData);
       let param = "";
       apiServices.postQuestion(questionData)
         .then(res => {
           param = res.data
-          console.log(res.data)
           navigate(`/question/edit?questionID=${param}`);
           navigate(0)
         })
@@ -324,8 +330,13 @@ export default function EditQuestionPage() {
                 if(typeof mediaFile !== "undefined"){
                   reader.readAsDataURL(e.target.files[0]);
                   reader.onloadend = () => {
-                    resizeImage(reader.result)
-                    .then(res => setQuestionMediaPath(res));
+                    if(getMediaType(reader.result) === "image"){
+                      resizeImage(reader.result)
+                      .then(res => setQuestionMediaPath(res));
+                    } else {
+                      setQuestionMediaPath(reader.result);
+                      console.log(reader.result)
+                    }
                   }
                 }
               }} />
@@ -399,7 +410,7 @@ export default function EditQuestionPage() {
                     >
                       <option value={0}> None</option>
                       {choiceMarkList.map((choiceMark) => (
-                          <option value={(choiceMark/100).toFixed(7)}>{choiceMark}%</option>
+                          <option value={(choiceMark/100)}>{choiceMark}%</option>
                         ))}
                     </Form.Select>
                   </Col>
