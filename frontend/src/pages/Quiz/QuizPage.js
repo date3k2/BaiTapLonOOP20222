@@ -87,7 +87,7 @@ export default function PreviewQuiz() {
           >
             PREVIEW QUIZ NOW
           </Button>
-          <PreviewQuizModal open={openModal} onClose={() => setOpenModal(false)} timeLimit = {quizData ? formatTime(quizData.timeLimitInSeconds) : null} path={path.pathname} />
+          <PreviewQuizModal quizId={quizData ? quizData.quizId : null} open={openModal} onClose={() => setOpenModal(false)} timeLimit = {quizData ? formatTime(quizData.timeLimitInSeconds) : null} path={path.pathname} />
         </div>
       </Row>
     </Container>
