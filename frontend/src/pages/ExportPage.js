@@ -30,7 +30,10 @@ export default function ExportPage() {
     .then(res => {
       setInfoMessage(`Exported to: ${res.data}`);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      setInfoMessage("");
+      setErrorMessage("Export failed!")
+    });
   }
 
   useEffect(() => {
