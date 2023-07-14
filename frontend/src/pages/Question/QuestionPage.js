@@ -19,7 +19,7 @@ export default function EditQuestionPage() {
   const [doesShowSub, setDoesShowSub] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [category, setCategory] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleShowSub = e => {
     setDoesShowSub(doesShowSub => !doesShowSub);
@@ -57,23 +57,27 @@ export default function EditQuestionPage() {
         <Form.Check type='checkbox' label='Also show old question' />
         <Button href='/question/edit'>Create a new question</Button>
         {
-          questions.length > 0 && isLoading ? <Loading /> :
-            <Table striped>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Question</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  questions.map(question => <Question question={question} />)
-                }
-              </tbody>
-            </Table>
-}
-        
+          isLoading ? <Loading /> :
+          <Container className='m-0 p-0'>
+            {
+              questions.length > 0 && 
+              <Table striped>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Question</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    questions.map(question => <Question question={question} />)
+                  }
+                </tbody>
+              </Table>
+            }
+          </Container>
+        }
       </Container>
     </div>
   )

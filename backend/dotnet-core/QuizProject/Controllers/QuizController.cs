@@ -173,7 +173,7 @@ namespace QuizProject.Controllers
             //Convert to PDF
             Process process = new();
             process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.Arguments = $"/c md-to-pdf {input}";
+            process.StartInfo.Arguments = $"/c md-to-pdf \"{input}\"";
             process.Start();
             process.WaitForExit();
 
