@@ -1,3 +1,4 @@
 .vs/
 .vscode/
 backend/dotnet-core/QuizProject/LatexPackage/
+mock_server/

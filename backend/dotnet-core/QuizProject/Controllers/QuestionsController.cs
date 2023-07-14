@@ -10,13 +10,22 @@ namespace QuizProject.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly QuizProjectContext _context;
+        private readonly ICategoryHelper _categoryHelper;
 
-        public QuestionsController(QuizProjectContext context)
+        public QuestionsController(QuizProjectContext context, ICategoryHelper categoryHelper)
         {
             _context = context;
+            _categoryHelper = categoryHelper;
         }
 
         // GET: api/Questions
+
+        /// <summary>
+        /// Retrieves a list of questions based on the specified category ID and whether to show subcategories.
+        /// </summary>
+        /// <param name="categoryId">The ID of the category to retrieve questions from. If 0, retrieves questions from all categories.</param>
+        /// <param name="showSubCategory">Whether to include questions from subcategories of the specified category.</param>
+        /// <returns>A list of questions.</returns>
         [HttpGet]
         public async Task<ActionResult> GetQuestions(int categoryId = 0, bool showSubCategory = false)
         {
@@ -30,26 +39,35 @@ namespace QuizProject.Controllers
                 return StatusCode(200, ques);
             }
             var questions = new List<Question>();
+            // Cây chứa các categoryId
+            var tree = new List<int> { categoryId };
             if (showSubCategory)
             {
-                var allChildrenId = await _context.CategoryRelationships.Where(e => e.CategoryParentId == categoryId).Select(e => e.CategoryChildId).ToListAsync();
-                if (!allChildrenId.Contains(categoryId))
-                    allChildrenId.Add(categoryId);
-                foreach (var childrenId in allChildrenId)
+                var categoryRelationships = await _context.CategoryRelationships.ToListAsync();
+                var adj = _categoryHelper.GetAdjencyList(categoryRelationships);
+
+                var level = new Dictionary<int, int>
                 {
-                    var category = await _context.Categories.FindAsync(childrenId);
-                    questions.AddRange(category!.Questions);
-                }
+                    [categoryId] = 0
+                };
+
+                _categoryHelper.DFS(categoryId, adj, level, tree);
             }
-            else
+            foreach (var catId in tree)
             {
-                var category = await _context.Categories.FindAsync(categoryId);
+                var category = await _context.Categories.FindAsync(catId);
                 questions.AddRange(category!.Questions);
             }
+
             return Ok(questions);
         }
 
 
+        /// <summary>
+        /// Creates a new single question with the specified question and its choices.
+        /// </summary>
+        /// <param name="question">The question to create.</param>
+        /// <returns>The ID of the created question.</returns>
         [HttpPost("Single")]
         public async Task<ActionResult<Guid>> PostSingleQuestion(Question question)
         {
@@ -160,12 +178,14 @@ namespace QuizProject.Controllers
         }
 
 
+
+
         /// <summary>
-        /// API import câu hỏi từ file .txt và .docx dưới định dạng Aiken format
+        /// Imports questions and choices from a file.
         /// </summary>
-        /// <param name="categoryId"></param>
-        /// <param name="file"></param>
-        /// <returns>Trả về số câu hỏi được import thành công, hoặc báo lỗi nếu sai định dạng</returns>
+        /// <param name="file">The file to import from.</param>
+        /// <param name="categoryId">The ID of the category to assign to the imported questions.</param>
+        /// <returns>Returns a success status code and the number of imported questions if the import was successful, or an error status code if an exception occurred.</returns>
         [HttpPost("File")]
         public async Task<ActionResult> ImportQuestionFromFile(IFormFile file, int categoryId = 0)
         {
@@ -200,6 +220,11 @@ namespace QuizProject.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a question with the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the question to delete.</param>
+        /// <returns>Returns a NoContent result if the question was deleted successfully, NotFound if the question was not found, or an error status code if an exception occurred.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQuestion(Guid id)
         {

@@ -177,14 +177,13 @@ namespace QuizProject.Controllers
             process.Start();
             process.WaitForExit();
 
-            if (password != null)
-            {
-                PdfReader reader = new PdfReader(output);
-                PdfStamper stamper = new PdfStamper(reader, new FileStream(realOutput, FileMode.Create));
-                stamper.SetEncryption(PdfWriter.STRENGTH128BITS, password, password, PdfWriter.AllowPrinting);
-                stamper.Close();
-                reader.Close();
-            }
+            PdfReader reader = new PdfReader(output);
+            PdfStamper stamper = new PdfStamper(reader, new FileStream(realOutput, FileMode.Create));
+            stamper.SetEncryption(PdfWriter.STRENGTH128BITS, password, password, PdfWriter.AllowPrinting);
+            stamper.Close();
+            reader.Close();
+            System.IO.File.Delete(output);
+            System.IO.File.Delete(input);
             return StatusCode(201, realOutput);
         }
     }
