@@ -9,12 +9,14 @@ import questionmark from '../icons/questionmark.png'
 import apiServices from '../services/apiServices';
 import { Category } from '../models/Category'
 import { useNavigate } from 'react-router-dom'
+import LoadingButton from '../component/LoadingButton';
 
 export default function CategoryPage() {
   const [filledName, setFilledName] = useState("");
   const [filledInfo, setFilledInfo] = useState("");
   const [categories, setCategories] = useState([]);
   const [parentID, setParentID] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate()
 
   const handleChangeName = (event) => {
@@ -42,23 +44,22 @@ export default function CategoryPage() {
       return;
     }
     const categoryData = new Category(filledName, filledInfo);
+    setIsLoading(false)
     if (parentID === 0) {
       apiServices.postCategoryDefault(categoryData)
         .then(res => {
           console.log(res.data);
-          toast.success("Add category successfully!");
+          navigate(0);
         })
         .catch(error => console.log(error));
-      navigate(0);
     }
     else {
       apiServices.postCategory(parentID, categoryData)
         .then(res => {
-          console.log(res.data);  
-          toast.success("Add category successfully!");
+          console.log(res.data);
+          navigate(0);
         })
         .catch(error => console.log(error));
-      navigate(0);
     }
   };
 
@@ -79,11 +80,11 @@ export default function CategoryPage() {
           <Col className='col-4' style={{ fontSize: '20px' }}>
             Parent category
           </Col>
-          <Col style={{marginLeft: '50px'}} className='col-6'>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <Form.Select value={parentID} onChange={handleParentSelect} style={{ width: '300px' }}>
-                <option value ={0}>Default </option>
+                <option value={0}>Default </option>
                 {categories.slice(1).map((category, index) => (
                   <option key={index} value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                 ))}
@@ -97,7 +98,7 @@ export default function CategoryPage() {
           <Col className='col-4' style={{ fontSize: '20px' }}>
             Name
           </Col>
-          <Col style={{marginLeft: '50px'}} className='col-6'>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' />
               <Form.Control onChange={handleChangeName} type="text" style={{ width: '600px' }} />
@@ -111,10 +112,10 @@ export default function CategoryPage() {
           <Col className='col-4' style={{ fontSize: '20px' }}>
             Category info
           </Col>
-          <Col style={{marginLeft: '50px'}} className='col-6'>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={alert} width='13px' height='13px' style={{ marginBottom: '260px' }} />
-              <Form.Control onChange={handleChangeInfo} type="text" as="textarea" style={{ width:'600px', height: '300px' }} />
+              <Form.Control onChange={handleChangeInfo} type="text" as="textarea" style={{ width: '600px', height: '300px' }} />
             </Stack>
           </Col>
         </div>
@@ -125,7 +126,7 @@ export default function CategoryPage() {
           <Col className='col-4' style={{ fontSize: '20px' }}>
             ID number
           </Col>
-          <Col style={{marginLeft: '50px'}} className='col-6'>
+          <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <Form.Control type="text" style={{ width: '100px' }} />
@@ -134,16 +135,19 @@ export default function CategoryPage() {
         </div>
 
         <br />
-        <div style={{ marginTop:'40px', display: "flex", justifyContent: 'center' }}>
-          <Button onClick={handleAddCategory} variant='danger' href='/category'>
-            ADD CATEGORY
-          </Button>
+        <div style={{ marginTop: '40px', display: "flex", justifyContent: 'center' }}>
+          {isLoading ?
+            <Button onClick={handleAddCategory} variant='danger' href='/category'>
+              ADD CATEGORY
+            </Button>
+            : <LoadingButton color={'danger'} />
+          }
           <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
         </div>
 
-        <div style={{ marginTop:'15px', display: "flex", justifyContent: 'center' }}>
+        <div style={{ marginTop: '15px', display: "flex", justifyContent: 'center' }}>
           <Stack direction="horizontal" gap={1}>
-            <p style={{fontSize:'18px'}}> There are required fields in this form marked</p>
+            <p style={{ fontSize: '18px' }}> There are required fields in this form marked</p>
             <img src={alert} width='13px' height='13px' style={{ marginBottom: '14px' }} />
           </Stack>
         </div>

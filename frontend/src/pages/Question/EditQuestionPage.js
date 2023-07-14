@@ -9,6 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Question } from '../../models/Question'
 import { Choice } from '../../models/Choice'
 import Loading from '../../component/Loading';
+import LoadingButton from '../../component/LoadingButton';
 
 export default function EditQuestionPage() {
   let choiceMarkList =
@@ -26,10 +27,11 @@ export default function EditQuestionPage() {
   const [questionMediaPath, setQuestionMediaPath] = useState();
   const [choices, setChoices] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [categoryID, setCategoryID] = useState(0);
+  const [categoryID, setCategoryID] = useState(-1);
   const [questionId, setQuestionId] = useState("");
   const [questionData, setQuestionData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingCategory, setLoadingCategory] = useState(true)
   const [editLoading, setEditLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(true);
   const navigate = useNavigate()
@@ -54,13 +56,14 @@ export default function EditQuestionPage() {
         setCategoryID(res.data.categoryId)
         setQuestionId(res.data.questionId)
         setQuestionMediaPath(res.data.questionMediaPath)
+        setIsLoading(false)
       })
       .catch(error => console.log(error));
 
     apiServices.getCategory()
       .then(res => {
         setCategories(res.data)
-        setIsLoading(false);
+        setLoadingCategory(false)
       })
       .catch(error => console.log(error));
   }, [isEdit]);
@@ -112,6 +115,14 @@ export default function EditQuestionPage() {
 
   const handleUpdateChoices = (index, key, newValue) => {
     if (key === 'choiceMediaPath') {
+      if (newValue == null) {
+        setChoices(prevChoices => {
+          let updatedChoices = [...prevChoices];
+          updatedChoices[index][key] = null;
+          return updatedChoices;
+        });
+        return;
+      }
       if (typeof newValue !== 'undefined') {
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
@@ -286,7 +297,10 @@ export default function EditQuestionPage() {
                 Category
               </Col>
               <Col style={{ marginLeft: '50px' }} className='col-6'>
-                <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }}>
+                <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }} >
+                  <option value="-1" disabled hidden>
+                    {!loadingCategory ? "--- Select a category ---" : "Loading ..."}
+                  </option>                  
                   {categories.map((category) => (
                     <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                   ))}
@@ -465,43 +479,31 @@ export default function EditQuestionPage() {
             >
               BLANKS FOR 3 MORE CHOICES
             </Button>
-            {editLoading ?
-              <Button
-                onClick={handleSaveAndContinue}
-                variant="primary"
-                style={{ marginLeft: "40%", marginTop: "70px" }}
-              >
-                SAVE CHANGE AND CONTINUE EDITING
-              </Button>
-              : <Button variant="primary"
-                style={{ marginLeft: "40%", marginTop: "70px" }}>
-                <span class="spinner-border spinner-border-sm"></span>
-                Loading...
-              </Button>
-            }
+            <div style={{ marginLeft: "40%", marginTop: "70px" }}>
+              {editLoading ?
+                <Button onClick={handleSaveAndContinue} variant="primary">
+                  SAVE CHANGE AND CONTINUE EDITING
+                </Button>
+                : <LoadingButton color={'primary'} />
+              }
+            </div>
             <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
-            {saveLoading ?
+            <div style={{ marginLeft: "40%", marginTop: "70px" }}>
+              {saveLoading ?
+                <Button onClick={handleSave} variant="danger">
+                  SAVE CHANGES
+                </Button>
+                : <LoadingButton color={'danger'} />
+              }
+
               <Button
-                onClick={handleSave}
-                variant="danger"
-                style={{ marginLeft: "40%", marginTop: "30px" }}
+                variant="primary"
+                style={{ marginLeft: "20px" }}
+                href="/question"
               >
-                SAVE CHANGES
+                CANCEL
               </Button>
-              : 
-              <Button variant="danger"
-                style={{ marginLeft: "40%", marginTop: "30px" }}>
-                <span class="spinner-border spinner-border-sm"></span>
-                Loading...
-              </Button>
-            }
-            <Button
-              variant="primary"
-              style={{ marginLeft: "20px", marginTop: "30px" }}
-              href="/question"
-            >
-              CANCEL
-            </Button>
+            </div>
           </div>
         }
       </div>

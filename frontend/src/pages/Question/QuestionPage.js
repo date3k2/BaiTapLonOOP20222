@@ -29,6 +29,7 @@ export default function EditQuestionPage() {
     apiServices.getQuestions(category, doesShowSub)
       .then(res => {
         setQuestions(res.data)
+        setIsLoading(false);
       })  
       .catch(err => console.log(err))
   }, [doesShowSub]);
@@ -36,9 +37,11 @@ export default function EditQuestionPage() {
   const handleCategory = e => {
     const category = e.target.value;
     setCategory(category);
+    setIsLoading(true);
     apiServices.getQuestions(category, doesShowSub)
       .then(res => {
         setQuestions(res.data)
+        setIsLoading(false)
       })
       .catch(err => console.log(err))
   }
@@ -54,7 +57,7 @@ export default function EditQuestionPage() {
         <Form.Check type='checkbox' label='Also show old question' />
         <Button href='/question/edit'>Create a new question</Button>
         {
-          questions.length > 0 &&
+          questions.length > 0 && isLoading ? <Loading /> :
             <Table striped>
               <thead>
                 <tr>

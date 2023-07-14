@@ -29,7 +29,7 @@ function Question({question, chooseQuestion, setChooseQuestion}){
 }
 
 export default function ANewQuestionModal({setOption, quizQuestions, setQuizQuestions}) {
-  const [doesShowSub, setDoesShowSub] = useState(true);
+  const [doesShowSub, setDoesShowSub] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [chooseQuestion, setChooseQuestion] = useState([]);
   const [isCheckedAll, setIsCheckedAll] = useState(false);

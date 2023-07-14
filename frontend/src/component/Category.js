@@ -4,11 +4,14 @@ import apiServices from "../services/apiServices";
 
 export default function Category({ handleCategory }) {
   const [categories, setCategories] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     apiServices
       .getCategory()
-      .then((res) => setCategories(res.data))
+      .then((res) => {
+        setCategories(res.data)
+        setIsLoading(false)
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -21,7 +24,7 @@ export default function Category({ handleCategory }) {
         onChange={handleCategory}
       >
         <option value="-1" disabled hidden>
-          --- Select a category ---
+          {!isLoading ? "--- Select a category ---" : "Loading ..."}
         </option>
         {categories.map((item, index) => {
           let space = `${"\xa0".repeat(item.level * 2)}`;

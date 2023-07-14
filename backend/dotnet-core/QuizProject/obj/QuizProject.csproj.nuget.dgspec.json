@@ -48,10 +48,6 @@
               "target": "Package",
               "version": "[23.6.0, )"
             },
-            "Cake.MarkdownToPdf": {
-              "target": "Package",
-              "version": "[3.0.4, )"
-            },
             "DocumentFormat.OpenXml": {
               "target": "Package",
               "version": "[2.20.0, )"
@@ -59,10 +55,6 @@
             "GroupDocs.Conversion": {
               "target": "Package",
               "version": "[23.6.0, )"
-            },
-            "IronPdf": {
-              "target": "Package",
-              "version": "[2023.7.4, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",

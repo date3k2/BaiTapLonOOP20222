@@ -9,6 +9,7 @@ import calendar from '../../icons/calendar.png'
 import apiServices from '../../services/apiServices';
 import { Quiz } from '../../models/Quiz'
 import { useNavigate } from 'react-router-dom'
+import LoadingButton from '../../component/LoadingButton';
 
 export default function AddQuizPage() {
   const [quizName, setQuizName] = useState("");
@@ -17,6 +18,7 @@ export default function AddQuizPage() {
   const [description, setDescription] = useState("");
   const [timeLimit, setTimeLimit] = useState("");
   const [selected, setSelected] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleDescriptionShowChange = (event) => {
@@ -60,7 +62,8 @@ export default function AddQuizPage() {
       else timeLimitInSecond *= 3600;
     }
     const quizData = new Quiz(quizName, description, timeLimitInSecond, descriptionShow, false);
-    console.log(quizData)
+    console.log(quizData);
+    setIsLoading(false);
     apiServices.postQuiz(quizData)
       .then(res => {
         console.log(res.data);
@@ -161,7 +164,7 @@ export default function AddQuizPage() {
               <img src={questionmark} width='13px' height='13px' />
               <FormControl disabled={isChecked ? null : 'disabled'} value ={timeLimit} onChange={handleTimeLimit} type='text' style={{ width: '100px' }} />
               <Form.Select disabled={isChecked ? null : 'disabled'} value={selected} onChange={handleSelectedChange} style={{ width: '115px' }}>
-                <option value={0}>  minutes </option>
+                <option value={0}> minutes </option>
                 <option value={1}> hours </option>
               </Form.Select>
               <Form.Check type='checkbox' label='Enable' checked={isChecked} onChange={handleCheckboxChange} />
@@ -185,7 +188,8 @@ export default function AddQuizPage() {
       </div>
 
       <div style={{ marginTop: '30px', display: "flex", justifyContent: 'center' }}>
-        <Button onClick={handleAddQuiz} variant="danger"> Create </Button>
+        {isLoading ? <Button onClick={handleAddQuiz} variant="danger"> Create </Button> 
+        :<LoadingButton color={'danger'}/>}
         <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
         <Button variant="primary" style={{ marginLeft: '20px' }} href='/'> Cancel </Button>
       </div>
