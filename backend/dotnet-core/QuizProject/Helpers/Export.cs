@@ -21,13 +21,13 @@ namespace QuizProject.Helpers
         private string ToMarkdown(Question question)
         {
             string res = $"{question.QuestionText}  \n";
-            if (question.QuestionMediaPath != null && isPng(question.QuestionMediaPath)) res += $"![ảnh]({question.QuestionMediaPath})\n";
+            if (question.QuestionMediaPath != null && isPng(question.QuestionMediaPath)) res += $"![ảnh]({question.QuestionMediaPath})\\\n";
             List<char> answers = new List<char>();
             for (int i = 0; i < question.QuestionChoices.Count; i++)
             {
                 QuestionChoice choice = question.QuestionChoices.ElementAt(i);
                 res += $"{(char)(i + 'A')}.{choice.ChoiceText}  \n";
-                if (choice.ChoiceMediaPath != null && isPng(choice.ChoiceMediaPath)) res += $"![lựa chọn]({choice.ChoiceMediaPath})\n";
+                if (choice.ChoiceMediaPath != null && isPng(choice.ChoiceMediaPath)) res += $"![lựa chọn]({choice.ChoiceMediaPath})\\\n";
                 if (choice.ChoiceMark > 0) answers.Add((char)(i + 'A'));
             }
             res += $"ANSWER: {string.Join(", ", answers)}";
