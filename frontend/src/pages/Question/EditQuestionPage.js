@@ -31,7 +31,6 @@ export default function EditQuestionPage() {
   const [questionId, setQuestionId] = useState("");
   const [questionData, setQuestionData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingCategory, setLoadingCategory] = useState(true)
   const [editLoading, setEditLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(true);
   const navigate = useNavigate()
@@ -56,14 +55,13 @@ export default function EditQuestionPage() {
         setCategoryID(res.data.categoryId)
         setQuestionId(res.data.questionId)
         setQuestionMediaPath(res.data.questionMediaPath)
-        setIsLoading(false)
       })
       .catch(error => console.log(error));
 
     apiServices.getCategory()
       .then(res => {
         setCategories(res.data)
-        setLoadingCategory(false)
+        setIsLoading(false)
       })
       .catch(error => console.log(error));
   }, [isEdit]);
@@ -177,6 +175,9 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      if(questionMediaPath != null && !filledText.includes("$media$")){
+        setFilledText(filledText + "/n$media$/n");
+      }
       questionData.categoryId = categoryID;
       questionData.questionCode = filledName;
       questionData.questionText = filledText;
@@ -201,6 +202,9 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      if(questionMediaPath != null && !filledText.includes("$media$")){
+        setFilledText(filledText + "/n$media$/n");
+      }
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       let param = "";
       setEditLoading(false);
@@ -238,6 +242,9 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      if(questionMediaPath != null && !filledText.includes("$media$")){
+        setFilledText(filledText + "/n$media$/n");
+      }
       questionData.categoryId = categoryID;
       questionData.questionCode = filledName;
       questionData.questionText = filledText;
@@ -261,6 +268,9 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      if(questionMediaPath != null && !filledText.includes("$media$")){
+        setFilledText(filledText + "/n$media$/n");
+      }
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       setSaveLoading(false);
       apiServices.postQuestion(questionData, questionId)
@@ -299,7 +309,7 @@ export default function EditQuestionPage() {
               <Col style={{ marginLeft: '50px' }} className='col-6'>
                 <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }} >
                   <option value="-1" disabled hidden>
-                    {!loadingCategory ? "--- Select a category ---" : "Loading ..."}
+                    --- Select a category ---
                   </option>                  
                   {categories.map((category) => (
                     <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
@@ -374,7 +384,7 @@ export default function EditQuestionPage() {
                         {
                           getMediaType(questionMediaPath) === "image" ?
                             <img src={questionMediaPath} /> :
-                            <video controls src={questionMediaPath} />
+                            <video style={{ maxHeight: '400px', maxWidth: "800px" }} controls src={questionMediaPath} />
                         }
                       </Row>
                       <Row>
@@ -456,7 +466,7 @@ export default function EditQuestionPage() {
                               {
                                 getMediaType(choice.choiceMediaPath) === "image" ?
                                   <img src={choice.choiceMediaPath} /> :
-                                  <video controls src={choice.choiceMediaPath} />
+                                  <video style={{ maxHeight: '400px', maxWidth: "800px" }} controls src={choice.choiceMediaPath} />
                               }
                             </Row>
                             <Row>

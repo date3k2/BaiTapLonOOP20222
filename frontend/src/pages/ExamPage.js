@@ -7,14 +7,41 @@ import correct from '../icons/correct.png'
 import wrong from '../icons/wrong.png'
 import Loading from '../component/Loading'
 
-function ExamQuestion({ getMap, index, question, answer, setAnswer, isQuizFinished, isShuffle }) {
+const getMediaType = (s) => {
+  return s.split(';')[0].split(':')[1].split('/')[0];
+}
+
+function TextArea({text, mediaPath}){
+  if(mediaPath == null){
+    return <p>{text}</p>
+  } else {
+    let para = text.split("$media$");
+    return(
+      <Container className='m-0 p-0'>
+        <p style={{whiteSpace: 'pre-line'}} className='p-0 m-0'>{para[0]}</p>
+        <Container className='m-0 p-0'>
+          {
+            getMediaType(mediaPath) === "image" ?
+            <img src={mediaPath} /> :
+            <video style={{ maxHeight: '400px', maxWidth: "800px" }} controls src={mediaPath} />
+          }
+        </Container>
+        {
+          para.length === 2 && <p style={{whiteSpace: 'pre-line'}} className='p-0 m-0'>{para[1].trim()}</p>
+        }
+      </Container>
+    );
+  }
+}
+
+function ExamQuestion({ getMap, index, question, answer, setAnswer, isQuizFinished }) {
   let correctChoiceList = [];
   question.questionChoices.forEach((choice, index) => {
     if (choice.choiceMark > 0) {
       if (choice.choiceText === "") {
         correctChoiceList.push(String.fromCharCode(index + 65));
       }
-      else correctChoiceList.push(choice.choiceText);
+      else correctChoiceList.push(choice.choiceText.replace("$media$", ""));
     }
   })
   const correctChoice = correctChoiceList.join(", ");
@@ -35,10 +62,6 @@ function ExamQuestion({ getMap, index, question, answer, setAnswer, isQuizFinish
     }
   }
 
-  const getMediaType = (s) => {
-    return s.split(';')[0].split(':')[1].split('/')[0];
-  }
-
   return (
     <Container className='mb-4' ref={(node) => {
       const map = getMap();
@@ -57,33 +80,25 @@ function ExamQuestion({ getMap, index, question, answer, setAnswer, isQuizFinish
         </Col>
         <Col className='p-0'>
           <Container className='m-0 p-2' style={{ backgroundColor: '#dcf5f5' }}>
-            <p>{question.questionText}</p>
-            {
-              question.questionMediaPath ?
-                <Container>
-                  {
-                    getMediaType(question.questionMediaPath) === "image" ?
-                      <img style={{ objectFit: 'fill', maxHeight: '200px', maxWidth: "300px" }} src={question.questionMediaPath} /> :
-                      <video style={{ maxHeight: '400px', maxWidth: "800px" }} controls src={question.questionMediaPath} />
-                  }
-                </Container> :
-                null
-            }
+            <TextArea text={question.questionText} mediaPath={question.questionMediaPath}/>
             {
               question.questionChoices.map((choice, index) =>
                 <Container >
                   <Stack direction='horizontal' className='m-0 p-0'>
                     <Stack className='m-0 p-0'>
-                      <Form.Check disabled={isQuizFinished} key={choice.choiceId} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} label={String.fromCharCode(index + 65) + ". " + choice.choiceText} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)} />
-                      {choice.choiceMediaPath ?
-                        <Container>
+                      <Form.Check className='m-0 p-0 ms-2' id={choice.choiceId}>
+                        <Form.Check.Input type={question.moreThanOneChoice ? 'checkbox' : 'radio'} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)}/>
+                        <Form.Check.Label>
                           {
-                            getMediaType(choice.choiceMediaPath) === "image" ?
-                              <img style={{ objectFit: 'fill', maxHeight: '200px', maxWidth: "300px" }} src={choice.choiceMediaPath} /> :
-                              <video controls src={choice.choiceMediaPath} />
+                            choice.choiceMediaPath ? 
+                            <Container className='m-0 p-0'>
+                              <span>{String.fromCharCode(index + 65) + ". "}</span>
+                              <TextArea text={choice.choiceText} mediaPath={choice.choiceMediaPath}/>
+                            </Container> :
+                            <p className='m-0 p-0'>{String.fromCharCode(index + 65) + ". " + choice.choiceText}</p>
                           }
-                        </Container> :
-                        null}
+                        </Form.Check.Label>
+                      </Form.Check>
                     </Stack>
                     {
                       isQuizFinished && answer.get(question.questionId).includes(choice) ?
@@ -142,12 +157,12 @@ const Timer = memo(function Timer({ quizTimeLimit, handleSubmit }) {
   </Container>;
 });
 
-const Scoreboard = ({ timeStart, timeCompleted, quizMarks, totalMark, maximumGrade }) => {
+const Scoreboard = ({ timeStart, timeCompleted, quizMarks, totalMark, maximumGrade, quizTimeLimit }) => {
 
   const DAY_IN_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const startDate = new Date(timeStart);
   const completedDate = new Date(timeCompleted);
-  const timeTaken = Math.floor((completedDate - startDate) / 1000);
+  const timeTaken = Math.min(Math.floor((completedDate - startDate) / 1000), quizTimeLimit);
 
   return (
     <Container className='my-2 border'>
@@ -237,7 +252,7 @@ export default function ExamPage() {
             <Col xs={9} className='border p-2 me-2'>
               {
                 isQuizFinished ?
-                  <Scoreboard timeStart={timeQuizStart} timeCompleted={timeQuizFinished} quizMarks={totalMark} totalMark={quizData.questions.length} maximumGrade={quizData.maxGrade} /> :
+                  <Scoreboard timeStart={timeQuizStart} timeCompleted={timeQuizFinished} quizMarks={totalMark} totalMark={quizData.questions.length} maximumGrade={quizData.maxGrade} quizTimeLimit={quizData.timeLimitInSeconds}/> :
                   <Container>
                     {
                       quizData && quizData.timeLimitInSeconds != null ?
