@@ -21,13 +21,26 @@ namespace QuizProject.Helpers
         private string ToMarkdown(Question question)
         {
             string res = $"{question.QuestionText}  \n";
-            if (question.QuestionMediaPath != null && isPng(question.QuestionMediaPath)) res += $"![ảnh]({question.QuestionMediaPath})\\\n";
+            Console.WriteLine(res.Contains("$media$"));
+            if (question.QuestionMediaPath != null && isPng(question.QuestionMediaPath))
+            {
+                if (res.Contains("$media$\n")) res = res.Replace("$media$", $"![ảnh]({question.QuestionMediaPath}) \\");
+                else if (res.Contains("$media$")) res = res.Replace("$media$", $"![ảnh]({question.QuestionMediaPath})");
+                else res += $"![ảnh]({question.QuestionMediaPath})\\\n";
+            }
+            if (res.Contains("$media$")) res = res.Replace("$media$", $"");
             List<char> answers = new List<char>();
             for (int i = 0; i < question.QuestionChoices.Count; i++)
             {
                 QuestionChoice choice = question.QuestionChoices.ElementAt(i);
                 res += $"{(char)(i + 'A')}.{choice.ChoiceText}  \n";
-                if (choice.ChoiceMediaPath != null && isPng(choice.ChoiceMediaPath)) res += $"![lựa chọn]({choice.ChoiceMediaPath})\\\n";
+                if (choice.ChoiceMediaPath != null && isPng(choice.ChoiceMediaPath))
+                {
+                    if (res.Contains("$media$\n")) res = res.Replace("$media$", $"\n![ảnh]({choice.ChoiceMediaPath}) \\");
+                    else if (res.Contains("$media$")) res = res.Replace("$media$", $"\n![ảnh]({choice.ChoiceMediaPath})");
+                    else res += $"![ảnh]({choice.ChoiceMediaPath})\\\n";
+                }
+                if (res.Contains("$media$")) res = res.Replace("$media$", $"");
                 if (choice.ChoiceMark > 0) answers.Add((char)(i + 'A'));
             }
             res += $"ANSWER: {string.Join(", ", answers)}";
@@ -37,7 +50,8 @@ namespace QuizProject.Helpers
         private bool isPng(string? base64)
         {
             if (base64 == null) return false;
-            return base64.Split(';')[0].Split('/')[0] == "data:image";
+            string[] infoImage = base64.Split(';')[0].Split('/');
+            return infoImage[0] == "data:image" && infoImage[1] != "gif";
         }
 
         public void WriteMarkdown(Quiz quiz, string path)

@@ -27,11 +27,10 @@ export default function EditQuestionPage() {
   const [questionMediaPath, setQuestionMediaPath] = useState();
   const [choices, setChoices] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [categoryID, setCategoryID] = useState(0);
+  const [categoryID, setCategoryID] = useState(-1);
   const [questionId, setQuestionId] = useState("");
   const [questionData, setQuestionData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingCategory, setLoadingCategory] = useState(true)
   const [editLoading, setEditLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(true);
   const navigate = useNavigate()
@@ -56,14 +55,13 @@ export default function EditQuestionPage() {
         setCategoryID(res.data.categoryId)
         setQuestionId(res.data.questionId)
         setQuestionMediaPath(res.data.questionMediaPath)
-        setIsLoading(false)
       })
       .catch(error => console.log(error));
 
     apiServices.getCategory()
       .then(res => {
         setCategories(res.data)
-        setLoadingCategory(false)
+        setIsLoading(false)
       })
       .catch(error => console.log(error));
   }, [isEdit]);
@@ -113,6 +111,10 @@ export default function EditQuestionPage() {
     return s.split(';')[0].split(':')[1].split('/')[0];
   }
 
+  const getImageType = (s) => {
+    return s.split(';')[0].split(':')[1].split('/')[1];
+  }
+
   const handleUpdateChoices = (index, key, newValue) => {
     if (key === 'choiceMediaPath') {
       if (newValue == null) {
@@ -126,7 +128,7 @@ export default function EditQuestionPage() {
       if (typeof newValue !== 'undefined') {
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
-          if (getMediaType(reader.result) === "image") {
+          if (getMediaType(reader.result) === "image" && getImageType(reader.result) !== "gif") {
             resizeImage(reader.result)
               .then(res => {
                 setChoices(prevChoices => {
@@ -154,11 +156,12 @@ export default function EditQuestionPage() {
 
   const handleSaveAndContinue = (event) => {
     event.preventDefault();
-    if (filledName == "" && filledText == "") {
+    if (filledName === "" || filledText === "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
     const filteredChoices = choices.filter(choice => choice.choiceText !== "" || choice.choiceMediaPath != null);
+    console.log(filteredChoices);
     let totalchoiceMark = 0;
     for (let i = 0; i < filteredChoices.length; ++i) {
       if (filteredChoices[i].choiceMark > 0)
@@ -176,6 +179,9 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      if(questionMediaPath != null && !filledText.includes("$media$")){
+        setFilledText(filledText + "/n$media$/n");
+      }
       questionData.categoryId = categoryID;
       questionData.questionCode = filledName;
       questionData.questionText = filledText;
@@ -183,7 +189,6 @@ export default function EditQuestionPage() {
       questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
       setEditLoading(false);
-      console.log(questionData)
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
           toast.success("Update question successfully!");
@@ -201,10 +206,12 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      if(questionMediaPath != null && !filledText.includes("$media$")){
+        setFilledText(filledText + "/n$media$/n");
+      }
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       let param = "";
       setEditLoading(false);
-      console.log(questionData)
       apiServices.postQuestion(questionData)
         .then(res => {
           param = res.data
@@ -217,7 +224,7 @@ export default function EditQuestionPage() {
 
   const handleSave = (event) => {
     event.preventDefault();
-    if (filledName == "" && filledText == "") {
+    if (filledName === "" || filledText === "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
@@ -239,6 +246,9 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      if(questionMediaPath != null && !filledText.includes("$media$")){
+        setFilledText(filledText + "/n$media$/n");
+      }
       questionData.categoryId = categoryID;
       questionData.questionCode = filledName;
       questionData.questionText = filledText;
@@ -246,7 +256,6 @@ export default function EditQuestionPage() {
       questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
       setSaveLoading(false);
-      console.log(questionData)
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
           navigate('/question');
@@ -263,9 +272,11 @@ export default function EditQuestionPage() {
       };
       if (countPositiveChoiceGrade > 1) moreThanOneChoice = true;
       else moreThanOneChoice = false;
+      if(questionMediaPath != null && !filledText.includes("$media$")){
+        setFilledText(filledText + "/n$media$/n");
+      }
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       setSaveLoading(false);
-      console.log(questionData)
       apiServices.postQuestion(questionData, questionId)
         .then(res => {
           navigate('/question');
@@ -300,8 +311,10 @@ export default function EditQuestionPage() {
                 Category
               </Col>
               <Col style={{ marginLeft: '50px' }} className='col-6'>
-                <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }}>
-                  <option disabled hidden selected> Loading... </option>
+                <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }} >
+                  <option value="-1" disabled hidden>
+                    {isLoading ? "Loading ..." : "--- Select a category ---"}
+                  </option>                  
                   {categories.map((category) => (
                     <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                   ))}
@@ -357,12 +370,11 @@ export default function EditQuestionPage() {
                     if (typeof mediaFile !== "undefined") {
                       reader.readAsDataURL(e.target.files[0]);
                       reader.onloadend = () => {
-                        if (getMediaType(reader.result) === "image") {
+                        if (getMediaType(reader.result) === "image" && getImageType(reader.result) !== "gif") {
                           resizeImage(reader.result)
                             .then(res => setQuestionMediaPath(res));
                         } else {
                           setQuestionMediaPath(reader.result);
-                          console.log(reader.result)
                         }
                       }
                     }
@@ -375,7 +387,7 @@ export default function EditQuestionPage() {
                         {
                           getMediaType(questionMediaPath) === "image" ?
                             <img src={questionMediaPath} /> :
-                            <video controls src={questionMediaPath} />
+                            <video style={{ maxHeight: '400px', maxWidth: "800px" }} controls src={questionMediaPath} />
                         }
                       </Row>
                       <Row>
@@ -457,7 +469,7 @@ export default function EditQuestionPage() {
                               {
                                 getMediaType(choice.choiceMediaPath) === "image" ?
                                   <img src={choice.choiceMediaPath} /> :
-                                  <video controls src={choice.choiceMediaPath} />
+                                  <video style={{ maxHeight: '400px', maxWidth: "800px" }} controls src={choice.choiceMediaPath} />
                               }
                             </Row>
                             <Row>
@@ -504,12 +516,6 @@ export default function EditQuestionPage() {
               >
                 CANCEL
               </Button>
-            </div>
-            <div style={{ marginTop: '30px', display: "flex", justifyContent: 'center' }}>
-              <Stack direction="horizontal" gap={1}>
-                <p style={{ fontSize: '18px' }}> There are required fields in this form marked</p>
-                <img src={alert} width='13px' height='13px' style={{ marginBottom: '14px' }} />
-              </Stack>
             </div>
           </div>
         }
