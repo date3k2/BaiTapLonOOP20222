@@ -179,7 +179,7 @@ namespace QuizProject.Controllers
 
             PdfReader reader = new PdfReader(output);
             PdfStamper stamper = new PdfStamper(reader, new FileStream(realOutput, FileMode.Create));
-            stamper.SetEncryption(PdfWriter.STRENGTH128BITS, password, password, PdfWriter.AllowPrinting);
+            if (password != "") stamper.SetEncryption(PdfWriter.STRENGTH128BITS, password, password, PdfWriter.AllowPrinting);
             stamper.Close();
             reader.Close();
             System.IO.File.Delete(output);

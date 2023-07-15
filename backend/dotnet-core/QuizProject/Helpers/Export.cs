@@ -24,7 +24,8 @@ namespace QuizProject.Helpers
             Console.WriteLine(res.Contains("$media$"));
             if (question.QuestionMediaPath != null && isPng(question.QuestionMediaPath))
             {
-                if (res.Contains("$media$")) res = res.Replace("$media$", $"\n![ảnh]({question.QuestionMediaPath})\n\n");
+                if (res.Contains("$media$\n")) res = res.Replace("$media$", $"![ảnh]({question.QuestionMediaPath}) \\");
+                else if (res.Contains("$media$")) res = res.Replace("$media$", $"![ảnh]({question.QuestionMediaPath})");
                 else res += $"![ảnh]({question.QuestionMediaPath})\\\n";
             }
             if (res.Contains("$media$")) res = res.Replace("$media$", $"");
@@ -35,7 +36,8 @@ namespace QuizProject.Helpers
                 res += $"{(char)(i + 'A')}.{choice.ChoiceText}  \n";
                 if (choice.ChoiceMediaPath != null && isPng(choice.ChoiceMediaPath))
                 {
-                    if (res.Contains("$media$")) res = res.Replace("$media$", $"\n![ảnh]({choice.ChoiceMediaPath})\n\n");
+                    if (res.Contains("$media$\n")) res = res.Replace("$media$", $"\n![ảnh]({choice.ChoiceMediaPath}) \\");
+                    else if (res.Contains("$media$")) res = res.Replace("$media$", $"\n![ảnh]({choice.ChoiceMediaPath})");
                     else res += $"![ảnh]({choice.ChoiceMediaPath})\\\n";
                 }
                 if (res.Contains("$media$")) res = res.Replace("$media$", $"");
