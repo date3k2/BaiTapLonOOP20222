@@ -21,11 +21,13 @@ namespace QuizProject.Helpers
         private string ToMarkdown(Question question)
         {
             string res = $"{question.QuestionText}  \n";
+            Console.WriteLine(res.Contains("$media$"));
             if (question.QuestionMediaPath != null && isPng(question.QuestionMediaPath))
             {
-                if (res.Contains("$media$")) res.Replace("$media$", $"![ảnh]({question.QuestionMediaPath})\\\n");
+                if (res.Contains("$media$")) res = res.Replace("$media$", $"\n![ảnh]({question.QuestionMediaPath})\n\n");
                 else res += $"![ảnh]({question.QuestionMediaPath})\\\n";
             }
+            if (res.Contains("$media$")) res = res.Replace("$media$", $"");
             List<char> answers = new List<char>();
             for (int i = 0; i < question.QuestionChoices.Count; i++)
             {
@@ -33,9 +35,10 @@ namespace QuizProject.Helpers
                 res += $"{(char)(i + 'A')}.{choice.ChoiceText}  \n";
                 if (choice.ChoiceMediaPath != null && isPng(choice.ChoiceMediaPath))
                 {
-                    if (res.Contains("$media$")) res.Replace("$media$", $"![ảnh]({choice.ChoiceMediaPath})\\\n");
+                    if (res.Contains("$media$")) res = res.Replace("$media$", $"\n![ảnh]({choice.ChoiceMediaPath})\n\n");
                     else res += $"![ảnh]({choice.ChoiceMediaPath})\\\n";
                 }
+                if (res.Contains("$media$")) res = res.Replace("$media$", $"");
                 if (choice.ChoiceMark > 0) answers.Add((char)(i + 'A'));
             }
             res += $"ANSWER: {string.Join(", ", answers)}";
