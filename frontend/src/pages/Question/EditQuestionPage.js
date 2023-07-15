@@ -111,6 +111,10 @@ export default function EditQuestionPage() {
     return s.split(';')[0].split(':')[1].split('/')[0];
   }
 
+  const getImageType = (s) => {
+    return s.split(';')[0].split(':')[1].split('/')[1];
+  }
+
   const handleUpdateChoices = (index, key, newValue) => {
     if (key === 'choiceMediaPath') {
       if (newValue == null) {
@@ -124,7 +128,7 @@ export default function EditQuestionPage() {
       if (typeof newValue !== 'undefined') {
         reader.readAsDataURL(newValue);
         reader.onloadend = () => {
-          if (getMediaType(reader.result) === "image") {
+          if (getMediaType(reader.result) === "image" && getImageType(reader.result) !== "gif") {
             resizeImage(reader.result)
               .then(res => {
                 setChoices(prevChoices => {
@@ -366,12 +370,11 @@ export default function EditQuestionPage() {
                     if (typeof mediaFile !== "undefined") {
                       reader.readAsDataURL(e.target.files[0]);
                       reader.onloadend = () => {
-                        if (getMediaType(reader.result) === "image") {
+                        if (getMediaType(reader.result) === "image" && getImageType(reader.result) !== "gif") {
                           resizeImage(reader.result)
                             .then(res => setQuestionMediaPath(res));
                         } else {
                           setQuestionMediaPath(reader.result);
-                          console.log(reader.result)
                         }
                       }
                     }

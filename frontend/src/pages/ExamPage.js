@@ -22,7 +22,7 @@ function TextArea({text, mediaPath}){
         <Container className='m-0 p-0'>
           {
             getMediaType(mediaPath) === "image" ?
-            <img src={mediaPath} /> :
+            <img style={{maxWidth: '500px', maxHeight: '300px'}} src={mediaPath} /> :
             <video style={{ maxHeight: '400px', maxWidth: "800px" }} controls src={mediaPath} />
           }
         </Container>
