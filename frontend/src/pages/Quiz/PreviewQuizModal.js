@@ -21,7 +21,7 @@ const PreviewQuizModal = ({quizId, open, onClose, timeLimit, path }) => {
     .then(res => {
       setMessage(`Exported to: ${res.data}`);
     })
-    .catch(err => console.log(err));
+    .catch(err => setMessage("Export failed!"));
   }
 
   if (!open) return null;
