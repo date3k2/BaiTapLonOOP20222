@@ -20,16 +20,20 @@ namespace QuizProject.Methods
 
         public void DFS(int u, Dictionary<int, List<int>> adj, Dictionary<int, int> level, List<int> tree)
         {
-            foreach (var v in adj[u])
+            if (adj.ContainsKey(u))
             {
-                if (!level.ContainsKey(v))
+                foreach (var v in adj[u])
                 {
-                    level[v] = level[u] + 1;
-                    tree.Add(v);
-                    if (adj.ContainsKey(v))
-                        DFS(v, adj, level, tree);
+                    if (!level.ContainsKey(v))
+                    {
+                        level[v] = level[u] + 1;
+                        tree.Add(v);
+                        if (adj.ContainsKey(v))
+                            DFS(v, adj, level, tree);
+                    }
                 }
             }
+
         }
     }
 }
