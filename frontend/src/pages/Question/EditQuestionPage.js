@@ -313,7 +313,7 @@ export default function EditQuestionPage() {
               <Col style={{ marginLeft: '50px' }} className='col-6'>
                 <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }} >
                   <option value="-1" disabled hidden>
-                    --- Select a category ---
+                    {isLoading ? "Loading ..." : "--- Select a category ---"}
                   </option>                  
                   {categories.map((category) => (
                     <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
