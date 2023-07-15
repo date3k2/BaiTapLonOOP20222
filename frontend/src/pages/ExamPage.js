@@ -147,8 +147,12 @@ function QuestionSelectBox({ question, index, handleClick, answer }) {
   );
 }
 
+function padWithLeadingZeros(num, totalLength) {
+  return String(num).padStart(totalLength, '0');
+}
+
 function CountdownTimer({ hours, minutes, seconds }) {
-  return <span className='border border-2 border-danger p-1 bg-white my-2'>Time left: {hours} : {minutes} : {seconds}</span>
+  return <span className='border border-2 border-danger p-1 bg-white my-2'>Time left: {padWithLeadingZeros(hours, 2)} : {padWithLeadingZeros(minutes, 2)} : {padWithLeadingZeros(seconds, 2)}</span>
 }
 
 const Timer = memo(function Timer({ quizTimeLimit, handleSubmit }) {
@@ -162,7 +166,9 @@ const Scoreboard = ({ timeStart, timeCompleted, quizMarks, totalMark, maximumGra
   const DAY_IN_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const startDate = new Date(timeStart);
   const completedDate = new Date(timeCompleted);
-  const timeTaken = Math.min(Math.floor((completedDate - startDate) / 1000), quizTimeLimit);
+  let timeTaken;
+  if(quizTimeLimit) timeTaken = Math.min(Math.floor((completedDate - startDate) / 1000), quizTimeLimit);
+  else timeTaken = Math.floor((completedDate - startDate) / 1000);
 
   return (
     <Container className='my-2 border'>
@@ -253,7 +259,7 @@ export default function ExamPage() {
               {
                 isQuizFinished ?
                   <Scoreboard timeStart={timeQuizStart} timeCompleted={timeQuizFinished} quizMarks={totalMark} totalMark={quizData.questions.length} maximumGrade={quizData.maxGrade} quizTimeLimit={quizData.timeLimitInSeconds}/> :
-                  <Container>
+                  <Container className='sticky-top'>
                     {
                       quizData && quizData.timeLimitInSeconds != null ?
                         <Timer quizTimeLimit={quizTimeLimit} handleSubmit={() => handleSubmit()} />
