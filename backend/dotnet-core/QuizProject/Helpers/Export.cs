@@ -50,7 +50,8 @@ namespace QuizProject.Helpers
         private bool isPng(string? base64)
         {
             if (base64 == null) return false;
-            return base64.Split(';')[0].Split('/')[0] == "data:image";
+            string[] infoImage = base64.Split(';')[0].Split('/');
+            return infoImage[0] == "data:image" && infoImage[1] != "gif";
         }
 
         public void WriteMarkdown(Quiz quiz, string path)
