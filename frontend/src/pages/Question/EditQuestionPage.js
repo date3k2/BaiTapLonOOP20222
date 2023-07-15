@@ -27,7 +27,7 @@ export default function EditQuestionPage() {
   const [questionMediaPath, setQuestionMediaPath] = useState();
   const [choices, setChoices] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [categoryID, setCategoryID] = useState(-1);
+  const [categoryID, setCategoryID] = useState(0);
   const [questionId, setQuestionId] = useState("");
   const [questionData, setQuestionData] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -154,12 +154,11 @@ export default function EditQuestionPage() {
 
   const handleSaveAndContinue = (event) => {
     event.preventDefault();
-    if (filledName === "" || filledText === "") {
+    if (filledName == "" && filledText == "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
     const filteredChoices = choices.filter(choice => choice.choiceText !== "" || choice.choiceMediaPath != null);
-    console.log(filteredChoices);
     let totalchoiceMark = 0;
     for (let i = 0; i < filteredChoices.length; ++i) {
       if (filteredChoices[i].choiceMark > 0)
@@ -184,6 +183,7 @@ export default function EditQuestionPage() {
       questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
       setEditLoading(false);
+      console.log(questionData)
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
           toast.success("Update question successfully!");
@@ -204,6 +204,7 @@ export default function EditQuestionPage() {
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       let param = "";
       setEditLoading(false);
+      console.log(questionData)
       apiServices.postQuestion(questionData)
         .then(res => {
           param = res.data
@@ -216,7 +217,7 @@ export default function EditQuestionPage() {
 
   const handleSave = (event) => {
     event.preventDefault();
-    if (filledName === "" || filledText === "") {
+    if (filledName == "" && filledText == "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
@@ -245,6 +246,7 @@ export default function EditQuestionPage() {
       questionData.questionMediaPath = questionMediaPath;
       questionData.questionChoices = filteredChoices;
       setSaveLoading(false);
+      console.log(questionData)
       apiServices.putQuestion(questionData, questionId)
         .then(res => {
           navigate('/question');
@@ -263,6 +265,7 @@ export default function EditQuestionPage() {
       else moreThanOneChoice = false;
       const questionData = new Question(categoryID, filledName, filledText, moreThanOneChoice, questionMediaPath, QuestionChoices);
       setSaveLoading(false);
+      console.log(questionData)
       apiServices.postQuestion(questionData, questionId)
         .then(res => {
           navigate('/question');
@@ -297,10 +300,8 @@ export default function EditQuestionPage() {
                 Category
               </Col>
               <Col style={{ marginLeft: '50px' }} className='col-6'>
-                <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }} >
-                  <option value="-1" disabled hidden>
-                    {!loadingCategory ? "--- Select a category ---" : "Loading ..."}
-                  </option>                  
+                <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }}>
+                  <option disabled hidden selected> Loading... </option>
                   {categories.map((category) => (
                     <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                   ))}
@@ -503,6 +504,12 @@ export default function EditQuestionPage() {
               >
                 CANCEL
               </Button>
+            </div>
+            <div style={{ marginTop: '30px', display: "flex", justifyContent: 'center' }}>
+              <Stack direction="horizontal" gap={1}>
+                <p style={{ fontSize: '18px' }}> There are required fields in this form marked</p>
+                <img src={alert} width='13px' height='13px' style={{ marginBottom: '14px' }} />
+              </Stack>
             </div>
           </div>
         }

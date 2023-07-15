@@ -43,13 +43,13 @@ export default function AddQuizPage() {
 
   const handleAddQuiz = (event) => {
     event.preventDefault();
-    if (quizName === "") {
+    if (quizName == "") {
       toast.warning("Quiz name need to be completed");
       return;
     }
     let timeLimitInSecond = timeLimit;
-    if (timeLimit === "" || isChecked === false) timeLimitInSecond = null;
-    else if (isNaN(timeLimit)){
+    if (timeLimit == "" || isChecked == false) timeLimitInSecond = null;
+    else if (isNaN(timeLimit)) {
       toast.warning("The time limit must be a number");
       return;
     }
@@ -123,7 +123,7 @@ export default function AddQuizPage() {
           </Col>
         </div>
 
-        <br/> <hr/>
+        <br /> <hr />
         <Stack direction="horizontal" gap={2}>
           <NavDropdown style={{ color: 'blue', fontSize: '25px' }} disabled>
           </NavDropdown>
@@ -162,7 +162,7 @@ export default function AddQuizPage() {
           <Col style={{ marginLeft: '50px' }} className='col-6'>
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
-              <FormControl disabled={isChecked ? null : 'disabled'} value ={timeLimit} onChange={handleTimeLimit} type='text' style={{ width: '100px' }} />
+              <FormControl disabled={isChecked ? null : 'disabled'} value={timeLimit} onChange={handleTimeLimit} type='text' style={{ width: '100px' }} />
               <Form.Select disabled={isChecked ? null : 'disabled'} value={selected} onChange={handleSelectedChange} style={{ width: '115px' }}>
                 <option value={0}> minutes </option>
                 <option value={1}> hours </option>
@@ -188,10 +188,16 @@ export default function AddQuizPage() {
       </div>
 
       <div style={{ marginTop: '30px', display: "flex", justifyContent: 'center' }}>
-        {isLoading ? <Button onClick={handleAddQuiz} variant="danger"> Create </Button> 
-        :<LoadingButton color={'danger'}/>}
+        {isLoading ? <Button onClick={handleAddQuiz} variant="danger"> Create </Button>
+          : <LoadingButton color={'danger'} />}
         <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
         <Button variant="primary" style={{ marginLeft: '20px' }} href='/'> Cancel </Button>
+      </div>
+      <div style={{ marginTop: '30px', display: "flex", justifyContent: 'center' }}>
+        <Stack direction="horizontal" gap={1}>
+          <p style={{ fontSize: '18px' }}> There are required fields in this form marked</p>
+          <img src={alert} width='13px' height='13px' style={{ marginBottom: '14px' }} />
+        </Stack>
       </div>
     </Container >
   )

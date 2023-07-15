@@ -39,13 +39,13 @@ export default function CategoryPage() {
 
   const handleAddCategory = (event) => {
     event.preventDefault();
-    if (filledName === "" || filledInfo === "") {
+    if (filledName == "" || filledInfo == "") {
       toast.warning("Name and info need to be completed");
       return;
     }
     const categoryData = new Category(filledName, filledInfo);
     setIsLoading(false)
-    if (parentID === 0) {
+    if (parentID == 0) {
       apiServices.postCategoryDefault(categoryData)
         .then(res => {
           console.log(res.data);
@@ -84,8 +84,8 @@ export default function CategoryPage() {
             <Stack direction="horizontal" gap={2}>
               <img src={questionmark} width='13px' height='13px' />
               <Form.Select value={parentID} onChange={handleParentSelect} style={{ width: '300px' }}>
-                <option value={0}>Default </option>
-                {categories.slice(1).map((category, index) => (
+                {<option disabled hidden selected> Loading... </option>}
+                {categories.map((category, index) => (
                   <option key={index} value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                 ))}
               </Form.Select>
@@ -145,7 +145,7 @@ export default function CategoryPage() {
           <ToastContainer hideProgressBar autoClose={3000}></ToastContainer>
         </div>
 
-        <div style={{ marginTop: '15px', display: "flex", justifyContent: 'center' }}>
+        <div style={{ marginTop: '30px', display: "flex", justifyContent: 'center' }}>
           <Stack direction="horizontal" gap={1}>
             <p style={{ fontSize: '18px' }}> There are required fields in this form marked</p>
             <img src={alert} width='13px' height='13px' style={{ marginBottom: '14px' }} />

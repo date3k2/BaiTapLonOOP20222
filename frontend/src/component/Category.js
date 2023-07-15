@@ -24,7 +24,7 @@ export default function Category({ handleCategory }) {
         onChange={handleCategory}
       >
         <option value="-1" disabled hidden>
-          {!isLoading ? "--- Select a category ---" : "Loading ..."}
+          {!isLoading ? "--- Select a category ---" : "Loading..."}
         </option>
         {categories.map((item, index) => {
           let space = `${"\xa0".repeat(item.level * 2)}`;
