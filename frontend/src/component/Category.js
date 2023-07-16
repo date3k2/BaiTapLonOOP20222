@@ -4,8 +4,9 @@ import apiServices from "../services/apiServices";
 
 export default function Category({ handleCategory }) {
   const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    setIsLoading(true);
     apiServices
       .getCategory()
       .then((res) => {

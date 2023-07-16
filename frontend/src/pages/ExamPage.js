@@ -87,7 +87,7 @@ function ExamQuestion({ getMap, index, question, answer, setAnswer, isQuizFinish
                   <Stack direction='horizontal' className='m-0 p-0'>
                     <Stack className='m-0 p-0'>
                       <Form.Check className='m-0 p-0 ms-2' id={choice.choiceId}>
-                        <Form.Check.Input type={question.moreThanOneChoice ? 'checkbox' : 'radio'} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)}/>
+                        <Form.Check.Input disabled={isQuizFinished} type={question.moreThanOneChoice ? 'checkbox' : 'radio'} name={question.questionId} onChange={() => handleChooseChoice(choice, question.moreThanOneChoice)}/>
                         <Form.Check.Label>
                           {
                             choice.choiceMediaPath ? 

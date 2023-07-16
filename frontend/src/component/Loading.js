@@ -5,7 +5,7 @@ export default function Loading() {
         <div class="d-flex ">
             <div class="spinner-border text-secondary" role="status">
             </div>
-            <p style={{marginLeft:"1rem", fontSize: "18px"}}> Loading......</p>
+            <p style={{marginLeft:"1rem", fontSize: "18px"}}> Loading ...</p>
         </div>      
     )
 }

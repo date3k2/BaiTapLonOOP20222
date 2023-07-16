@@ -53,7 +53,7 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
     let randomQuestions = [];
     while(randomQuestions.length < numberRandomQuestion){
       let questionId = Math.floor(Math.random() * questions.length);
-      if(randomQuestions.indexOf(questions[questionId]) == -1) randomQuestions.push(questions[questionId]);
+      if(randomQuestions.indexOf(questions[questionId]) == -1 && !quizQuestions.includes(questions[questionId])) randomQuestions.push(questions[questionId]);
     }
     setQuizQuestions(quizQuestions => [...quizQuestions, ...randomQuestions]);
   }
