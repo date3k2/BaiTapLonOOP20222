@@ -48,12 +48,17 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
   const handleShowSub = e => {
     setDoesShowSub(doesShowSub => !doesShowSub);
   };
+  
+
+  const checkDuplicate = (list, question) => {
+    return list.filter(item => item.questionId === question.questionId).length > 0;
+  }
 
   const handleSubmit = () => {
     let randomQuestions = [];
     while(randomQuestions.length < numberRandomQuestion){
       let questionId = Math.floor(Math.random() * questions.length);
-      if(randomQuestions.indexOf(questions[questionId]) == -1 && !quizQuestions.includes(questions[questionId])) randomQuestions.push(questions[questionId]);
+      if(randomQuestions.indexOf(questions[questionId]) == -1 && !checkDuplicate(quizQuestions, questions[questionId])) randomQuestions.push(questions[questionId]);
     }
     setQuizQuestions(quizQuestions => [...quizQuestions, ...randomQuestions]);
   }
