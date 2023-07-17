@@ -156,7 +156,7 @@ export default function EditQuestionPage() {
 
   const handleSaveAndContinue = (event) => {
     event.preventDefault();
-    if (filledName === "" || filledText === "") {
+    if (filledName === "" && filledText === "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
@@ -224,7 +224,7 @@ export default function EditQuestionPage() {
 
   const handleSave = (event) => {
     event.preventDefault();
-    if (filledName === "" || filledText === "") {
+    if (filledName === "" && filledText === "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
