@@ -16,7 +16,7 @@ export default function EditQuestionPage() {
     [100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333,
       30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5];
   let tmp = [];
-  for (let i = 0; i < choiceMarkList.length; ++i) {
+  for (let i = 2; i < choiceMarkList.length; ++i) {
     tmp[i] = -choiceMarkList[choiceMarkList.length - i - 1];
   }
   choiceMarkList = choiceMarkList.concat(tmp);

@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Form, Table, Button } from 'react-bootstrap'
+import { Container, Modal, Form, Table, Button } from 'react-bootstrap'
 import apiServices from '../../../services/apiServices';
 import Category from '../../../component/Category';
 import { BsZoomIn } from "react-icons/bs";
 import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import Loading from '../../../component/Loading';
 
-function Question({question, chooseQuestion, setChooseQuestion}){
+function Question({ question, chooseQuestion, setChooseQuestion }) {
 
   const handleChooseQuestion = () => {
-    if(chooseQuestion.includes(question)){
+    if (chooseQuestion.includes(question)) {
       setChooseQuestion(chooseQuestion => chooseQuestion.filter(item => item.questionId !== question.questionId));
     } else {
       setChooseQuestion(chooseQuestion => [...chooseQuestion, question]);
     }
   }
 
-  return(
+  return (
     <tr>
       <td width='2%'>
         {/* {chooseQuestion.length > 0 && chooseQuestion.includes(question.id) ? <Form.Check type='checkbox' checked onChange={handleChooseQuestion}/> : <Form.Check type='checkbox' onChange={handleChooseQuestion}/>} */}
-        <Form.Check type='checkbox' checked={chooseQuestion.includes(question)} onChange={handleChooseQuestion}/>
+        <Form.Check type='checkbox' checked={chooseQuestion.includes(question)} onChange={handleChooseQuestion} />
       </td>
       <td>{question.questionCode ? question.questionCode : null} {question.questionText}</td>
       <td width='2%'><BsZoomIn className="ms-auto me-3" /></td>
@@ -28,30 +29,32 @@ function Question({question, chooseQuestion, setChooseQuestion}){
   );
 }
 
-export default function ANewQuestionModal({setOption, quizQuestions, setQuizQuestions}) {
+export default function ANewQuestionModal({ setOption, quizQuestions, setQuizQuestions }) {
   const [doesShowSub, setDoesShowSub] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [chooseQuestion, setChooseQuestion] = useState([]);
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const [category, setCategory] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = () => {
     let filteredChooseQuestion = [];
-    for(let i = 0 ; i < chooseQuestion.length ; ++i)
-    if(quizQuestions.filter(question => question.questionId === chooseQuestion[i].questionId).length === 0) filteredChooseQuestion.push(chooseQuestion[i]);
+    for (let i = 0; i < chooseQuestion.length; ++i)
+      if (quizQuestions.filter(question => question.questionId === chooseQuestion[i].questionId).length === 0) filteredChooseQuestion.push(chooseQuestion[i]);
     setQuizQuestions([...quizQuestions, ...filteredChooseQuestion]);
   }
 
   useEffect(() => {
     apiServices.getQuestions(category, doesShowSub)
-    .then(res => {
-      setQuestions(res.data)
-    })
-    .catch(err => console.log(err))
+      .then(res => {
+        setQuestions(res.data)
+        setIsLoading(false);
+      })
+      .catch(err => console.log(err))
   }, [doesShowSub]);
 
   const handleChooseAll = () => {
-    if(isCheckedAll){
+    if (isCheckedAll) {
       setChooseQuestion([]);
       setIsCheckedAll(false);
     } else {
@@ -70,11 +73,13 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
     setIsCheckedAll(false);
     const category = e.target.value;
     setCategory(category);
+    setIsLoading(true);
     apiServices.getQuestions(category, doesShowSub)
-    .then(res => {
-      setQuestions(res.data)
-    })
-    .catch(err => console.log(err))
+      .then(res => {
+        setQuestions(res.data)
+        setIsLoading(false)
+      })
+      .catch(err => console.log(err))
   }
 
   const handleClose = () => {
@@ -84,30 +89,35 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
   return (
     <Modal show={true} onHide={handleClose} backdrop="static" keyboard={false} size='xl'>
       <Modal.Header closeButton>
-        <Modal.Title style={{color: 'red'}}>Add from question bank at the end</Modal.Title>
+        <Modal.Title style={{ color: 'red' }}>Add from question bank at the end</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Category handleCategory={handleCategory} />
-        <p className='m-0' style={{color: 'skyblue'}}>Search options</p>
-        <Form.Check type='checkbox' label='Also show question from subcategories' onChange={handleShowSub}/>
-        <Form.Check type='checkbox' label='Also show old question'/>
+        <p className='m-0' style={{ color: 'skyblue' }}>Search options</p>
+        <Form.Check type='checkbox' label='Also show question from subcategories' onChange={handleShowSub} />
+        <Form.Check type='checkbox' label='Also show old question' />
         {
-          questions.length > 0 && 
-          <Table striped>
-            <thead>
-              <tr>
-                <th><Form.Check checked={isCheckedAll} onChange={handleChooseAll} type='checkbox'/></th>
-                <th>Question</th>
-              </tr>
-            </thead>
-            <tbody>
+          isLoading ? <Loading /> :
+            <Container className='m-0 p-0'>
               {
-                questions.map(question => <Question question={question} chooseQuestion={chooseQuestion} setChooseQuestion={setChooseQuestion} />)
+                questions.length > 0 &&
+                <Table striped>
+                  <thead>
+                    <tr>
+                      <th><Form.Check checked={isCheckedAll} onChange={handleChooseAll} type='checkbox' /></th>
+                      <th>Question</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      questions.map(question => <Question question={question} chooseQuestion={chooseQuestion} setChooseQuestion={setChooseQuestion} />)
+                    }
+                  </tbody>
+                </Table>
               }
-            </tbody>
-          </Table>
+            </Container>
         }
-      <Button onClick={handleSubmit}>ADD SELECTED QUESTION TO THE QUIZ</Button>
+        <Button onClick={handleSubmit}>ADD SELECTED QUESTION TO THE QUIZ</Button>
       </Modal.Body>
       <ToastContainer hideProgressBar autoClose={3000} />
     </Modal>

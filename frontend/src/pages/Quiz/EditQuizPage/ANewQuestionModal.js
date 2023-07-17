@@ -19,7 +19,7 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
     [100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333,
       30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5];
   let tmp = [];
-  for (let i = 0; i < choiceMarkList.length; ++i) {
+  for (let i = 2; i < choiceMarkList.length; ++i) {
     tmp[i] = -choiceMarkList[choiceMarkList.length - i - 1];
   }
   choiceMarkList = choiceMarkList.concat(tmp);
@@ -29,8 +29,9 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
   const [questionMediaPath, setQuestionMediaPath] = useState();
   const [choices, setChoices] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [categoryID, setCategoryID] = useState(0);
+  const [categoryID, setCategoryID] = useState(-1);
   const [saveLoading, setSaveLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const reader = new FileReader();
 
@@ -165,6 +166,7 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
     apiServices.getCategory()
     .then(res => {
       setCategories(res.data)
+      setIsLoading(false)
     })
     .catch(error => console.log(error));
   }, []);
@@ -191,9 +193,9 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
               </Col>
               <Col style={{ marginLeft: '50px' }} className='col-6'>
                 <Form.Select value={categoryID} onChange={handleChangeCategory} style={{ marginLeft: "20px", width: "300px" }} >
-                  <option value="-1" disabled hidden>
-                    --- Select a category ---
-                  </option>                  
+                <option value="-1" disabled hidden>
+                    {isLoading ? "Loading ..." : "--- Select a category ---"}
+                  </option>               
                   {categories.map((category) => (
                     <option value={category.id}>{`${'\xa0'.repeat(category.level * 2)}`} {category.name}</option>
                   ))}
