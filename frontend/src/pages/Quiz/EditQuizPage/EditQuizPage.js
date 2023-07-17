@@ -53,8 +53,10 @@ function QuizQuestion({isSelect, question, index, chosenQuestion, setChosenQuest
       {isSelect && <Form.Check checked={chosenQuestion.includes(question.questionId)} onChange={handleSelect}></Form.Check>}
       <p className="m-0 me-1 px-2" style={{backgroundColor: '#d9d7d7'}}>{index}</p>
       <p className="m-0">{question.questionCode ? question.questionCode : null} {question.questionText}</p>
-      <BsZoomIn className="ms-auto me-3" />
-      <BsFillTrash3Fill style={{cursor:'pointer'}} onClick={handleDelete} className="me-3" />
+      <Container className="d-flex flex-row-reverse m-0 ms-auto" style={{width: '100px'}}>
+        <BsZoomIn/> 
+        <BsFillTrash3Fill style={{cursor:'pointer'}} onClick={handleDelete} className="me-3" />
+      </Container>
       <input disabled type="text" value="1.00"  size={3}/>
     </Stack>
   );
