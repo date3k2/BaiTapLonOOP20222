@@ -55,8 +55,10 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
   }
 
   const handleSubmit = () => {
-    let randomQuestions = [];
+    let randomQuestions = [], count = 0;
     while(randomQuestions.length < numberRandomQuestion){
+      count++;
+      if(count == questions.length * 100) break;
       let questionId = Math.floor(Math.random() * questions.length);
       if(randomQuestions.indexOf(questions[questionId]) == -1 && !checkDuplicate(quizQuestions, questions[questionId])) randomQuestions.push(questions[questionId]);
     }
