@@ -9,11 +9,8 @@ import { toast, ToastContainer } from 'react-toastify';
 function Question({question, chooseQuestion, setChooseQuestion}){
 
   const handleChooseQuestion = () => {
-    console.log("RUN")
-    console.log(chooseQuestion)
     if(chooseQuestion.includes(question)){
-      console.log("INCLUDE")
-      setChooseQuestion(chooseQuestion => chooseQuestion.filter(item => item.id !== question.id));
+      setChooseQuestion(chooseQuestion => chooseQuestion.filter(item => item.questionId !== question.questionId));
     } else {
       setChooseQuestion(chooseQuestion => [...chooseQuestion, question]);
     }
