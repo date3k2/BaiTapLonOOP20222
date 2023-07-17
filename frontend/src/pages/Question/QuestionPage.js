@@ -20,12 +20,13 @@ export default function EditQuestionPage() {
   const [questions, setQuestions] = useState([]);
   const [category, setCategory] = useState();
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isLoadingSub, setIsLoadingSub] = useState(false);
   const handleShowSub = e => {
     setDoesShowSub(doesShowSub => !doesShowSub);
   };
 
   useEffect(() => {
+    setIsLoading(true)
     apiServices.getQuestions(category, doesShowSub)
       .then(res => {
         setQuestions(res.data)
@@ -38,6 +39,7 @@ export default function EditQuestionPage() {
     const category = e.target.value;
     setCategory(category);
     setIsLoading(true);
+    setIsLoadingSub(true);
     apiServices.getQuestions(category, doesShowSub)
       .then(res => {
         setQuestions(res.data)
@@ -57,7 +59,7 @@ export default function EditQuestionPage() {
         <Form.Check type='checkbox' label='Also show old question' />
         <Button href='/question/edit'>Create a new question</Button>
         {
-          isLoading ? <Loading /> :
+          isLoadingSub && isLoading ? <Loading /> :
           <Container className='m-0 p-0'>
             {
               questions.length > 0 && 

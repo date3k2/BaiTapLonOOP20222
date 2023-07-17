@@ -36,6 +36,7 @@ export default function ANewQuestionModal({ setOption, quizQuestions, setQuizQue
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const [category, setCategory] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSub, setIsLoadingSub] = useState(false);
 
   const handleSubmit = () => {
     let filteredChooseQuestion = [];
@@ -45,6 +46,7 @@ export default function ANewQuestionModal({ setOption, quizQuestions, setQuizQue
   }
 
   useEffect(() => {
+    setIsLoading(true)
     apiServices.getQuestions(category, doesShowSub)
       .then(res => {
         setQuestions(res.data)
@@ -74,6 +76,7 @@ export default function ANewQuestionModal({ setOption, quizQuestions, setQuizQue
     const category = e.target.value;
     setCategory(category);
     setIsLoading(true);
+    setIsLoadingSub(true)
     apiServices.getQuestions(category, doesShowSub)
       .then(res => {
         setQuestions(res.data)
@@ -97,7 +100,7 @@ export default function ANewQuestionModal({ setOption, quizQuestions, setQuizQue
         <Form.Check type='checkbox' label='Also show question from subcategories' onChange={handleShowSub} />
         <Form.Check type='checkbox' label='Also show old question' />
         {
-          isLoading ? <Loading /> :
+          isLoadingSub && isLoading ? <Loading /> :
             <Container className='m-0 p-0'>
               {
                 questions.length > 0 &&
