@@ -6,7 +6,6 @@ import apiServices from '../../../services/apiServices';
 import { toast, ToastContainer } from 'react-toastify';
 import { Question } from '../../../models/Question'
 import { Choice } from '../../../models/Choice'
-import Loading from '../../../component/Loading';
 import LoadingButton from '../../../component/LoadingButton';
 
 
@@ -19,7 +18,7 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
     [100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333,
       30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5];
   let tmp = [];
-  for (let i = 2; i < choiceMarkList.length; ++i) {
+  for (let i = 0; i < choiceMarkList.length-2; ++i) {
     tmp[i] = -choiceMarkList[choiceMarkList.length - i - 1];
   }
   choiceMarkList = choiceMarkList.concat(tmp);
@@ -124,7 +123,7 @@ export default function ANewQuestionModal({setOption, quizQuestions, setQuizQues
   }
 
   const handleSave = () => {
-    if (filledName == "" || filledText == "") {
+    if (filledName == "" && filledText == "") {
       toast.warning("Question name and text need to be completed");
       return;
     }
