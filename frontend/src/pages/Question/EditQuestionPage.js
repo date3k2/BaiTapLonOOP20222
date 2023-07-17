@@ -156,8 +156,8 @@ export default function EditQuestionPage() {
 
   const handleSaveAndContinue = (event) => {
     event.preventDefault();
-    if (filledName === "" && filledText === "") {
-      toast.warning("Question name and text need to be completed");
+    if (filledText === "") {
+      toast.warning("Question text need to be completed");
       return;
     }
     const filteredChoices = choices.filter(choice => choice.choiceText !== "" || choice.choiceMediaPath != null);
@@ -224,8 +224,8 @@ export default function EditQuestionPage() {
 
   const handleSave = (event) => {
     event.preventDefault();
-    if (filledName === "" && filledText === "") {
-      toast.warning("Question name and text need to be completed");
+    if (filledText === "") {
+      toast.warning("Question text need to be completed");
       return;
     }
     const filteredChoices = choices.filter(choice => choice.choiceText !== "" || choice.choiceMediaPath != null);
